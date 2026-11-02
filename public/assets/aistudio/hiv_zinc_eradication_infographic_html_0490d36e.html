@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bioinorganic & Zinc-Modulated Strategies for HIV-1 Eradication</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Styling & Chart Containers -->
+    <style>
+        /* Color Palette Constants (Brilliant Blues & Vibrant Accents)
+           Primary: #0f172a (Slate 900)
+           Secondary/Accent 1: #2563eb (Royal Blue)
+           Accent 2: #06b6d4 (Cyan)
+           Accent 3: #10b981 (Emerald)
+           Accent 4: #f59e0b (Amber)
+           Card BG: #ffffff
+        */
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+
+        /* Glassmorphism subtle effects */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .gradient-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e40af 100%);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-cyan-500 selection:text-white">
+
+    <!-- Sticky Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md text-white border-b border-slate-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-blue-600 rounded-lg text-cyan-300">
+                        <i class="fa-solid font-bold fa-atom text-xl"></i>
+                    </div>
+                    <span class="font-bold text-lg tracking-wider text-white">ZINC-MOD <span class="text-cyan-400 text-xs uppercase font-semibold px-2 py-0.5 bg-cyan-950/80 rounded border border-cyan-800">HIV Cure</span></span>
+                </div>
+                <div class="hidden md:flex space-x-6 text-sm font-medium">
+                    <a href="#overview" class="hover:text-cyan-400 transition-colors">Paradigm Shift</a>
+                    <a href="#mechanisms" class="hover:text-cyan-400 transition-colors">Zinc Mechanisms</a>
+                    <a href="#ejection" class="hover:text-cyan-400 transition-colors">NCp7 Ejection</a>
+                    <a href="#immunology" class="hover:text-cyan-400 transition-colors">DC Vaccine Dynamics</a>
+                    <a href="#shock-kill" class="hover:text-cyan-400 transition-colors">Shock & Kill</a>
+                    <a href="#comparative" class="hover:text-cyan-400 transition-colors">CRISPR vs Bioinorganic</a>
+                </div>
+                <div class="flex items-center">
+                    <a href="#roadmap" class="px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-md text-xs transition-colors">
+                        Strategic Roadmap
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header class="gradient-header text-white py-16 px-4 sm:px-6 lg:px-8 shadow-xl">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-cyan-300 text-sm font-medium mb-4">
+                <i class="fa-solid fa-flask text-xs"></i>
+                <span>Bioinorganic Frontiers in Viral Eradication</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
+                Non-Editing & Zinc-Modulated Strategies for HIV-1 Eradication
+            </h1>
+            <p class="max-w-3xl mx-auto text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
+                Disrupting viral reservoirs, protecting host genomic integrity, and overcoming intellectual property barriers via targeted zinc coordination dynamics, non-ejection Nc9 chelators, and immune modulation.
+            </p>
+            
+            <!-- Key Metric Cards Row -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mt-8">
+                <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl shadow-inner text-center">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Genomic Editing DSBs</p>
+                    <p class="text-3xl font-extrabold text-emerald-400 mt-1">0%</p>
+                    <p class="text-[11px] text-slate-400 mt-1">Zero host DNA breaks</p>
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl shadow-inner text-center">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">NCp7 Affin. ($K_d$)</p>
+                    <p class="text-3xl font-extrabold text-cyan-400 mt-1">10<sup>-12</sup>M</p>
+                    <p class="text-[11px] text-slate-400 mt-1">Picomolar Zn<sup>2+</sup> binding</p>
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl shadow-inner text-center">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Therapeutic Index</p>
+                    <p class="text-3xl font-extrabold text-blue-400 mt-1">&ge; 30</p>
+                    <p class="text-[11px] text-slate-400 mt-1">SAMT-19 virucidal selectivity</p>
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl shadow-inner text-center">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Host Proteome Target</p>
+                    <p class="text-3xl font-extrabold text-amber-400 mt-1">~3%</p>
+                    <p class="text-[11px] text-slate-400 mt-1">Human genes with Zn fingers</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- Section 1: Paradigm Shift -->
+        <section id="overview" class="scroll-mt-20">
+            <div class="mb-6 border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-sm font-bold">1</span>
+                    Paradigm Shift Beyond Genomic Editing
+                </h2>
+            </div>
+            
+            <p class="text-slate-600 leading-relaxed mb-6">
+                While combination antiretroviral therapy (cART) successfully suppresses active viral replication, long-lived latent viral reservoirs persist in resting CD4+ T cells, gut-associated lymphoid tissue (GALT), and central nervous system (CNS) microglial cells. Historical cure strategies focused on genomic editing platforms (such as CRISPR/Cas9 or Zinc Finger Nucleases) to disrupt host <i>CCR5</i> genes. However, these methods induce double-strand DNA breaks (DSBs), carry risks of off-target cleavage, selection for CXCR4-tropic viral escape mutants, and dense patent encumbrances. Bioinorganic zinc modulation offers a transformative non-editing alternative.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Card: Risk profile comparison -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                            Genomic Editing Risks vs. Bioinorganic Safety
+                        </h3>
+                        <p class="text-sm text-slate-500 mb-4">
+                            Direct DNA cleavage creates substantial clinical hurdles. Bioinorganic targets exploit coordination chemistry without altering host gene sequences.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="riskRadarChart"></canvas>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 italic mt-4 text-center">
+                        Comparison across key translational safety and operational risk vectors.
+                    </p>
+                </div>
+
+                <!-- Card: Anatomical Reservoir Distribution -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-network-wired text-cyan-600"></i>
+                            Anatomical Reservoir & Sanctuary Targets
+                        </h3>
+                        <p class="text-sm text-slate-500 mb-4">
+                            Latent HIV-1 is distributed across anatomical sanctuaries requiring targeted delivery that bypasses blood-brain and tissue barriers.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="reservoirDonutChart"></canvas>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 italic mt-4 text-center">
+                        Relative distribution of persistent proviral reservoirs under effective cART.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Zinc-Dependent Antiviral Peptides & Non-Editing Targets -->
+        <section id="mechanisms" class="scroll-mt-20">
+            <div class="mb-6 border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-sm font-bold">2</span>
+                    Zinc-Dependent Non-Editing Viral Targets
+                </h2>
+            </div>
+            
+            <p class="text-slate-600 leading-relaxed mb-6">
+                Host innate immune pathways naturally utilize zinc-finger motifs (e.g., ZAP/ZC3HAV1 with four CCCH-type fingers) to degrade viral RNA without altering host DNA. Synthetic bioinorganic engineering leverages artificial non-cleaving zinc-finger peptides to interfere with viral integration, transcription, and Tat stability.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Strategy 1 -->
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-xl shadow-md border-t-4 border-cyan-400">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-cyan-300">Pre-Integration</span>
+                        <i class="fa-solid fa-dna text-cyan-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">2LTRZFP Peptides</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Engineered multi-finger peptides specifically bind unique circular 2LTR genomic junctions in aborted integration events. Sterically blocks viral integrase without cleaving DNA.
+                    </p>
+                </div>
+
+                <!-- Strategy 2 -->
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-xl shadow-md border-t-4 border-blue-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-300">Epigenetic Silencing</span>
+                        <i class="fa-solid fa-lock text-blue-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">KRAB-PBS2 Fusion</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Links a Primer Binding Site (PBS)-targeted zinc finger to a KRAB repressor domain. Recruits host HDACs to form localized heterochromatin without inducing double-strand breaks.
+                    </p>
+                </div>
+
+                <!-- Strategy 3 -->
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-xl shadow-md border-t-4 border-emerald-400">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Transcription Block</span>
+                        <i class="fa-solid fa-ban text-emerald-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Sp1 / TAR Interference</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Artificial fingers bind Sp1 promoter sites on LTR, competing with host factors and disrupting the Sp1-cyclin T1-Tat transactivation complex to halt transcription.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Flowchart Diagram using HTML/Tailwind -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                <h3 class="text-md font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-diagram-project text-blue-600"></i>
+                    Endogenous ZAP (ZC3HAV1) Non-Editing Viral RNA Degradation Pathway
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center text-sm">
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 flex flex-col items-center justify-center">
+                        <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs mb-2">1</span>
+                        <p class="font-semibold text-slate-800">CpG Motif Binding</p>
+                        <p class="text-xs text-slate-500 mt-1">ZAP N-terminal CCCH zinc fingers recognize CpG-rich viral RNA</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 flex flex-col items-center justify-center">
+                        <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs mb-2">2</span>
+                        <p class="font-semibold text-slate-800">Decapping Complex</p>
+                        <p class="text-xs text-slate-500 mt-1">Recruits DCP1/DCP2 decapping machinery</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 flex flex-col items-center justify-center">
+                        <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs mb-2">3</span>
+                        <p class="font-semibold text-slate-800">Exonuclease Target</p>
+                        <p class="text-xs text-slate-500 mt-1">Engages 5'-3' XRN1 and 3'-5' exosome complex</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 flex flex-col items-center justify-center">
+                        <span class="w-7 h-7 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold text-xs mb-2">4</span>
+                        <p class="font-semibold text-slate-800">Viral RNA Clearance</p>
+                        <p class="text-xs text-slate-500 mt-1">Destroys HIV-1 transcript without host genome edit</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: NCp7 Zinc Ejection vs Selective Chelation -->
+        <section id="ejection" class="scroll-mt-20">
+            <div class="mb-6 border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-sm font-bold">3</span>
+                    Molecular Mechanics of Nucleocapsid NCp7 Disruption
+                </h2>
+            </div>
+
+            <p class="text-slate-600 leading-relaxed mb-6">
+                The mature HIV-1 nucleocapsid protein (NCp7) contains two highly conserved CCHC-type zinc finger motifs coordinating Zn<sup>2+</sup> with high affinity ($K_d \approx 10^{-9}$ to $10^{-12}$ M). Disruption of these zinc fingers destroys viral nucleic acid chaperone activity, rendering virions non-infectious. Bioinorganic strategies have evolved from non-specific electrophilic ejectors to domain-selective non-ejection Nc9 chelators to improve therapeutic index.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Plotly Chart: Ejector vs Non-ejection Safety Profiles -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-100">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-2">
+                        Cytotoxicity vs. Efficacy ($CC_{50}$ / $EC_{50}$) Across Ejector Generations
+                    </h3>
+                    <p class="text-sm text-slate-500 mb-4">
+                        Comparison of early electrophiles (NOBA) versus refined SAMTs and novel non-ejection chelators.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="ejectorScatterChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Cys49 Oxidation Mechanics -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-3">
+                            Molecular Ejection Mechanism at Cys49
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="p-3 bg-slate-50 rounded-lg border-l-4 border-amber-500">
+                                <p class="font-bold text-sm text-slate-800">1. Solvent-Exposed Attack Target</p>
+                                <p class="text-xs text-slate-600 mt-1">Cys49 in the C-terminal CCHC finger exhibits high solvent accessibility, making it the primary site for electrophilic attack by SAMTs or DIBAs.</p>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border-l-4 border-blue-500">
+                                <p class="font-bold text-sm text-slate-800">2. Disulfide / Adduct Formation</p>
+                                <p class="text-xs text-slate-600 mt-1">Covalent thioester modification leads to intramolecular disulfide cross-links or thiosulfide adducts.</p>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border-l-4 border-emerald-500">
+                                <p class="font-bold text-sm text-slate-800">3. Metal Coordination Failure & Folding Loss</p>
+                                <p class="text-xs text-slate-600 mt-1">Zinc is ejected, unfolding the hydrophobic protein core, causing irreversible protein aggregation and complete loss of infectivity.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-cyan-50 text-cyan-900 rounded-lg text-xs font-medium border border-cyan-200">
+                        <i class="fa-solid fa-shield-halved mr-1"></i> FTO Advantage: Non-ejection Nc9 chelators bind the hydrophobic pocket without thiol oxidation, bypassing legacy NCI ejector patent claims.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Immunomodulatory Dynamics in Dendritic Cells -->
+        <section id="immunology" class="scroll-mt-20">
+            <div class="mb-6 border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-sm font-bold">4</span>
+                    Immunomodulatory Dynamics of Zinc in Dendritic Cell Vaccines
+                </h2>
+            </div>
+
+            <p class="text-slate-600 leading-relaxed mb-6">
+                Intracellular free cytosolic zinc ([Zn<sup>2+</sup>]<sub>i</sub>) acts as a crucial second messenger in dendritic cells (DCs). TLR4 activation downregulates ZIP family influx transporters, creating a rapid drop in cytosolic free zinc. This decline releases MyD88/NF-&kappa;B inhibition, upregulating MHC-II, CD80, and CD86 expression. Modulating intracellular zinc during ex vivo DC vaccine manufacturing directs adaptive immunity toward cytotoxic T cell (CTL) induction rather than regulatory T cell (T<sub>reg</sub>) polarization.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Bar Chart: Phenotypic Output vs Zinc Depletion -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-100">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-2">
+                        Dendritic Cell Phenotype as a Function of Zinc Concentration
+                    </h3>
+                    <p class="text-sm text-slate-500 mb-4">
+                        Controlled transient chelation maximizes immunogenic cross-presentation parameters, whereas high cytosolic zinc promotes tolerogenic T<sub>reg</sub> induction.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="dcPhenotypeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Qualitative Biphasic Dynamics -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-3">
+                            Biphasic Immunological Switch
+                        </h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                                <div class="flex items-center gap-2 text-emerald-800 font-bold text-sm mb-1">
+                                    <i class="fa-solid fa-bolt"></i> Low Intracellular Zinc / Controlled Chelation
+                                </div>
+                                <ul class="text-xs text-emerald-900 space-y-1 list-disc list-inside">
+                                    <li>Unblocks MyD88 / NF-&kappa;B & MAPK signaling cascades</li>
+                                    <li>Upregulates surface MHC-II, CD80, CD86, and IL-12</li>
+                                    <li>Promotes Th1 polarization & cDC1 CD8+ CTL cross-priming</li>
+                                    <li>Optimal state for therapeutic HIV dendritic cell vaccines</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 bg-amber-50 rounded-xl border border-amber-200">
+                                <div class="flex items-center gap-2 text-amber-800 font-bold text-sm mb-1">
+                                    <i class="fa-solid fa-hand"></i> High Intracellular Free Zinc
+                                </div>
+                                <ul class="text-xs text-amber-900 space-y-1 list-disc list-inside">
+                                    <li>Locks DCs in immature/tolerogenic state (MHC-II<sup>lo</sup>)</li>
+                                    <li>Inhibits STAT3 phosphorylation & IL-6/IL-1&beta; pathways</li>
+                                    <li>Upregulates Foxp3 and KLF-10 transcription factors</li>
+                                    <li>Drives CD4+ T cell differentiation into CD25+ Foxp3+ T<sub>regs</sub></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 italic mt-3 text-center">
+                        Transient ex vivo zinc chelation during antigen pulsing enhances CTL vaccine potency.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Shock and Kill Synergy -->
+        <section id="shock-kill" class="scroll-mt-20">
+            <div class="mb-6 border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-sm font-bold">5</span>
+                    Bioinorganic Synergies in Reservoir Reactivation ("Shock & Kill")
+                </h2>
+            </div>
+
+            <p class="text-slate-600 leading-relaxed mb-6">
+                Eradicating latent HIV-1 requires purging transcriptionally silent proviruses from sanctuary sites. Histone Deacetylase Inhibitors (HDACis) rely on **Zinc Binding Groups (ZBGs)**—such as hydroxamic acids (Vorinostat, Panobinostat) or thiols (Romidepsin)—to chelate the catalytic Zn<sup>2+</sup> at the base of Class I HDAC active sites (HDAC1/2/3). Combining ZBG-based LRAs with non-ejection NCp7 inhibitors ensures that reactivated virions cannot mature or spread, while zinc-optimized DC vaccines prime CTLs to kill reactivated cells.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Stacked Bar Chart: Multi-targeted Synergy -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-100">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-2">
+                        Synergistic Suppression of Viral Rebound Under "Shock & Kill"
+                    </h3>
+                    <p class="text-sm text-slate-500 mb-4">
+                        Multi-pronged strategy prevents de novo infection during latency reactivation compared to single-agent LRA therapy.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="synergyStackedChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Structured Table / List of ZBGs -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-3">
+                            Class I HDAC Inhibitor Zinc Binding Groups (ZBGs)
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-600">
+                                <thead class="bg-slate-100 text-slate-800 font-bold uppercase border-b border-slate-200">
+                                    <tr>
+                                        <th class="p-2">Agent / Class</th>
+                                        <th class="p-2">Zinc Binding Group</th>
+                                        <th class="p-2">Target Enzyme</th>
+                                        <th class="p-2">Reactivation Impact</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr>
+                                        <td class="p-2 font-semibold text-slate-800">Vorinostat (SAHA)</td>
+                                        <td class="p-2 text-cyan-700 font-medium">Hydroxamic Acid</td>
+                                        <td class="p-2">Pan-HDAC (Class I/II)</td>
+                                        <td class="p-2">LTR hyperacetylation; moderate shock</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-semibold text-slate-800">Romidepsin (RMD)</td>
+                                        <td class="p-2 text-cyan-700 font-medium">Reduced Thiol</td>
+                                        <td class="p-2">Class I (HDAC1/2)</td>
+                                        <td class="p-2">Nanomolar catalytic Zn<sup>2+</sup> chelation</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-semibold text-slate-800">Benzamides / Ketones</td>
+                                        <td class="p-2 text-cyan-700 font-medium">2-Substituted Benzamide</td>
+                                        <td class="p-2">Selective HDAC1/2/3</td>
+                                        <td class="p-2">High LRA efficacy with reduced systemic toxicity</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-emerald-50 rounded-lg border border-emerald-200 text-xs text-emerald-900">
+                        <i class="fa-solid fa-circle-check mr-1"></i> <b>Key Finding:</b> Co-inhibition of HDAC1, 2, and 3 is required for robust HIV-1 proviral transcription in resting memory CD4+ T cells.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Comparative Analysis -->
+        <section id="comparative" class="scroll-mt-20">
+            <div class="mb-6 border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-sm font-bold">6</span>
+                    Comparative Matrix: Non-Editing Zinc Modulation vs. Genomic Editing
+                </h2>
+            </div>
+
+            <p class="text-slate-600 leading-relaxed mb-6">
+                A rigorous evaluation of translational viability highlights key technical, safety, and patent advantages of bioinorganic zinc modulation over endonuclease-based gene editing (CRISPR/Cas9, ZFNs).
+            </p>
+
+            <!-- Plotly Interactive Comparison Chart Container -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-slate-100 mb-8">
+                <h3 class="text-lg font-semibold text-slate-800 mb-2">
+                    Multi-Vector Feature Comparison: CRISPR/ZFN vs. Zinc Modulation
+                </h3>
+                <p class="text-sm text-slate-500 mb-4">
+                    Visualizing scores across key clinical parameters (Scale 1-10; higher is favorable).
+                </p>
+                <div class="chart-container" style="max-width: 800px; height: 380px;">
+                    <canvas id="comparativeBarChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Detailed Table -->
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-900 text-white font-semibold">
+                                <th class="p-4">Evaluation Parameter</th>
+                                <th class="p-4 text-cyan-300">Non-Editing Bioinorganic Strategies (Zinc Mod)</th>
+                                <th class="p-4 text-slate-300">Genomic Gene Editing (CRISPR / ZFNs)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-bold text-slate-800">Primary Target Mechanism</td>
+                                <td class="p-4 text-slate-700">NCp7 CCHC fingers, viral RNA (ZAP/2LTRZFP), HDAC catalytic Zn<sup>2+</sup>, DC flux</td>
+                                <td class="p-4 text-slate-700">Genomic host loci (<i>CCR5</i>, <i>CXCR4</i>, proviral DNA) via DSBs</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-bold text-slate-800">Host Genome Integrity</td>
+                                <td class="p-4 text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Absolute preservation; 0% DSBs</td>
+                                <td class="p-4 text-red-600 font-medium"><i class="fa-solid fa-circle-xmark mr-1"></i> Permanent indels, translocation risk</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-bold text-slate-800">Off-Target Safety Profile</td>
+                                <td class="p-4 text-slate-700">Kinetic selectivity for CCHC over host C2H2; buffered by metallothioneins</td>
+                                <td class="p-4 text-slate-700">Off-target genomic cuts, potential oncogenesis risk</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-bold text-slate-800">Viral Escape & Tropism</td>
+                                <td class="p-4 text-emerald-700 font-semibold"><i class="fa-solid fa-shield text-emerald-600 mr-1"></i> Hyper-conserved NCp7; mutations impair fitness</td>
+                                <td class="p-4 text-amber-700 font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i> CCR5 knockout selects for X4 CXCR4 strains</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-bold text-slate-800">Delivery & Scalability</td>
+                                <td class="p-4 text-slate-700">Systemic small molecules, DC vaccines, LRA conjugates, nanoparticles</td>
+                                <td class="p-4 text-slate-700">Requires viral vectors (AAV) or ex vivo electroporation</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-4 font-bold text-slate-800">Intellectual Property (FTO)</td>
+                                <td class="p-4 text-emerald-700 font-semibold"><i class="fa-solid fa-unlock text-emerald-600 mr-1"></i> High FTO outside small-molecule ejector patents</td>
+                                <td class="p-4 text-red-600 font-medium"><i class="fa-solid fa-lock mr-1"></i> Heavily litigated CRISPR/Cas9 patent thickets</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Strategic Development Roadmap -->
+        <section id="roadmap" class="scroll-mt-20">
+            <div class="mb-6 border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-sm font-bold">7</span>
+                    Strategic Translational Roadmap
+                </h2>
+            </div>
+
+            <p class="text-slate-600 leading-relaxed mb-6">
+                To advance non-editing bioinorganic strategies toward clinical deployment, a multi-phased roadmap prioritizes Nc9 ligand design, optimized DC manufacturing, selective LRA conjugation, and sanctuary-targeted delivery systems.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Step 1 -->
+                <div class="bg-white p-5 rounded-xl shadow-md border-t-4 border-blue-600 relative">
+                    <span class="absolute -top-3 right-4 px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded">PHASE 1</span>
+                    <h3 class="font-bold text-slate-900 mb-2">Structure-Guided Nc9 Design</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Accelerate high-affinity non-ejection small molecules targeting mature Nc9 hydrophobic pockets to block chaperone function without generating reactive disulfide species.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-white p-5 rounded-xl shadow-md border-t-4 border-cyan-500 relative">
+                    <span class="absolute -top-3 right-4 px-2 py-0.5 bg-cyan-500 text-slate-950 text-[10px] font-bold rounded">PHASE 2</span>
+                    <h3 class="font-bold text-slate-900 mb-2">DC Vaccine Standardization</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Implement transient ex vivo zinc chelation during DC antigen-pulsing to maximize MHC-I cross-presentation, CD86 upregulation, and durable CTL responses.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-white p-5 rounded-xl shadow-md border-t-4 border-emerald-500 relative">
+                    <span class="absolute -top-3 right-4 px-2 py-0.5 bg-emerald-500 text-white text-[10px] font-bold rounded">PHASE 3</span>
+                    <h3 class="font-bold text-slate-900 mb-2">Class I LRA Conjugates</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Synthesize selective HDAC1/2/3 inhibitors featuring 2-substituted benzamide ZBGs paired with NCp7 inhibitors for safe, synchronized "shock and sterilize".
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="bg-white p-5 rounded-xl shadow-md border-t-4 border-amber-500 relative">
+                    <span class="absolute -top-3 right-4 px-2 py-0.5 bg-amber-500 text-white text-[10px] font-bold rounded">PHASE 4</span>
+                    <h3 class="font-bold text-slate-900 mb-2">Nanoparticle Targeting</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Engineer blood-brain barrier (BBB)-permeable, lymphoid-targeted liposomal vehicles to deliver bioinorganic agents directly into GALT and microglial sanctuaries.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+                <p class="font-bold text-white text-sm">Bioinorganic HIV-1 Eradication Research Group</p>
+                <p class="mt-1">Interactive Single-Page Application Infographic &bull; Bioinorganic Strategies Beyond Genomic Editing</p>
+            </div>
+            <div class="flex items-center space-x-6">
+                <span class="text-slate-500">Built with Chart.js & Tailwind CSS</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Charts Initialization -->
+    <script>
+        // Global Chart.js Configuration for Tooltip Label Wrapping
+        const chartTooltipCallback = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // Utility Function for Label Wrapping (>16 Chars)
+        function wrapLabel(str, maxLen = 16) {
+            if (str.length <= maxLen) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLen) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine += ' ' + word;
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        }
+
+        // --- Chart 1: Risk Radar Chart ---
+        const ctxRadar = document.getElementById('riskRadarChart').getContext('2d');
+        const rawRadarLabels = ['Host Genomic Instability', 'Off-Target Cleavage Risk', 'Viral Tropism Escape', 'Delivery Complexity', 'Patent Encumbrance'];
+        const wrappedRadarLabels = rawRadarLabels.map(l => wrapLabel(l));
+
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: wrappedRadarLabels,
+                datasets: [{
+                    label: 'Genomic Editing (CRISPR/ZFN)',
+                    data: [90, 85, 80, 75, 95],
+                    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                    borderColor: '#ef4444',
+                    pointBackgroundColor: '#ef4444'
+                }, {
+                    label: 'Bioinorganic Zinc Modulation',
+                    data: [5, 15, 10, 35, 20],
+                    backgroundColor: 'rgba(6, 182, 212, 0.2)',
+                    borderColor: '#06b6d4',
+                    pointBackgroundColor: '#06b6d4'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: '#e2e8f0' },
+                        grid: { color: '#cbd5e1' },
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                        ticks: { display: false }
+                    }
+                },
+                plugins: {
+                    tooltip: chartTooltipCallback.plugins.tooltip,
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                }
+            }
+        });
+
+        // --- Chart 2: Reservoir Distribution Donut Chart ---
+        const ctxDonut = document.getElementById('reservoirDonutChart').getContext('2d');
+        const rawDonutLabels = ['Resting CD4+ T Cells', 'Gut Lymphoid (GALT)', 'Lymph Node Centers', 'CNS Microglia / Brain'];
+        const wrappedDonutLabels = rawDonutLabels.map(l => wrapLabel(l));
+
+        new Chart(ctxDonut, {
+            type: 'doughnut',
+            data: {
+                labels: wrappedDonutLabels,
+                datasets: [{
+                    data: [45, 30, 15, 10],
+                    backgroundColor: ['#2563eb', '#06b6d4', '#10b981', '#f59e0b'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: chartTooltipCallback.plugins.tooltip,
+                    legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } }
+                }
+            }
+        });
+
+        // --- Chart 3: Ejector Scatter/Bubble Chart ---
+        const ctxScatter = document.getElementById('ejectorScatterChart').getContext('2d');
+        new Chart(ctxScatter, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: '1st Gen Ejector (NOBA)',
+                    data: [{ x: 8, y: 12 }],
+                    backgroundColor: '#ef4444',
+                    pointRadius: 10
+                }, {
+                    label: '2nd Gen Ejector (SAMT-19)',
+                    data: [{ x: 0.8, y: 45 }],
+                    backgroundColor: '#f59e0b',
+                    pointRadius: 12
+                }, {
+                    label: 'Non-Ejection Nc9 Chelator',
+                    data: [{ x: 0.1, y: 120 }],
+                    backgroundColor: '#10b981',
+                    pointRadius: 14
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: { display: true, text: 'EC50 Virucidal Potency (μM) - Lower is Better', font: { size: 11 } }
+                    },
+                    y: {
+                        title: { display: true, text: 'CC50 Cytotoxicity Limit (μM) - Higher is Better', font: { size: 11 } }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(items) {
+                                return items[0].dataset.label;
+                            },
+                            label: function(item) {
+                                return `EC50: ${item.raw.x} μM, CC50: ${item.raw.y} μM`;
+                            }
+                        }
+                    },
+                    legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
+                }
+            }
+        });
+
+        // --- Chart 4: DC Phenotype Bar Chart ---
+        const ctxDC = document.getElementById('dcPhenotypeChart').getContext('2d');
+        const rawDCLabels = ['MHC-II Expression', 'CD86 Co-Stimulation', 'IL-12 Secretion', 'Treg Polarization'];
+        const wrappedDCLabels = rawDCLabels.map(l => wrapLabel(l));
+
+        new Chart(ctxDC, {
+            type: 'bar',
+            data: {
+                labels: wrappedDCLabels,
+                datasets: [{
+                    label: 'Controlled Zinc Chelation',
+                    data: [88, 92, 85, 12],
+                    backgroundColor: '#06b6d4'
+                }, {
+                    label: 'High Exogenous Zinc',
+                    data: [25, 30, 18, 90],
+                    backgroundColor: '#f59e0b'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 100, title: { display: true, text: 'Relative Expression Level (%)', font: { size: 11 } } }
+                },
+                plugins: {
+                    tooltip: chartTooltipCallback.plugins.tooltip,
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                }
+            }
+        });
+
+        // --- Chart 5: Shock and Kill Synergy Stacked Bar ---
+        const ctxSynergy = document.getElementById('synergyStackedChart').getContext('2d');
+        const rawSynergyLabels = ['Baseline cART', 'LRA Alone (Vorinostat)', 'LRA + NCp7 Chelator', 'LRA + NCp7 + DC Vaccine'];
+        const wrappedSynergyLabels = rawSynergyLabels.map(l => wrapLabel(l));
+
+        new Chart(ctxSynergy, {
+            type: 'bar',
+            data: {
+                labels: wrappedSynergyLabels,
+                datasets: [{
+                    label: 'Latency Reactivation',
+                    data: [5, 75, 78, 82],
+                    backgroundColor: '#3b82f6'
+                }, {
+                    label: 'New Infection Blockade',
+                    data: [80, 20, 95, 98],
+                    backgroundColor: '#10b981'
+                }, {
+                    label: 'CTL Reservoir Clearance',
+                    data: [10, 15, 25, 90],
+                    backgroundColor: '#06b6d4'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, beginAtZero: true, max: 300, title: { display: true, text: 'Cumulative Efficacy Index', font: { size: 11 } } }
+                },
+                plugins: {
+                    tooltip: chartTooltipCallback.plugins.tooltip,
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                }
+            }
+        });
+
+        // --- Chart 6: Comparative Matrix Horizontal Bar Chart ---
+        const ctxComp = document.getElementById('comparativeBarChart').getContext('2d');
+        const rawCompLabels = ['Genomic Integrity', 'Escape Resistance', 'Sanctuary Delivery', 'IP Freedom (FTO)', 'Translational Safety'];
+        const wrappedCompLabels = rawCompLabels.map(l => wrapLabel(l));
+
+        new Chart(ctxComp, {
+            type: 'bar',
+            data: {
+                labels: wrappedCompLabels,
+                datasets: [{
+                    label: 'CRISPR / ZFN Gene Editing',
+                    data: [2, 3, 4, 2, 3],
+                    backgroundColor: '#94a3b8'
+                }, {
+                    label: 'Bioinorganic Zinc Modulation',
+                    data: [10, 9, 8, 9, 9],
+                    backgroundColor: '#2563eb'
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { beginAtZero: true, max: 10, title: { display: true, text: 'Favorability Rating (1-10)', font: { size: 11 } } }
+                },
+                plugins: {
+                    tooltip: chartTooltipCallback.plugins.tooltip,
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

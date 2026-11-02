@@ -1,0 +1,103 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with role and preferences",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["trustee", "co_trustee", "counsel", "fiduciary", "viewer"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "LegalCase": {
+      "title": "LegalCase",
+      "description": "Consolidated court case tracking record",
+      "type": "object",
+      "properties": {
+        "caseNumber": { "type": "string", "maxLength": 64 },
+        "court": { "type": "string", "maxLength": 128 },
+        "venue": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "maxLength": 64 },
+        "claimValue": { "type": "number" },
+        "sharesAllocated": { "type": "number" },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["caseNumber", "court", "status"]
+    },
+    "DigitalSignature": {
+      "title": "DigitalSignature",
+      "description": "Cryptographically sealed signature record",
+      "type": "object",
+      "properties": {
+        "tabId": { "type": "string", "maxLength": 64 },
+        "signatory": { "type": "string", "enum": ["caustin", "juan"] },
+        "signatoryName": { "type": "string", "maxLength": 128 },
+        "signatureType": { "type": "string", "enum": ["drawn", "typed"] },
+        "pqcHash": { "type": "string", "maxLength": 128 },
+        "signedAt": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "uid": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["tabId", "signatory", "pqcHash", "signedAt", "uid"]
+    },
+    "CourtFiling": {
+      "title": "CourtFiling",
+      "description": "Record of electronic court presentation or filing",
+      "type": "object",
+      "properties": {
+        "recipientCourt": { "type": "string", "maxLength": 128 },
+        "docketNumber": { "type": "string", "maxLength": 64 },
+        "intakeEmail": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "maxLength": 64 },
+        "dispatchedAt": { "type": "string" },
+        "receiptId": { "type": "string", "maxLength": 128 },
+        "packetDigest": { "type": "string", "maxLength": 128 },
+        "uid": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["recipientCourt", "docketNumber", "status", "dispatchedAt", "uid"]
+    },
+    "WorkspaceActivity": {
+      "title": "WorkspaceActivity",
+      "description": "Audit log of Google Workspace integrations",
+      "type": "object",
+      "properties": {
+        "service": { "type": "string", "enum": ["drive", "sheets", "gmail", "calendar", "docs", "chat", "meet"] },
+        "action": { "type": "string", "maxLength": 128 },
+        "resourceId": { "type": "string", "maxLength": 256 },
+        "resourceTitle": { "type": "string", "maxLength": 256 },
+        "timestamp": { "type": "string" },
+        "status": { "type": "string", "maxLength": 64 },
+        "uid": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["service", "action", "timestamp", "uid"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Authenticated user records and roles"
+    },
+    "/cases/{caseId}": {
+      "schema": { "$ref": "#/entities/LegalCase" },
+      "description": "Consolidated court case registry"
+    },
+    "/signatures/{signatureId}": {
+      "schema": { "$ref": "#/entities/DigitalSignature" },
+      "description": "PQC signed agreements and jurat seals"
+    },
+    "/filings/{filingId}": {
+      "schema": { "$ref": "#/entities/CourtFiling" },
+      "description": "Court presentment and delivery verification"
+    },
+    "/workspace_activity/{activityId}": {
+      "schema": { "$ref": "#/entities/WorkspaceActivity" },
+      "description": "Audit ledger for Google Workspace interactions"
+    }
+  }
+}

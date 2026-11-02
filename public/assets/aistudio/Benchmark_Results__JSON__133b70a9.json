@@ -1,0 +1,713 @@
+{
+  "benchmarks": [
+    {
+      "benchmark": "alu_chain",
+      "lsx64": {
+        "arch": "lsx64",
+        "cycles": 28,
+        "instructions_retired": 21,
+        "cpi": 1.3333,
+        "ipc": 0.75,
+        "total_stalls": 200,
+        "data_stalls": 0,
+        "control_stalls": 0,
+        "cache_stalls": 200,
+        "branches_total": 0,
+        "branches_taken": 0,
+        "branch_taken_rate": "0.00%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 19,
+          "misses": 2,
+          "evictions": 0,
+          "total_accesses": 21,
+          "hit_rate": "90.48%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 2,
+          "evictions": 0,
+          "total_accesses": 2,
+          "hit_rate": "0.00%"
+        }
+      },
+      "rv64i": {
+        "arch": "rv64i",
+        "cycles": 26,
+        "instructions_retired": 21,
+        "cpi": 1.2381,
+        "ipc": 0.8077,
+        "total_stalls": 200,
+        "data_stalls": 0,
+        "control_stalls": 0,
+        "cache_stalls": 200,
+        "branches_total": 0,
+        "branches_taken": 0,
+        "branch_taken_rate": "0.00%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 19,
+          "misses": 2,
+          "evictions": 0,
+          "total_accesses": 21,
+          "hit_rate": "90.48%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 2,
+          "evictions": 0,
+          "total_accesses": 2,
+          "hit_rate": "0.00%"
+        }
+      },
+      "speedup": 0.9286
+    },
+    {
+      "benchmark": "loop_sum",
+      "lsx64": {
+        "arch": "lsx64",
+        "cycles": 608,
+        "instructions_retired": 304,
+        "cpi": 2.0,
+        "ipc": 0.5,
+        "total_stalls": 397,
+        "data_stalls": 0,
+        "control_stalls": 297,
+        "cache_stalls": 100,
+        "branches_total": 100,
+        "branches_taken": 99,
+        "branch_taken_rate": "99.00%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 402,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 403,
+          "hit_rate": "99.75%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 1,
+          "hit_rate": "0.00%"
+        }
+      },
+      "rv64i": {
+        "arch": "rv64i",
+        "cycles": 507,
+        "instructions_retired": 304,
+        "cpi": 1.6678,
+        "ipc": 0.5996,
+        "total_stalls": 397,
+        "data_stalls": 0,
+        "control_stalls": 297,
+        "cache_stalls": 100,
+        "branches_total": 100,
+        "branches_taken": 99,
+        "branch_taken_rate": "99.00%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 402,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 403,
+          "hit_rate": "99.75%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 1,
+          "hit_rate": "0.00%"
+        }
+      },
+      "speedup": 0.8339
+    },
+    {
+      "benchmark": "memcpy",
+      "lsx64": {
+        "arch": "lsx64",
+        "cycles": 169,
+        "instructions_retired": 117,
+        "cpi": 1.4444,
+        "ipc": 0.6923,
+        "total_stalls": 375,
+        "data_stalls": 0,
+        "control_stalls": 45,
+        "cache_stalls": 330,
+        "branches_total": 16,
+        "branches_taken": 15,
+        "branch_taken_rate": "93.75%",
+        "loads": 16,
+        "stores": 16,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 131,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 132,
+          "hit_rate": "99.24%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 30,
+          "misses": 2,
+          "evictions": 0,
+          "total_accesses": 32,
+          "hit_rate": "93.75%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 3,
+          "evictions": 0,
+          "total_accesses": 3,
+          "hit_rate": "0.00%"
+        }
+      },
+      "rv64i": {
+        "arch": "rv64i",
+        "cycles": 152,
+        "instructions_retired": 117,
+        "cpi": 1.2991,
+        "ipc": 0.7697,
+        "total_stalls": 375,
+        "data_stalls": 0,
+        "control_stalls": 45,
+        "cache_stalls": 330,
+        "branches_total": 16,
+        "branches_taken": 15,
+        "branch_taken_rate": "93.75%",
+        "loads": 16,
+        "stores": 16,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 131,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 132,
+          "hit_rate": "99.24%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 30,
+          "misses": 2,
+          "evictions": 0,
+          "total_accesses": 32,
+          "hit_rate": "93.75%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 3,
+          "evictions": 0,
+          "total_accesses": 3,
+          "hit_rate": "0.00%"
+        }
+      },
+      "speedup": 0.8994
+    },
+    {
+      "benchmark": "fibonacci",
+      "lsx64": {
+        "arch": "lsx64",
+        "cycles": 169,
+        "instructions_retired": 105,
+        "cpi": 1.6095,
+        "ipc": 0.6213,
+        "total_stalls": 157,
+        "data_stalls": 0,
+        "control_stalls": 57,
+        "cache_stalls": 100,
+        "branches_total": 20,
+        "branches_taken": 19,
+        "branch_taken_rate": "95.00%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 123,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 124,
+          "hit_rate": "99.19%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 1,
+          "hit_rate": "0.00%"
+        }
+      },
+      "rv64i": {
+        "arch": "rv64i",
+        "cycles": 148,
+        "instructions_retired": 105,
+        "cpi": 1.4095,
+        "ipc": 0.7095,
+        "total_stalls": 157,
+        "data_stalls": 0,
+        "control_stalls": 57,
+        "cache_stalls": 100,
+        "branches_total": 20,
+        "branches_taken": 19,
+        "branch_taken_rate": "95.00%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 123,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 124,
+          "hit_rate": "99.19%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 1,
+          "hit_rate": "0.00%"
+        }
+      },
+      "speedup": 0.8757
+    },
+    {
+      "benchmark": "matrix_sum",
+      "lsx64": {
+        "arch": "lsx64",
+        "cycles": 169,
+        "instructions_retired": 101,
+        "cpi": 1.6733,
+        "ipc": 0.5976,
+        "total_stalls": 276,
+        "data_stalls": 16,
+        "control_stalls": 45,
+        "cache_stalls": 215,
+        "branches_total": 16,
+        "branches_taken": 15,
+        "branch_taken_rate": "93.75%",
+        "loads": 16,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 115,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 116,
+          "hit_rate": "99.14%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 15,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 16,
+          "hit_rate": "93.75%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 2,
+          "evictions": 0,
+          "total_accesses": 2,
+          "hit_rate": "0.00%"
+        }
+      },
+      "rv64i": {
+        "arch": "rv64i",
+        "cycles": 152,
+        "instructions_retired": 101,
+        "cpi": 1.505,
+        "ipc": 0.6645,
+        "total_stalls": 276,
+        "data_stalls": 16,
+        "control_stalls": 45,
+        "cache_stalls": 215,
+        "branches_total": 16,
+        "branches_taken": 15,
+        "branch_taken_rate": "93.75%",
+        "loads": 16,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 115,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 116,
+          "hit_rate": "99.14%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 15,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 16,
+          "hit_rate": "93.75%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 2,
+          "evictions": 0,
+          "total_accesses": 2,
+          "hit_rate": "0.00%"
+        }
+      },
+      "speedup": 0.8994
+    },
+    {
+      "benchmark": "branch_heavy",
+      "lsx64": {
+        "arch": "lsx64",
+        "cycles": 584,
+        "instructions_retired": 280,
+        "cpi": 2.0857,
+        "ipc": 0.4795,
+        "total_stalls": 397,
+        "data_stalls": 0,
+        "control_stalls": 297,
+        "cache_stalls": 100,
+        "branches_total": 125,
+        "branches_taken": 99,
+        "branch_taken_rate": "79.20%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 478,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 479,
+          "hit_rate": "99.79%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 1,
+          "hit_rate": "0.00%"
+        }
+      },
+      "rv64i": {
+        "arch": "rv64i",
+        "cycles": 483,
+        "instructions_retired": 280,
+        "cpi": 1.725,
+        "ipc": 0.5797,
+        "total_stalls": 397,
+        "data_stalls": 0,
+        "control_stalls": 297,
+        "cache_stalls": 100,
+        "branches_total": 125,
+        "branches_taken": 99,
+        "branch_taken_rate": "79.20%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 428,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 429,
+          "hit_rate": "99.77%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 1,
+          "hit_rate": "0.00%"
+        }
+      },
+      "speedup": 0.8271
+    },
+    {
+      "benchmark": "mul_acc",
+      "lsx64": {
+        "arch": "lsx64",
+        "cycles": 168,
+        "instructions_retired": 84,
+        "cpi": 2.0,
+        "ipc": 0.5,
+        "total_stalls": 217,
+        "data_stalls": 60,
+        "control_stalls": 57,
+        "cache_stalls": 100,
+        "branches_total": 20,
+        "branches_taken": 19,
+        "branch_taken_rate": "95.00%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 20,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 102,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 103,
+          "hit_rate": "99.03%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 1,
+          "hit_rate": "0.00%"
+        }
+      },
+      "rv64i": {
+        "arch": "rv64i",
+        "cycles": 147,
+        "instructions_retired": 84,
+        "cpi": 1.75,
+        "ipc": 0.5714,
+        "total_stalls": 217,
+        "data_stalls": 60,
+        "control_stalls": 57,
+        "cache_stalls": 100,
+        "branches_total": 20,
+        "branches_taken": 19,
+        "branch_taken_rate": "95.00%",
+        "loads": 0,
+        "stores": 0,
+        "mul_ops": 20,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 102,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 103,
+          "hit_rate": "99.03%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "total_accesses": 0,
+          "hit_rate": "0.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 1,
+          "hit_rate": "0.00%"
+        }
+      },
+      "speedup": 0.875
+    },
+    {
+      "benchmark": "memory_stride",
+      "lsx64": {
+        "arch": "lsx64",
+        "cycles": 329,
+        "instructions_retired": 197,
+        "cpi": 1.6701,
+        "ipc": 0.5988,
+        "total_stalls": 1049,
+        "data_stalls": 32,
+        "control_stalls": 93,
+        "cache_stalls": 924,
+        "branches_total": 32,
+        "branches_taken": 31,
+        "branch_taken_rate": "96.88%",
+        "loads": 32,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 227,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 228,
+          "hit_rate": "99.56%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 24,
+          "misses": 8,
+          "evictions": 0,
+          "total_accesses": 32,
+          "hit_rate": "75.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 9,
+          "evictions": 0,
+          "total_accesses": 9,
+          "hit_rate": "0.00%"
+        }
+      },
+      "rv64i": {
+        "arch": "rv64i",
+        "cycles": 296,
+        "instructions_retired": 197,
+        "cpi": 1.5025,
+        "ipc": 0.6655,
+        "total_stalls": 1049,
+        "data_stalls": 32,
+        "control_stalls": 93,
+        "cache_stalls": 924,
+        "branches_total": 32,
+        "branches_taken": 31,
+        "branch_taken_rate": "96.88%",
+        "loads": 32,
+        "stores": 0,
+        "mul_ops": 0,
+        "div_ops": 0,
+        "l1_i_cache": {
+          "name": "L1-I",
+          "hits": 227,
+          "misses": 1,
+          "evictions": 0,
+          "total_accesses": 228,
+          "hit_rate": "99.56%"
+        },
+        "l1_d_cache": {
+          "name": "L1-D",
+          "hits": 24,
+          "misses": 8,
+          "evictions": 0,
+          "total_accesses": 32,
+          "hit_rate": "75.00%"
+        },
+        "l2_cache": {
+          "name": "L2",
+          "hits": 0,
+          "misses": 9,
+          "evictions": 0,
+          "total_accesses": 9,
+          "hit_rate": "0.00%"
+        }
+      },
+      "speedup": 0.8997
+    }
+  ],
+  "summary": {
+    "avg_cpi_lsx64": 1.727,
+    "avg_cpi_rv64i": 1.5121,
+    "avg_speedup": 0.8799
+  }
+}

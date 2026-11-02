@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-stone-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D4 & D5 Dopamine Receptor SAR Explorer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        stone: {
+                            50: '#fcfbf9',
+                            100: '#f3f0e8',
+                            200: '#e5e0d8',
+                            700: '#57534e',
+                            800: '#292524',
+                            900: '#1c1917',
+                        },
+                        teal: {
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        amber: {
+                            700: '#b45309',
+                            800: '#92400e',
+                        },
+                        indigo: {
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="h-full text-stone-800 font-sans flex flex-col antialiased bg-stone-50">
+
+    <!-- Chosen Palette: Warm Neutral Harmonious Palette (Stone, Sand, Slate, Emerald, and Muted Teal) -->
+    <!-- Application Structure Plan: Designed as an interactive 5-module explorer: 1. Topography & Homology Overview (establishing structural context), 2. D4 Receptor Selectivity Explorer (interactive SAR and extended secondary pocket engagement), 3. D5 Receptor Selectivity & Efficacy Matrix (focusing on rigid constraints and bioisosteres), 4. Comparative Benchmark Ligand Explorer (filterable dataset with interactive multi-receptor affinity profiles), and 5. Docking & Residue Contact Inspector (mapping core modifications to GPCR binding coordinates). This structure allows researchers and students to move seamlessly from macro receptor biology to micro chemical modification and binding kinetics. -->
+    <!-- Visualization & Content Choices: 1. Radar & Grouped Bar Charts (Chart.js canvas) to display Ki values across D1-D5 and 5-HT2A without SVG. 2. Interactive HTML/CSS Diagram Cards to visualize ligand structures and pocket interactions (OBP vs SBP). 3. Dynamic Filterable Table for compound benchmarking with instant chart syncing. 4. Dual Scatter/Bubble Plot for functional efficacy (Emax) vs dissociation constants (Ki). All choices prioritize non-SVG rendering and interactive exploration. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Header Navigation -->
+    <header class="bg-stone-900 text-stone-100 border-b border-stone-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="bg-teal-700 text-white font-mono text-xs font-bold px-2.5 py-1 rounded tracking-wider uppercase">SAR Portal</span>
+                    <h1 class="text-lg sm:text-xl font-semibold tracking-tight text-white">
+                        D<sub>4</sub> & D<sub>5</sub> Receptor Phenethylamine SAR
+                    </h1>
+                </div>
+                <div class="text-xs text-stone-400 hidden md:block">
+                    GPCR Subtype Selectivity & Medicinal Chemistry
+                </div>
+            </div>
+            <!-- Navigation Tabs -->
+            <nav class="flex space-x-1 sm:space-x-4 overflow-x-auto pb-2 text-xs sm:text-sm font-medium border-t border-stone-800 pt-2">
+                <button onclick="switchTab('topography')" id="tab-topography" class="nav-tab px-3 py-1.5 rounded-md transition-colors text-white bg-teal-800">
+                    1. Topography & Homology
+                </button>
+                <button onclick="switchTab('d4-sar')" id="tab-d4-sar" class="nav-tab px-3 py-1.5 rounded-md transition-colors text-stone-300 hover:text-white hover:bg-stone-800">
+                    2. D<sub>4</sub> Selectivity Engine
+                </button>
+                <button onclick="switchTab('d5-sar')" id="tab-d5-sar" class="nav-tab px-3 py-1.5 rounded-md transition-colors text-stone-300 hover:text-white hover:bg-stone-800">
+                    3. D<sub>5</sub> Efficacy & SAR
+                </button>
+                <button onclick="switchTab('benchmarks')" id="tab-benchmarks" class="nav-tab px-3 py-1.5 rounded-md transition-colors text-stone-300 hover:text-white hover:bg-stone-800">
+                    4. Ligand Database
+                </button>
+                <button onclick="switchTab('residues')" id="tab-residues" class="nav-tab px-3 py-1.5 rounded-md transition-colors text-stone-300 hover:text-white hover:bg-stone-800">
+                    5. Residue Pocket Inspector
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+        <!-- ==================================================================== -->
+        <!-- MODULE 1: TOPOGRAPHY & HOMOLOGY OVERVIEW -->
+        <!-- ==================================================================== -->
+        <section id="module-topography" class="tab-content block space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                <div class="border-b border-stone-100 pb-3">
+                    <h2 class="text-xl font-bold text-stone-900">Receptor Subtype Topography & Homology Divergence</h2>
+                    <p class="text-sm text-stone-600 mt-1">
+                        Understanding the evolutionary divergence between $D_1$-like ($D_1, D_5$) and $D_2$-like ($D_2, D_3, D_4$) dopamine GPCR subfamilies is key to designing subtype-selective phenethylamine derivatives.
+                    </p>
+                </div>
+                <p class="text-sm text-stone-700 leading-relaxed">
+                    Dopamine receptors belong to the Class A GPCR family. The basic phenethylamine backbone ($\text{Ar}-\text{CH}_2-\text{CH}_2-\text{NH}_2$) binds via an essential ionic salt bridge between its protonated nitrogen and a conserved aspartate residue ($\text{Asp}^{3.32}$) on Transmembrane Helix 3 (TM3). Subtype selectivity hinges on secondary interactions within the Secondary Binding Pocket (SBP) and Extracellular Loop 2 (EL2).
+                </p>
+
+                <!-- Homology Comparison Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <!-- D2-like Card -->
+                    <div class="bg-stone-50 rounded-lg p-5 border border-stone-200 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">Gαi/o Coupled</span>
+                                <h3 class="text-lg font-bold text-stone-800 mt-1">D<sub>2</sub>-like Subfamily (D<sub>2</sub>, D<sub>3</sub>, D<sub>4</sub>)</h3>
+                            </div>
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                        <p class="text-xs text-stone-600">
+                            While $D_2$ and $D_3$ share ~75% TM sequence identity, $D_4$ diverges significantly with only <strong>53% homology</strong>. This divergence creates a uniquely spacious and flexible Secondary Binding Pocket (SBP) along EL2 and TM7.
+                        </p>
+                        <div class="space-y-1 text-xs">
+                            <div class="flex justify-between py-1 border-b border-stone-200">
+                                <span class="font-medium text-stone-700">Primary Anchor:</span>
+                                <span class="font-mono text-stone-900">Asp<sup>3.32</sup> (TM3)</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-stone-200">
+                                <span class="font-medium text-stone-700">D<sub>4</sub> SBP Divergence:</span>
+                                <span class="font-mono text-teal-800 font-semibold">Phe<sup>186</sup> (EL2) & Phe<sup>339</sup>/Phe<sup>340</sup></span>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <span class="font-medium text-stone-700">Selectivity Driver:</span>
+                                <span class="text-stone-800">Bulky N-aralkyl / 4-arylpiperazine extensions</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- D1-like Card -->
+                    <div class="bg-stone-50 rounded-lg p-5 border border-stone-200 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Gαs/olf Coupled</span>
+                                <h3 class="text-lg font-bold text-stone-800 mt-1">D<sub>1</sub>-like Subfamily (D<sub>1</sub>, D<sub>5</sub>)</h3>
+                            </div>
+                            <span class="text-2xl">🔥</span>
+                        </div>
+                        <p class="text-xs text-stone-600">
+                            $D_1$ and $D_5$ share <strong>>80% overall identity</strong> and >90% homology within the TM ligand binding domain. Discriminating $D_5$ over $D_1$ using simple flexible molecules is virtually impossible due to rigid spatial constraints.
+                        </p>
+                        <div class="space-y-1 text-xs">
+                            <div class="flex justify-between py-1 border-b border-stone-200">
+                                <span class="font-medium text-stone-700">Catechol Anchor:</span>
+                                <span class="font-mono text-stone-900">Ser<sup>5.42</sup> & Ser<sup>5.46</sup> (TM5)</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-stone-200">
+                                <span class="font-medium text-stone-700">D<sub>1</sub>/D<sub>5</sub> Pocket Feature:</span>
+                                <span class="font-mono text-amber-800 font-semibold">Tightly constrained orthosteric lid</span>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <span class="font-medium text-stone-700">Selectivity Driver:</span>
+                                <span class="text-stone-800">Dihedral lock (3-benzazepines) & Non-catechol biaryls</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Alignment / Key Differences Visualizer -->
+                <div class="mt-6 p-4 bg-stone-100 rounded-lg border border-stone-200 space-y-3">
+                    <h4 class="text-sm font-bold text-stone-800 uppercase tracking-wide">Key Micro-Architectural Differences Across Binding Cavities</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div class="bg-white p-3 rounded border border-stone-200 space-y-1">
+                            <div class="font-semibold text-stone-900">1. Orthosteric Salt Bridge</div>
+                            <p class="text-stone-600">Identical across all 5 GPCRs ($\text{Asp}^{3.32}$). Protonated amine distance parameter is strictly $5.1 - 5.3\,\text{Å}$.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded border border-stone-200 space-y-1">
+                            <div class="font-semibold text-teal-800">2. Secondary Pocket (SBP)</div>
+                            <p class="text-stone-600">Wide in $D_4$; restricted in $D_2/D_3$; tight & obstructed in $D_1/D_5$. $D_4$ accepts large $N$-extensions.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded border border-stone-200 space-y-1">
+                            <div class="font-semibold text-amber-800">3. TM5 Hydrogen Network</div>
+                            <p class="text-stone-600">Essential for $D_1/D_5$ agonist activation via $\text{Ser}^{5.42}/\text{Ser}^{5.46}$. Shifted or non-polar in $D_4$.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- MODULE 2: D4 SELECTIVITY ENGINE -->
+        <!-- ==================================================================== -->
+        <section id="module-d4-sar" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-6">
+                <div class="border-b border-stone-100 pb-3">
+                    <h2 class="text-xl font-bold text-stone-900">D<sub>4</sub> Receptor Selectivity & SAR Engine</h2>
+                    <p class="text-sm text-stone-600 mt-1">
+                        Explore how modifications to the aromatic ring, ethyl side-chain, and terminal nitrogen alter binding affinity at $D_4$ versus $D_2$, $D_3$, and $5\text{-HT}_{2\text{A}}$ receptors.
+                    </p>
+                </div>
+
+                <!-- Interactive Region Selector -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Controls Column -->
+                    <div class="space-y-4 lg:col-span-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-500">Select Modification Target</label>
+                        <div class="space-y-2">
+                            <button onclick="selectD4Mod('aromatic')" id="btn-mod-aromatic" class="d4-mod-btn w-full text-left p-3 rounded-lg border border-teal-700 bg-teal-50 text-teal-900 font-medium text-sm flex justify-between items-center transition">
+                                <span>Aromatic Ring (C3/C4 & Fusions)</span>
+                                <span class="text-xs bg-teal-200 px-2 py-0.5 rounded text-teal-800 font-bold">C3/C4</span>
+                            </button>
+                            <button onclick="selectD4Mod('sidechain')" id="btn-mod-sidechain" class="d4-mod-btn w-full text-left p-3 rounded-lg border border-stone-200 bg-stone-50 text-stone-700 font-medium text-sm flex justify-between items-center hover:bg-stone-100 transition">
+                                <span>Ethyl Side Chain (C<sub>α</sub> / C<sub>β</sub>)</span>
+                                <span class="text-xs bg-stone-200 px-2 py-0.5 rounded text-stone-700 font-bold">Cα/Cβ</span>
+                            </button>
+                            <button onclick="selectD4Mod('nitrogen')" id="btn-mod-nitrogen" class="d4-mod-btn w-full text-left p-3 rounded-lg border border-stone-200 bg-stone-50 text-stone-700 font-medium text-sm flex justify-between items-center hover:bg-stone-100 transition">
+                                <span>Terminal Nitrogen Extensions</span>
+                                <span class="text-xs bg-amber-200 px-2 py-0.5 rounded text-amber-800 font-bold">N-Sub</span>
+                            </button>
+                        </div>
+
+                        <!-- Details Box -->
+                        <div id="d4-mod-details" class="p-4 bg-stone-50 rounded-lg border border-stone-200 text-xs space-y-2">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Chart Column -->
+                    <div class="lg:col-span-2 bg-stone-50 p-4 rounded-xl border border-stone-200 flex flex-col justify-between">
+                        <div>
+                            <h3 id="d4-chart-title" class="text-sm font-bold text-stone-800 mb-1">
+                                Affinity Profile ($K_i$ in nM - Lower is Potent)
+                            </h3>
+                            <p id="d4-chart-subtitle" class="text-xs text-stone-500 mb-3">
+                                Comparing binding dissociation constants across monoamine receptor subtypes.
+                            </p>
+                        </div>
+
+                        <!-- Responsive Chart Container -->
+                        <div class="chart-container">
+                            <canvas id="d4SarChart"></canvas>
+                        </div>
+
+                        <div class="text-[11px] text-stone-500 text-center mt-2">
+                            * Note: Values plotted on log scale. Sub-nanomolar values indicates exceptional receptor affinity.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- MODULE 3: D5 EFFICACY & SAR -->
+        <!-- ==================================================================== -->
+        <section id="module-d5-sar" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-6">
+                <div class="border-b border-stone-100 pb-3">
+                    <h2 class="text-xl font-bold text-stone-900">D<sub>5</sub> Receptor SAR & Intrinsic Efficacy Engine</h2>
+                    <p class="text-sm text-stone-600 mt-1">
+                        Analyze structural determinants required for $D_1/D_5$ selectivity over $D_2$-like GPCRs and how nitrogen or ring modifications switch molecules between full agonists, partial agonists, and antagonists.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Controls & Text -->
+                    <div class="space-y-4 lg:col-span-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-500">Structural Feature Focus</label>
+                        <select id="d5-feature-select" onchange="updateD5View()" class="w-full text-sm p-2.5 bg-stone-50 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="catechol">1. Catechol Ring & Bioisosteres (Ser5.42 / Ser5.46)</option>
+                            <option value="benzazepine">2. Conformational Locks (3-Benzazepines)</option>
+                            <option value="nitrogen">3. N-Substitution (Agonist vs Antagonist Toggle)</option>
+                        </select>
+
+                        <div id="d5-feature-description" class="p-4 bg-amber-50/50 border border-amber-200 rounded-lg text-xs space-y-2 text-stone-800">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+
+                    <!-- Interactive Efficacy / Affinity Bubble Chart -->
+                    <div class="lg:col-span-2 bg-stone-50 p-4 rounded-xl border border-stone-200 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-stone-800 mb-1">
+                                Intrinsic Efficacy ($E_{\text{max}}$) vs $D_5$ Affinity ($K_i$)
+                            </h3>
+                            <p class="text-xs text-stone-500 mb-3">
+                                Visualization of how molecular constraints impact G-protein signaling ($E_{\text{max}}\%$) alongside binding affinity.
+                            </p>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="d5EfficacyChart"></canvas>
+                        </div>
+
+                        <div class="flex justify-around text-xs pt-2 border-t border-stone-200 text-stone-600">
+                            <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block mr-1"></span> Full Agonist (>90%)</span>
+                            <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-500 inline-block mr-1"></span> Partial Agonist (30-80%)</span>
+                            <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-rose-500 inline-block mr-1"></span> Antagonist (~0%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- MODULE 4: COMPARATIVE BENCHMARK LIGAND DATABASE -->
+        <!-- ==================================================================== -->
+        <section id="module-benchmarks" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-6">
+                <div class="border-b border-stone-100 pb-3 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-stone-900">Benchmark Ligand SAR Database</h2>
+                        <p class="text-sm text-stone-600 mt-1">
+                            Filter and inspect reference phenethylamine derivatives, rigid analogs, and arylpiperazines to compare multi-receptor binding affinities ($K_i$, nM).
+                        </p>
+                    </div>
+
+                    <!-- Filter Controls -->
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-medium text-stone-500">Filter Target:</span>
+                        <select id="db-filter-select" onchange="filterBenchmarkTable()" class="text-xs p-2 bg-stone-100 border border-stone-300 rounded-md font-medium text-stone-800">
+                            <option value="all">All Compounds</option>
+                            <option value="d4-selective">D4 Selective (Ki < 10 nM)</option>
+                            <option value="d5-selective">D1/D5 Selective (Ki < 5 nM)</option>
+                            <option value="5ht2a">5-HT2A Cross-Reactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Database Table -->
+                <div class="overflow-x-auto rounded-lg border border-stone-200">
+                    <table class="w-full text-left text-xs text-stone-700">
+                        <thead class="bg-stone-100 text-stone-800 uppercase font-semibold border-b border-stone-200">
+                            <tr>
+                                <th class="p-3">Compound / Scaffold</th>
+                                <th class="p-3">Class / Structural Core</th>
+                                <th class="p-3">D<sub>1</sub> ($K_i$)</th>
+                                <th class="p-3">D<sub>5</sub> ($K_i$)</th>
+                                <th class="p-3">D<sub>2</sub> ($K_i$)</th>
+                                <th class="p-3">D<sub>3</sub> ($K_i$)</th>
+                                <th class="p-3">D<sub>4</sub> ($K_i$)</th>
+                                <th class="p-3">5-HT<sub>2A</sub> ($K_i$)</th>
+                                <th class="p-3">Dominant Selectivity Mechanism</th>
+                            </tr>
+                        </thead>
+                        <tbody id="benchmark-tbody" class="divide-y divide-stone-200 bg-white font-mono">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Selected Compound Visualizer Card -->
+                <div id="compound-detail-card" class="bg-stone-50 p-5 rounded-xl border border-stone-200 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="md:col-span-1 space-y-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-stone-500">Selected Compound Analysis</span>
+                        <h3 id="card-comp-name" class="text-lg font-bold text-stone-900">L-745,870</h3>
+                        <p id="card-comp-class" class="text-xs text-stone-600 font-sans">Arylpiperazine derivative targeting D4 secondary binding pocket.</p>
+                        <div class="pt-2">
+                            <span id="card-comp-badge" class="inline-block px-2 py-1 bg-teal-100 text-teal-800 border border-teal-300 rounded text-xs font-sans font-semibold">
+                                D4 Highly Selective (>1000x over D2)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 text-xs font-sans text-stone-700 space-y-2 flex flex-col justify-center border-t md:border-t-0 md:border-l border-stone-200 md:pl-4">
+                        <div>
+                            <span class="font-bold text-stone-900">Key Binding Mechanism:</span>
+                            <p id="card-comp-mech" class="text-stone-600 mt-0.5">Engages Asp3.32 via protonated piperazine nitrogen while projecting its fluorophenyl group into the broad D4 secondary binding pocket to form pi-pi stacks with Phe186 (EL2).</p>
+                        </div>
+                        <div>
+                            <span class="font-bold text-stone-900">Therapeutic / Research Relevance:</span>
+                            <p id="card-comp-rel" class="text-stone-600 mt-0.5">Benchmark tool compound for exploring D4-mediated cognitive and behavioral pathways without D2 extrapyramidal side effects.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- MODULE 5: DOCKING & RESIDUE CONTACT INSPECTOR -->
+        <!-- ==================================================================== -->
+        <section id="module-residues" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-6">
+                <div class="border-b border-stone-100 pb-3">
+                    <h2 class="text-xl font-bold text-stone-900">Molecular Docking & Residue Contact Matrix</h2>
+                    <p class="text-sm text-stone-600 mt-1">
+                        Inspect specific amino acid residues across Transmembrane Helices (TM3, TM5, TM6, TM7) and Extracellular Loop 2 (EL2) that form critical non-covalent contacts with phenethylamines.
+                    </p>
+                </div>
+
+                <!-- Interactive Pocket Map -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- HTML-based Binding Pocket Map (No SVG) -->
+                    <div class="bg-stone-900 text-stone-100 p-5 rounded-xl space-y-4">
+                        <div class="flex justify-between items-center border-b border-stone-800 pb-2">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-teal-400">Binding Cavity Micro-Environment Map</h3>
+                            <span class="text-[10px] text-stone-400">Ballesteros-Weinstein Alignment</span>
+                        </div>
+
+                        <!-- Pocket Visual Container -->
+                        <div class="grid grid-cols-2 gap-3 py-2 text-xs">
+                            <!-- Orthosteric Core -->
+                            <div class="bg-stone-800 p-3 rounded-lg border border-stone-700 space-y-2">
+                                <div class="text-amber-400 font-bold border-b border-stone-700 pb-1">Orthosteric Pocket (OBP)</div>
+                                <div class="space-y-1.5 text-[11px]">
+                                    <div onclick="highlightResidue('asp332')" class="cursor-pointer hover:bg-stone-700 p-1 rounded flex justify-between">
+                                        <span class="font-mono text-amber-300">Asp3.32 (TM3)</span>
+                                        <span class="text-stone-400">Salt Bridge</span>
+                                    </div>
+                                    <div onclick="highlightResidue('ser542')" class="cursor-pointer hover:bg-stone-700 p-1 rounded flex justify-between">
+                                        <span class="font-mono text-emerald-300">Ser5.42 (TM5)</span>
+                                        <span class="text-stone-400">3-OH H-Bond</span>
+                                    </div>
+                                    <div onclick="highlightResidue('ser546')" class="cursor-pointer hover:bg-stone-700 p-1 rounded flex justify-between">
+                                        <span class="font-mono text-emerald-300">Ser5.46 (TM5)</span>
+                                        <span class="text-stone-400">4-OH H-Bond</span>
+                                    </div>
+                                    <div onclick="highlightResidue('phe651')" class="cursor-pointer hover:bg-stone-700 p-1 rounded flex justify-between">
+                                        <span class="font-mono text-blue-300">Phe6.51 / 6.52</span>
+                                        <span class="text-stone-400">Aromatic Stacking</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Secondary Pocket -->
+                            <div class="bg-stone-800 p-3 rounded-lg border border-stone-700 space-y-2">
+                                <div class="text-teal-400 font-bold border-b border-stone-700 pb-1">Secondary Pocket (SBP)</div>
+                                <div class="space-y-1.5 text-[11px]">
+                                    <div onclick="highlightResidue('phe186')" class="cursor-pointer hover:bg-stone-700 p-1 rounded flex justify-between">
+                                        <span class="font-mono text-teal-300">Phe186 (EL2)</span>
+                                        <span class="text-stone-400">D4 Extended Stacking</span>
+                                    </div>
+                                    <div onclick="highlightResidue('val120')" class="cursor-pointer hover:bg-stone-700 p-1 rounded flex justify-between">
+                                        <span class="font-mono text-purple-300">Val120 / Phe325</span>
+                                        <span class="text-stone-400">Halogen / Hydrophobic</span>
+                                    </div>
+                                    <div onclick="highlightResidue('tm7')" class="cursor-pointer hover:bg-stone-700 p-1 rounded flex justify-between">
+                                        <span class="font-mono text-indigo-300">TM7 / EL2 Lid</span>
+                                        <span class="text-stone-400">D1/D5 Steric Boundary</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-[11px] text-stone-400 bg-stone-950/60 p-2.5 rounded border border-stone-800">
+                            💡 <em>Click any residue above to inspect its atomic interaction mechanics and structural role in subtype discrimination.</em>
+                        </div>
+                    </div>
+
+                    <!-- Residue Inspector Output -->
+                    <div id="residue-inspector-card" class="bg-stone-50 p-5 rounded-xl border border-stone-200 space-y-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start border-b border-stone-200 pb-2">
+                                <div>
+                                    <span id="res-code" class="font-mono text-xs font-bold text-teal-800 bg-teal-100 px-2 py-0.5 rounded">Asp3.32 (TM3)</span>
+                                    <h3 id="res-title" class="text-base font-bold text-stone-900 mt-1">Universal Primary Ionic Anchor</h3>
+                                </div>
+                                <span class="text-xs text-stone-400 font-mono">Conserved 100%</span>
+                            </div>
+
+                            <div class="space-y-3 mt-3 text-xs text-stone-700">
+                                <p id="res-desc">
+                                    Forms an essential ionic salt bridge with the positively charged protonated nitrogen atom ($\text{R-NH}_3^+$ or $\text{R}_2\text{-NH}_2^+$) of phenethylamines at a standard bond distance of approximately $2.7 - 3.0\,\text{Å}$.
+                                </p>
+
+                                <div class="bg-white p-3 rounded border border-stone-200 space-y-1">
+                                    <div class="font-semibold text-stone-900">Impact of Structural Modifications:</div>
+                                    <ul id="res-bullet-list" class="list-disc list-inside space-y-1 text-stone-600">
+                                        <li>Essential for all monoaminergic receptor recognition.</li>
+                                        <li>Steric bulk at $\text{C}_\alpha$ (e.g., amphetamines) creates minor clash near Asp3.32, slightly lowering affinity.</li>
+                                        <li>Secondary amines ($N$-methyl, $N$-allyl) preserve ionic geometry while expanding into adjacent pockets.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-[11px] text-stone-500 border-t border-stone-200 pt-2 font-mono">
+                            Target Subtype Dominance: <span id="res-dominance" class="font-bold text-stone-800">All GPCRs (D1-D5)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 border-t border-stone-800 py-6 text-xs mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>D4 and D5 Dopamine Receptor Structure-Activity Relationship (SAR) Interactive Explorer</p>
+            <p class="text-stone-500">Based on Medicinal Chemistry Research & Structural Biology Data (GPCR Class A Superfamily)</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Global State
+        let currentTab = 'topography';
+        let d4ChartInstance = null;
+        let d5ChartInstance = null;
+
+        // Data Storage
+        const d4SarData = {
+            aromatic: {
+                title: "Aromatic Ring Modifications (C3, C4, Ring Fusions)",
+                subtitle: "Comparing unsubstituted PEA, 3,4-dichloro, and fused tricyclic cores.",
+                labels: ['Phenethylamine (PEA)', '3,4-Dichloro-PEA', '2,5-DiOMe-4-I (DOI)', 'Pyrazolocycloheptathiophene'],
+                d4: [1200, 25, 450, 0.8],
+                d2: [4500, 110, 2200, 450],
+                d3: [1800, 85, 1800, 320],
+                ht2a: [8000, 1200, 0.65, 1500],
+                details: "Adding 3,4-dichloro substituents introduces halogen-bonding with Val120/Phe325, boosting D4 affinity ~50-fold over PEA. Fusing the aromatic ring into tricyclic architectures dramatically fills the wide D4 secondary entry portal, resulting in sub-nanomolar affinity and >500-fold selectivity over D2."
+            },
+            sidechain: {
+                title: "Ethyl Side Chain Modifications (Cα & Cβ Positions)",
+                subtitle: "Impact of α-methylation, β-hydroxylation, and conformational restriction.",
+                labels: ['Unsubstituted PEA', 'α-Methyl (Amphetamine)', 'β-Hydroxylated PEA', 'Cyclopropyl Constraint'],
+                d4: [1200, 850, 180, 75],
+                d2: [4500, 3200, 950, 620],
+                d3: [1800, 1400, 410, 280],
+                ht2a: [8000, 2100, 3100, 1200],
+                details: "Adding a methyl group at the Cα position introduces steric clash near Asp3.32, lowering D4 affinity and abolishing subtype selectivity. Restricting the sidechain into a cyclopropyl ring fixes the Ar-C-C-N dihedral angle near 60°, optimizing spatial distance for D4 orthosteric fit."
+            },
+            nitrogen: {
+                title: "Terminal Nitrogen Extensions (N-Benzyl & Arylpiperazines)",
+                subtitle: "Primary driver of D4 selectivity over D2 and D3.",
+                labels: ['Primary Amine (PEA)', 'N-Methyl-PEA', 'N-(2-Methoxybenzyl) (NBOMe)', '4-Arylpiperazine Core'],
+                d4: [1200, 950, 1.2, 0.43],
+                d2: [4500, 3800, 1500, 960],
+                d3: [1800, 1200, 890, 2300],
+                ht2a: [8000, 6500, 0.08, 2100],
+                details: "Extending the terminal nitrogen with bulky N-benzyl groups (e.g. NBOMe) or integrating it into a 4-arylpiperazine framework provides exceptional D4 selectivity (>1000-fold over D2/D3). The bulky extensions project directly into the flexible D4 secondary binding pocket (SBP) to engage Phe186 on EL2."
+            }
+        };
+
+        const d5FeatureData = {
+            catechol: {
+                title: "Catechol Hydroxyls & Non-Catechol Bioisosteres",
+                desc: "The 3,4-dihydroxy catechol motif forms crucial H-bonds with Ser5.42 and Ser5.46 on TM5. Removing either OH drops D5 affinity 50-fold and converts agonists into antagonists. Modern non-catechol bioisosteres (imidazopyridines, biaryl pyrazoles like PF-06256142) maintain high D5 potency while providing COMT metabolic stability.",
+                compounds: [
+                    { name: 'Dopamine', ki: 250, emax: 100, status: 'Full Agonist' },
+                    { name: 'Monohydroxy PEA', ki: 2500, emax: 15, status: 'Weak Partial Agonist' },
+                    { name: 'PF-06256142 (Biaryl)', ki: 0.5, emax: 95, status: 'Full Agonist (COMT Resistant)' }
+                ]
+            },
+            benzazepine: {
+                title: "Conformational Restriction: 3-Benzazepines",
+                desc: "Fusing the flexible ethylamine chain into a 7-membered tetrahydro-3-benzazepine ring system locks the Ar-C-C-N dihedral angle. This provides >100-fold selectivity for D1/D5 over D2-like receptors by perfectly matching the D1/D5 orthosteric binding pocket dimensions.",
+                compounds: [
+                    { name: 'SKF-38393', ki: 0.8, emax: 55, status: 'Partial Agonist' },
+                    { name: 'SKF-82958 (N-Allyl)', ki: 0.3, emax: 100, status: 'Full Agonist' },
+                    { name: 'SCH-23390', ki: 0.3, emax: 0, status: 'Potent Antagonist' }
+                ]
+            },
+            nitrogen: {
+                title: "Terminal Nitrogen Substitutions (Agonist Toggle)",
+                desc: "Unlike D4, the D1/D5 binding pocket has strict spatial boundary conditions around Asp3.32. Unsubstituted or N-monomethylated amines maintain high agonist efficacy. N-allyl substitution (SKF-82958) enhances full agonist potency via weak pi-solvation. Bulky N-aralkyl extensions introduce severe steric clash with TM3/TM7, converting agonists into antagonists.",
+                compounds: [
+                    { name: 'Dopamine (Primary Amine)', ki: 250, emax: 100, status: 'Full Agonist' },
+                    { name: 'SKF-82958 (N-Allyl)', ki: 0.3, emax: 100, status: 'Full Agonist' },
+                    { name: 'SCH-23390 (N-Chloroallyl)', ki: 0.3, emax: 0, status: 'Antagonist' }
+                ]
+            }
+        };
+
+        const benchmarkCompounds = [
+            { id: 'dopamine', name: 'Dopamine', class: 'Endogenous Phenethylamine', d1: 1500, d5: 250, d2: 450, d3: 25, d4: 30, ht2a: 10000, mech: 'Endogenous agonist; modest D3/D4/D5 preference; rapidly degraded by COMT.', relevance: 'Natural neurotransmitter.' },
+            { id: 'doi', name: 'DOI (2,5-DiOMe-4-I)', class: 'Substituted Phenethylamine', d1: 5000, d5: 5000, d2: 2200, d3: 1800, d4: 450, ht2a: 0.65, mech: 'C2/C5 methoxy positioning optimizes 5-HT2A activation; modest D4 cross-reactivity.', relevance: 'Serotonergic benchmark probe.' },
+            { id: 'l745870', name: 'L-745,870', class: 'Arylpiperazine Derivative', d1: 10000, d5: 10000, d2: 960, d3: 2300, d4: 0.43, ht2a: 2100, mech: 'SBP engagement via D4-specific EL2 contacts (Phe186). >1000x selective over D2.', relevance: 'Gold-standard D4 receptor antagonist.' },
+            { id: 'nbome', name: 'N-NBOMe-2C-I', class: 'N-Benzyl Phenethylamine', d1: 5000, d5: 5000, d2: 1500, d3: 890, d4: 1.2, ht2a: 0.08, mech: 'Dual 5-HT2A / D4 affinity driven by secondary N-benzyl pi-pi stacking with Phe186.', relevance: 'Ultra-potent dual affinity tool compound.' },
+            { id: 'skf38393', name: 'SKF-38393', class: '3-Benzazepine Core', d1: 1.0, d5: 0.8, d2: 1500, d3: 500, d4: 800, ht2a: 2500, mech: 'Dihedral constraint fits D1/D5 orthosteric pocket with high selectivity over D2.', relevance: 'Prototype D1/D5 partial agonist.' },
+            { id: 'sch23390', name: 'SCH-23390', class: 'Halogenated Benzazepine', d1: 0.2, d5: 0.3, d2: 1100, d3: 800, d4: 350, ht2a: 30, mech: 'High D1/D5 affinity; halogenated N-extension acts as steric lock converting to antagonist.', relevance: 'Standard D1/D5 receptor antagonist.' },
+            { id: 'pf06256142', name: 'PF-06256142', class: 'Biaryl Non-Catechol', d1: 0.4, d5: 0.5, d2: 10000, d3: 10000, d4: 5000, ht2a: 10000, mech: 'Non-catechol biaryl fits D1/D5 specifically while resisting COMT metabolism.', relevance: 'Clinical candidate for cognitive enhancement.' }
+        ];
+
+        const residueDetails = {
+            asp332: {
+                code: "Asp3.32 (TM3)",
+                title: "Universal Primary Ionic Anchor",
+                dominance: "All GPCRs (D1-D5)",
+                desc: "Forms an essential ionic salt bridge with the protonated nitrogen atom of phenethylamines at a standard bond distance of ~2.7-3.0 Å.",
+                bullets: [
+                    "Required for baseline binding across all dopamine receptor subtypes.",
+                    "Steric bulk at Cα creates minor clash near Asp3.32, reducing affinity.",
+                    "Forms the geometric center of the orthosteric binding pocket (OBP)."
+                ]
+            },
+            ser542: {
+                code: "Ser5.42 (TM5)",
+                title: "3-OH Catechol Hydrogen Bond Donor/Acceptor",
+                dominance: "D1, D5, D2, D3 Receptors",
+                desc: "Forms crucial hydrogen-bonding network with the meta (3-OH) hydroxyl group of catecholamines, driving TM5 conformational movements during agonist activation.",
+                bullets: [
+                    "Deletion of 3-OH causes 10-50x loss in D5 affinity.",
+                    "Non-catechol bioisosteres (imidazopyridines) substitute lone pairs to match Ser5.42.",
+                    "D4 receptor exhibits altered TM5 orientation, lowering reliance on Ser5.42."
+                ]
+            },
+            ser546: {
+                code: "Ser5.46 (TM5)",
+                title: "4-OH Catechol Anchor",
+                dominance: "D1, D5 Receptors",
+                desc: "Engages the para (4-OH) hydroxyl group of dopamine and phenethylamine analogs.",
+                bullets: [
+                    "Works synergistically with Ser5.42 for full G-protein activation.",
+                    "Crucial for stabilizing the active state conformation of D1/D5 GPCRs."
+                ]
+            },
+            phe651: {
+                code: "Phe6.51 / Phe6.52 (TM6)",
+                title: "Aromatic Cage Stacking Residues",
+                dominance: "All Dopamine Subtypes",
+                desc: "Forms a hydrophobic aromatic cage that stabilizes the phenyl ring of phenethylamines through face-to-edge pi-pi stacking.",
+                bullets: [
+                    "In D4, these residues adopt a flexible rotameric orientation.",
+                    "Allows N-benzyl and arylpiperazine rings to slide into the adjacent SBP."
+                ]
+            },
+            phe186: {
+                code: "Phe186 (EL2)",
+                title: "D4 Secondary Binding Pocket (SBP) Selectivity Gate",
+                dominance: "D4 Receptor Specific",
+                desc: "Located on Extracellular Loop 2 (EL2) of the D4 receptor. Forms strong secondary pi-pi stacking interactions with N-benzyl extensions and 4-arylpiperazines.",
+                bullets: [
+                    "Absent/divergent in D2 and D3 receptors.",
+                    "Primary structural reason why L-745,870 and NBOMe analogs exhibit sub-nanomolar D4 affinity."
+                ]
+            },
+            val120: {
+                code: "Val120 / Phe325 (TM3/TM6)",
+                title: "Lipophilic Halogen Subpocket",
+                dominance: "D4 and D2 Receptors",
+                desc: "Creates a lipophilic pocket that accommodates 3,4-dichloro and 4-iodo substitutions on the phenethylamine aromatic ring.",
+                bullets: [
+                    "Increases association rates via localized halogen bonding.",
+                    "Boosts affinity 50-fold for 3,4-dichlorophenethylamine over unsubstituted PEA."
+                ]
+            },
+            tm7: {
+                code: "TM7 / EL2 Lid Constraint",
+                title: "D1/D5 Orthosteric Boundary Lid",
+                dominance: "D1 and D5 Receptors",
+                desc: "Forms a rigid structural lid over the orthosteric pocket, preventing bulky N-extensions from binding without severe steric hindrance.",
+                bullets: [
+                    "Restricts D1/D5 ligands to small N-substituents (N-H, N-methyl, N-allyl).",
+                    "Explains why bulky D4 selective arylpiperazines fail to bind D1/D5."
+                ]
+            }
+        };
+
+        // Navigation Management
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-tab').forEach(el => {
+                el.classList.remove('bg-teal-800', 'text-white');
+                el.classList.add('text-stone-300', 'hover:text-white', 'hover:bg-stone-800');
+            });
+
+            document.getElementById(`module-${tabId}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`tab-${tabId}`);
+            activeNav.classList.add('bg-teal-800', 'text-white');
+
+            // Render charts on demand if switching to chart modules
+            if (tabId === 'd4-sar' && !d4ChartInstance) {
+                initD4Chart();
+                selectD4Mod('aromatic');
+            } else if (tabId === 'd5-sar' && !d5ChartInstance) {
+                initD5Chart();
+                updateD5View();
+            } else if (tabId === 'benchmarks') {
+                renderBenchmarkTable(benchmarkCompounds);
+            }
+        }
+
+        // ====================================================================
+        // MODULE 2 LOGIC: D4 CHARTS & MODIFICATIONS
+        // ====================================================================
+        function initD4Chart() {
+            const ctx = document.getElementById('d4SarChart').getContext('2d');
+            d4ChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        { label: 'D4 Affinity (Ki, nM)', data: [], backgroundColor: '#0f766e' },
+                        { label: 'D2 Affinity (Ki, nM)', data: [], backgroundColor: '#94a3b8' },
+                        { label: 'D3 Affinity (Ki, nM)', data: [], backgroundColor: '#cbd5e1' },
+                        { label: '5-HT2A Affinity (Ki, nM)', data: [], backgroundColor: '#b45309' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'logarithmic',
+                            title: { display: true, text: 'Ki (nM) - Log Scale' },
+                            min: 0.1,
+                            max: 10000
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw} nM`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function selectD4Mod(modType) {
+            // Update button styles
+            document.querySelectorAll('.d4-mod-btn').forEach(btn => {
+                btn.classList.remove('border-teal-700', 'bg-teal-50', 'text-teal-900');
+                btn.classList.add('border-stone-200', 'bg-stone-50', 'text-stone-700');
+            });
+            const activeBtn = document.getElementById(`btn-mod-${modType}`);
+            activeBtn.classList.remove('border-stone-200', 'bg-stone-50', 'text-stone-700');
+            activeBtn.classList.add('border-teal-700', 'bg-teal-50', 'text-teal-900');
+
+            const data = d4SarData[modType];
+            document.getElementById('d4-chart-title').innerText = data.title;
+            document.getElementById('d4-chart-subtitle').innerText = data.subtitle;
+            document.getElementById('d4-mod-details').innerText = data.details;
+
+            if (d4ChartInstance) {
+                d4ChartInstance.data.labels = data.labels;
+                d4ChartInstance.data.datasets[0].data = data.d4;
+                d4ChartInstance.data.datasets[1].data = data.d2;
+                d4ChartInstance.data.datasets[2].data = data.d3;
+                d4ChartInstance.data.datasets[3].data = data.ht2a;
+                d4ChartInstance.update();
+            }
+        }
+
+        // ====================================================================
+        // MODULE 3 LOGIC: D5 EFFICACY & BUBBLE CHART
+        // ====================================================================
+        function initD5Chart() {
+            const ctx = document.getElementById('d5EfficacyChart').getContext('2d');
+            d5ChartInstance = new Chart(ctx, {
+                type: 'bubble',
+                data: {
+                    datasets: []
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'logarithmic',
+                            title: { display: true, text: 'D5 Ki Affinity (nM) - Log Scale' },
+                            min: 0.1,
+                            max: 5000
+                        },
+                        y: {
+                            title: { display: true, text: 'Intrinsic Efficacy Emax (%)' },
+                            min: -10,
+                            max: 110
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const raw = context.raw;
+                                    return `${raw.name}: Ki = ${raw.x} nM, Emax = ${raw.y}% (${raw.status})`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateD5View() {
+            const val = document.getElementById('d5-feature-select').value;
+            const data = d5FeatureData[val];
+
+            document.getElementById('d5-feature-description').innerHTML = `
+                <div class="font-bold text-amber-900">${data.title}</div>
+                <p class="text-stone-700 mt-1">${data.desc}</p>
+            `;
+
+            if (d5ChartInstance) {
+                const bubbleDatasets = data.compounds.map(comp => {
+                    let color = '#10b981'; // Green for full agonist
+                    if (comp.emax < 20) color = '#f43f5e'; // Red for antagonist
+                    else if (comp.emax < 85) color = '#f59e0b'; // Amber for partial agonist
+
+                    return {
+                        label: comp.name,
+                        data: [{ x: comp.ki, y: comp.emax, r: 12, name: comp.name, status: comp.status }],
+                        backgroundColor: color
+                    };
+                });
+
+                d5ChartInstance.data.datasets = bubbleDatasets;
+                d5ChartInstance.update();
+            }
+        }
+
+        // ====================================================================
+        // MODULE 4 LOGIC: BENCHMARK DATABASE & FILTERING
+        // ====================================================================
+        function renderBenchmarkTable(compounds) {
+            const tbody = document.getElementById('benchmark-tbody');
+            tbody.innerHTML = '';
+
+            compounds.forEach(comp => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-stone-50 cursor-pointer transition';
+                tr.onclick = () => selectCompoundForCard(comp);
+
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-stone-900 font-sans">${comp.name}</td>
+                    <td class="p-3 text-stone-600 font-sans">${comp.class}</td>
+                    <td class="p-3">${comp.d1}</td>
+                    <td class="p-3 font-bold text-amber-700">${comp.d5}</td>
+                    <td class="p-3">${comp.d2}</td>
+                    <td class="p-3">${comp.d3}</td>
+                    <td class="p-3 font-bold text-teal-700">${comp.d4}</td>
+                    <td class="p-3 text-stone-500">${comp.ht2a}</td>
+                    <td class="p-3 font-sans text-[11px] text-stone-600">${comp.mech}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterBenchmarkTable() {
+            const filter = document.getElementById('db-filter-select').value;
+            let filtered = benchmarkCompounds;
+
+            if (filter === 'd4-selective') {
+                filtered = benchmarkCompounds.filter(c => c.d4 < 10);
+            } else if (filter === 'd5-selective') {
+                filtered = benchmarkCompounds.filter(c => c.d5 < 5);
+            } else if (filter === '5ht2a') {
+                filtered = benchmarkCompounds.filter(c => c.ht2a < 50);
+            }
+
+            renderBenchmarkTable(filtered);
+        }
+
+        function selectCompoundForCard(comp) {
+            document.getElementById('card-comp-name').innerText = comp.name;
+            document.getElementById('card-comp-class').innerText = `${comp.class} — D4: ${comp.d4} nM | D5: ${comp.d5} nM | D2: ${comp.d2} nM`;
+            document.getElementById('card-comp-mech').innerText = comp.mech;
+            document.getElementById('card-comp-rel').innerText = comp.relevance;
+
+            const badge = document.getElementById('card-comp-badge');
+            if (comp.d4 < 5) {
+                badge.className = "inline-block px-2 py-1 bg-teal-100 text-teal-800 border border-teal-300 rounded text-xs font-sans font-semibold";
+                badge.innerText = `D4 Selective Variant (${comp.d4} nM)`;
+            } else if (comp.d5 < 5) {
+                badge.className = "inline-block px-2 py-1 bg-amber-100 text-amber-800 border border-amber-300 rounded text-xs font-sans font-semibold";
+                badge.innerText = `D1/D5 Selective Core (${comp.d5} nM)`;
+            } else {
+                badge.className = "inline-block px-2 py-1 bg-stone-200 text-stone-800 border border-stone-300 rounded text-xs font-sans font-semibold";
+                badge.innerText = "Non-selective / Serotonergic Cross-reactive";
+            }
+        }
+
+        // ====================================================================
+        // MODULE 5 LOGIC: RESIDUE INSPECTOR
+        // ====================================================================
+        function highlightResidue(key) {
+            const data = residueDetails[key];
+            if (!data) return;
+
+            document.getElementById('res-code').innerText = data.code;
+            document.getElementById('res-title').innerText = data.title;
+            document.getElementById('res-desc').innerText = data.desc;
+            document.getElementById('res-dominance').innerText = data.dominance;
+
+            const list = document.getElementById('res-bullet-list');
+            list.innerHTML = '';
+            data.bullets.forEach(b => {
+                const li = document.createElement('li');
+                li.innerText = b;
+                list.appendChild(li);
+            });
+        }
+
+        // Initial Load
+        window.addEventListener('DOMContentLoaded', () => {
+            selectCompoundForCard(benchmarkCompounds[2]); // Default to L-745,870
+        });
+    </script>
+</body>
+</html>

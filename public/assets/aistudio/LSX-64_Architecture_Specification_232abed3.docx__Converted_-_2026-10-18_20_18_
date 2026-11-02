@@ -1,0 +1,709 @@
+﻿LSX-64 Architecture Specification
+A Loongson-Inspired 64-Bit RISC Processor Architecture
+Version 1.0 — August 2026
+  
+
+1. Design Philosophy and Motivation
+LSX-64 is an original 64-bit RISC processor architecture inspired by the design principles of LoongTech's LoongArch ISA and the broader Loongson processor family. It is not a LoongArch implementation, nor does it claim binary compatibility with any existing commercial ISA. Rather, it distills key architectural decisions from LoongArch — fixed-width encoding, a rich instruction format taxonomy, elimination of branch delay slots, PC-relative addressing, integrated SIMD/vector extensions, and binary-translation-friendly semantics — into a clean, modular, simulatable design.
+1.1 Design Principles
+Principle
+	Description
+	RISC Orthogonality
+	All instructions are 32-bit fixed-width. Most instructions have exactly two source operands and one destination operand. Memory access is restricted to load/store instructions.
+	No Delay Slots
+	Following LoongArch's departure from MIPS tradition (LoongArch Reference Manual, Vol. 1), LSX-64 eliminates branch delay slots entirely. The instruction following a taken branch is not speculatively executed. This simplifies the pipeline and improves compiler code generation quality.
+	Rich Instruction Formats
+	LSX-64 defines 9 instruction formats (3 without immediate, 6 with immediate), inspired by LoongArch's format taxonomy (Linux Kernel Docs — LoongArch Introduction). This enables wider immediates (up to 24 bits in a single instruction) and larger branch offsets than classical MIPS.
+	Modular Extensibility
+	The base ISA (LSX-64I) is mandatory. Extensions for SIMD/vector operations (LSX-64V), binary translation assist (LSX-64BT), and atomic memory operations (LSX-64A) are optional and independently implementable.
+	Principle Adherence
+	The architecture adheres to classical RISC design principles: load-store purity, fixed-width decode simplicity, register orthogonality, and single-cycle execution for most ALU operations.
+	
+
+1.2 Comparison to LoongArch and RISC-V
+Feature
+	LSX-64 (this design)
+	LoongArch LA64
+	RISC-V RV64I
+	Instruction width
+	32-bit fixed
+	32-bit fixed
+	32-bit fixed (16-bit compressed optional)
+	Register count
+	32 GPRs (r0 = zero)
+	32 GPRs (r0 = zero)
+	32 GPRs (x0 = zero)
+	Branch delay slots
+	None (eliminated)
+	None (eliminated)
+	None
+	Instruction formats
+	9
+	9
+	4 base + extension-specific
+	Max immediate (single insn)
+	24 bits
+	24 bits
+	12 bits (sign-extended)
+	Max branch offset
+	±1 MB (21-bit)
+	±1 MB (21-bit)
+	±4 KB (12-bit B-type), ±1 MB (J-type)
+	Load-store architecture
+	Yes
+	Yes
+	Yes
+	Endianness
+	Little-endian
+	Little-endian
+	Little-endian (configurable)
+	SIMD/vector extension
+	LSX-64V (128-bit)
+	LSX (128-bit) / LASX (256-bit)
+	RVV (variable-length vector)
+	Binary translation assist
+	LSX-64BT (optional)
+	LBT (170+ instructions)
+	Not in base ISA
+	Base instruction count
+	67 (LSX-64I)
+	~337 (base part)
+	~52 (RV64I)
+	
+
+Note: LoongArch's broader instruction count reflects its production maturity and includes privileged, floating-point, and extension instructions. LSX-64I is intentionally compact to keep the design tractable for simulation. Sources: LoongArch Reference Manual, Vol. 1, RISC-V ISA Manual, Wikipedia — RISC-V.
+  
+
+2. Register File Organization
+2.1 General-Purpose Registers (GPRs)
+LSX-64 provides 32 general-purpose registers, each 64 bits wide:
+Register
+	Name
+	Convention
+	r0
+	zero
+	Hardwired to 0. Writes ignored, reads return 0.
+	r1
+	ra
+	Return address (caller-saved)
+	r2–r3
+	tp, sp
+	Thread pointer, stack pointer (callee-saved)
+	r4–r11
+	a0–a7
+	Argument / return value registers (caller-saved)
+	r12–r21
+	t0–t9
+	Temporary registers (caller-saved)
+	r22–r31
+	s0–s9
+	Saved registers (callee-saved)
+	
+
+2.2 Special Registers
+Register
+	Width
+	Description
+	PC
+	64-bit
+	Program counter
+	HI / LO
+	64-bit each
+	Multiply/divide result registers (for MUL/DIV results exceeding 64 bits)
+	
+
+2.3 Vector Registers (LSX-64V Extension)
+When the LSX-64V extension is enabled, 32 vector registers (vr0–vr31) are provided, each 128 bits wide. These overlap with the floating-point register file in a full implementation, but in LSX-64 they are modeled as a separate file for simplicity.
+  
+
+3. Instruction Set Architecture
+3.1 Instruction Formats
+LSX-64 defines 9 instruction formats, following the LoongArch taxonomy:
+2R-type:   [ opcode(24) | Rj(5) | Rd(5) ]
+3R-type:   [ opcode(16) | Rk(5) | Rj(5) | Rd(5) ]
+4R-type:   [ opcode(10) | Ra(5) | Rk(5) | Rj(5) | Rd(5) ]
+2RI8:      [ opcode(15) | I8(8)  | Rj(5) | Rd(5) ]
+2RI12:     [ opcode(7)  | I12(12) | Rj(5) | Rd(5) ]
+2RI14:     [ opcode(7)  | I14(14) | Rj(5) | Rd(5) ]
+2RI16:     [ opcode(5)  | I16(16) | Rj(5) | Rd(5) ]
+1RI21:     [ opcode(10) | I21(21) ]
+I26:       [ opcode(6)  | I26(26) ]
+
+* Rj, Rk are source register operands. Rd is the destination. Ra is an additional source for 4R-type (e.g., fused multiply-add).
+* Immediate fields are sign-extended unless otherwise specified.
+* 2RI16 is used for conditional branches (16-bit signed offset × 4).
+* 1RI21 provides a 21-bit offset for unconditional branches (±1 MB range).
+* I26 provides a 26-bit offset for long jumps (±128 MB range).
+3.2 Base Integer Instruction Set (LSX-64I)
+3.2.1 Arithmetic Operations
+Instruction
+	Format
+	Semantics
+	ADD.W Rd, Rj, Rk
+	3R
+	Rd = sign_extend((Rj + Rk)[31:0]) — 32-bit add
+	ADD.D Rd, Rj, Rk
+	3R
+	Rd = Rj + Rk — 64-bit add
+	SUB.W Rd, Rj, Rk
+	3R
+	Rd = sign_extend((Rj - Rk)[31:0])
+	SUB.D Rd, Rj, Rk
+	3R
+	Rd = Rj - Rk
+	ADDI.W Rd, Rj, I12
+	2RI12
+	Rd = sign_extend((Rj + imm)[31:0])
+	ADDI.D Rd, Rj, I12
+	2RI12
+	Rd = Rj + sign_extend(imm)
+	SLT Rd, Rj, Rk
+	3R
+	Rd = (Rj < Rk) ? 1 : 0 (signed)
+	SLTU Rd, Rj, Rk
+	3R
+	Rd = (Rj < Rk) ? 1 : 0 (unsigned)
+	SLTI Rd, Rj, I12
+	2RI12
+	Rd = (Rj < imm) ? 1 : 0 (signed)
+	MUL.D Rd, Rj, Rk
+	3R
+	Rd = Rj × Rk (low 64 bits)
+	MULH.D Rd, Rj, Rk
+	3R
+	Rd = (Rj × Rk) >> 64 (high 64 bits, signed)
+	DIV.D Rd, Rj, Rk
+	3R
+	Rd = Rj ÷ Rk (signed)
+	DIVU.D Rd, Rj, Rk
+	3R
+	Rd = Rj ÷ Rk (unsigned)
+	
+
+3.2.2 Logical Operations
+Instruction
+	Format
+	Semantics
+	AND Rd, Rj, Rk
+	3R
+	Rd = Rj & Rk
+	OR Rd, Rj, Rk
+	3R
+	Rd = Rj
+	Rk
+	XOR Rd, Rj, Rk
+	3R
+	Rd = Rj ^ Rk
+	NOR Rd, Rj, Rk
+	3R
+	Rd = ~(Rj
+	Rk)
+	ANDI Rd, Rj, I12
+	2RI12
+	Rd = Rj & sign_extend(imm)
+	ORI Rd, Rj, I12
+	2RI12
+	Rd = Rj
+	sign_extend(imm)
+	XORI Rd, Rj, I12
+	2RI12
+	Rd = Rj ^ sign_extend(imm)
+	
+
+3.2.3 Shift and Bit Manipulation Operations
+Instruction
+	Format
+	Semantics
+	SLL.W Rd, Rj, Rk
+	3R
+	Rd = sign_extend(Rj[31:0] << Rk[4:0])
+	SRL.W Rd, Rj, Rk
+	3R
+	Rd = zero_extend(Rj[31:0] >> Rk[4:0])
+	SRA.W Rd, Rj, Rk
+	3R
+	Rd = sign_extend(Rj[31:0] >>> Rk[4:0])
+	SLL.D Rd, Rj, Rk
+	3R
+	Rd = Rj << Rk[5:0]
+	SRL.D Rd, Rj, Rk
+	3R
+	Rd = Rj >> Rk[5:0]
+	SRA.D Rd, Rj, Rk
+	3R
+	Rd = Rj >>> Rk[5:0]
+	ROTR.D Rd, Rj, Rk
+	3R
+	Rd = rotate_right(Rj, Rk[5:0])
+	EXT.W.B Rd, Rj
+	2R
+	Rd = sign_extend(Rj[7:0])
+	EXT.W.H Rd, Rj
+	2R
+	Rd = sign_extend(Rj[15:0])
+	CLO.D Rd, Rj
+	2R
+	Rd = count_leading_ones(Rj)
+	CLZ.D Rd, Rj
+	2R
+	Rd = count_leading_zeros(Rj)
+	CTZ.D Rd, Rj
+	2R
+	Rd = count_trailing_zeros(Rj)
+	BYTEPICK.D Rd, Rj, Rk
+	3R
+	Rd = byte_permute(Rj, Rk[2:0])
+	
+
+3.2.4 Memory Access Operations
+Instruction
+	Format
+	Semantics
+	LD.B Rd, Rj, I12
+	2RI12
+	Rd = sign_extend(M[Rj + imm], 8)
+	LD.H Rd, Rj, I12
+	2RI12
+	Rd = sign_extend(M[Rj + imm], 16)
+	LD.W Rd, Rj, I12
+	2RI12
+	Rd = sign_extend(M[Rj + imm], 32)
+	LD.D Rd, Rj, I12
+	2RI12
+	Rd = M[Rj + imm] (64-bit)
+	LD.BU Rd, Rj, I12
+	2RI12
+	Rd = zero_extend(M[Rj + imm], 8)
+	LD.HU Rd, Rj, I12
+	2RI12
+	Rd = zero_extend(M[Rj + imm], 16)
+	LD.WU Rd, Rj, I12
+	2RI12
+	Rd = zero_extend(M[Rj + imm], 32)
+	ST.B Rd, Rj, I12
+	2RI12
+	M[Rj + imm] = Rd[7:0]
+	ST.H Rd, Rj, I12
+	2RI12
+	M[Rj + imm] = Rd[15:0]
+	ST.W Rd, Rj, I12
+	2RI12
+	M[Rj + imm] = Rd[31:0]
+	ST.D Rd, Rj, I12
+	2RI12
+	M[Rj + imm] = Rd (64-bit)
+	PRELD I12, Rj, I8
+	2RI8
+	Prefetch hint: M[Rj + imm] into cache (no architectural state change)
+	
+
+3.2.5 Branch and Jump Operations
+Instruction
+	Format
+	Semantics
+	BEQ Rj, Rk, I16
+	2RI16
+	if (Rj == Rk) PC += imm × 4
+	BNE Rj, Rk, I16
+	2RI16
+	if (Rj != Rk) PC += imm × 4
+	BLT Rj, Rk, I16
+	2RI16
+	if (Rj < Rk, signed) PC += imm × 4
+	BGE Rj, Rk, I16
+	2RI16
+	if (Rj >= Rk, signed) PC += imm × 4
+	BLTU Rj, Rk, I16
+	2RI16
+	if (Rj < Rk, unsigned) PC += imm × 4
+	BGEU Rj, Rk, I16
+	2RI16
+	if (Rj >= Rk, unsigned) PC += imm × 4
+	BEQZ Rj, I21
+	1RI21
+	if (Rj == 0) PC += imm × 4
+	BNEZ Rj, I21
+	1RI21
+	if (Rj != 0) PC += imm × 4
+	B I26
+	I26
+	PC += imm × 4 (unconditional)
+	BL I26
+	I26
+	r1 = PC + 4; PC += imm × 4
+	JIRL Rd, Rj, I16
+	2RI16
+	Rd = PC + 4; PC = Rj + imm × 4
+	
+
+No delay slots: When a branch is taken, the next sequential instruction is not fetched. The pipeline flushes on branch resolution. This mirrors LoongArch's design choice to eliminate MIPS-style delay slots (LoongArch Reference Manual, Vol. 1).
+3.2.6 PC-Relative Operations
+Instruction
+	Format
+	Semantics
+	PCADDI Rd, I20
+	2RI20*
+	Rd = PC + sign_extend(imm << 2)
+	PCADDU12I Rd, I20
+	2RI20*
+	Rd = PC + sign_extend(imm << 12)
+	PCALAU12I Rd, I20
+	2RI20*
+	Rd = PC[63:12] : sign_extend(imm)
+	
+
+*PCADDI and PCADDU12I use a 2RI20 variant of the 2RI16 format (5-bit opcode, 20-bit immediate). These enable efficient PC-relative addressing for position-independent code, a feature LoongArch introduced that classical MIPS lacks.
+3.2.7 Miscellaneous
+Instruction
+	Format
+	Semantics
+	LU12I.W Rd, I20
+	2RI20*
+	Rd = sign_extend(imm << 12) (set upper 32 bits)
+	NOP
+	2R
+	No operation (encoded as ADDI r0, r0, 0)
+	DBAR I15
+	2RI15
+	Execution barrier (model as NOP in simulator)
+	BREAK
+	2R
+	Halt simulation (diagnostic)
+	
+
+3.3 Atomic Extension (LSX-64A)
+Instruction
+	Format
+	Semantics
+	LL.W Rd, Rj, I12
+	2RI12
+	Load-linked (32-bit), set link register
+	SC.W Rd, Rj, I12
+	2RI12
+	Store-conditional; Rd = 1 on success, 0 on failure
+	AMSWAP.W Rd, Rk, Rj
+	3R
+	Atomic swap: old = M[Rj]; M[Rj] = Rk; Rd = old
+	AMADD.W Rd, Rk, Rj
+	3R
+	Atomic add: old = M[Rj]; M[Rj] += Rk; Rd = old
+	AMAND.W Rd, Rk, Rj
+	3R
+	Atomic AND
+	AMOR.W Rd, Rk, Rj
+	3R
+	Atomic OR
+	AMMAX.W Rd, Rk, Rj
+	3R
+	Atomic MAX (signed)
+	AMMIN.W Rd, Rk, Rj
+	3R
+	Atomic MIN (signed)
+	
+
+3.4 Vector/SIMD Extension (LSX-64V)
+The LSX-64V extension provides 128-bit vector operations, inspired by LoongArch's LSX extension (Loongson product page). Key instructions:
+Instruction
+	Semantics
+	VADD.W Vd, Vj, Vk
+	Element-wise 32-bit add (4 lanes)
+	VSUB.W Vd, Vj, Vk
+	Element-wise 32-bit subtract
+	VMUL.W Vd, Vj, Vk
+	Element-wise 32-bit multiply
+	VLD Vd, Rj, I12
+	Load 128 bits from memory to vector register
+	VST Vd, Rj, I12
+	Store 128 bits from vector register to memory
+	VAND, VOR, VXOR
+	Element-wise logical
+	VSHUF.W Vd, Vj, Vk
+	Shuffle 32-bit elements
+	VREPLVE.W Vd, Rj
+	Replicate scalar across 4 lanes
+	
+
+The simulator models LSX-64V as 4-lane 32-bit SIMD operations. This is a subset of LoongArch's full LSX which includes 128-bit operations across multiple data types.
+3.5 Binary Translation Assist Extension (LSX-64BT)
+Inspired by LoongArch's LBT extension (Loongson product page), LSX-64BT provides instructions to accelerate binary translation from other ISAs (x86, ARM):
+Instruction
+	Semantics
+	LBT_X86_FLAG_SET
+	Set x86-style flags from ALU result
+	LBT_X86_FLAG_GET Rd
+	Read x86-style flags to GPR
+	LBT_BRCOND I5, I16
+	Conditional branch based on guest ISA flags
+	
+
+LSX-64BT is specified but not implemented in the simulator. Its presence in the specification demonstrates the architecture's compatibility-first design philosophy.
+  
+
+4. Pipeline Architecture
+4.1 Pipeline Overview
+LSX-64 uses a 7-stage in-order scalar pipeline with forwarding. The pipeline depth is chosen to balance clock frequency and branch penalty, drawing from the deeper pipeline trends in modern Loongson cores (LA664 features a deeper pipeline than its predecessor LA464, per Tom's Hardware).
+┌──────┐    ┌──────┐    ┌─────────┐    ┌──────┐    ┌───────┐    ┌───────┐    ┌──────┐
+│ IF1  │───▶│ IF2  │───▶│ ID / RF │───▶│  EX  │───▶│ MEM1  │───▶│ MEM2  │───▶│  WB  │
+│Fetch │    │Cache │    │Decode   │    │Exec  │    │D-Cache│    │Align │    │Write │
+│ Req  │    │Resp  │    │Reg Read │    │      │    │  Acc  │    │ WB   │    │ Back │
+└──────┘    └──────┘    └─────────┘    └──────┘    └───────┘    └───────┘    └──────┘
+
+4.2 Stage Descriptions
+Stage
+	Name
+	Function
+	Latency
+	IF1
+	Instruction Fetch Request
+	Generate fetch address (PC), initiate I-cache access
+	1 cycle
+	IF2
+	Instruction Fetch Response
+	Receive instruction from I-cache (or stall on miss)
+	1 cycle (hit) / N cycles (miss)
+	ID/RF
+	Decode / Register Fetch
+	Decode instruction word, read source registers from register file
+	1 cycle
+	EX
+	Execute
+	Perform ALU operation, compute branch target, resolve branches
+	1 cycle (most ops), 2 cycles (MUL), 20 cycles (DIV)
+	MEM1
+	Memory Access 1
+	For load/store: initiate D-cache access
+	1 cycle (hit) / N cycles (miss)
+	MEM2
+	Memory Access 2 / Align
+	Complete D-cache access, byte alignment for sub-word loads
+	1 cycle
+	WB
+	Write Back
+	Write result to register file
+	1 cycle
+	
+
+4.3 Hazard Detection and Mitigation
+4.3.1 Data Hazards (RAW)
+LSX-64 implements full forwarding to minimize RAW stalls:
+* EX-to-EX forwarding: Result from EX stage forwarded to EX stage of a dependent instruction (0 stall cycles).
+* MEM-to-EX forwarding: Result from MEM stage forwarded to EX stage (0 stall cycles for ALU ops).
+* Load-use hazard: If an instruction immediately following a load depends on the load result, a 1-cycle stall is required because the load data is not available until MEM2, but the consumer needs it in EX.
+Load-use stall example:
+ LD.W  r4, [r1, 0]    # r4 loaded in MEM2
+ ADD   r5, r4, r2     # needs r4 in EX → must stall 1 cycle
+
+4.3.2 Control Hazards
+Since LSX-64 has no branch delay slots, taken branches cause a pipeline flush:
+* Branch resolution in EX stage: Branches are resolved in the EX stage (stage 4). A taken branch flushes IF1, IF2, and ID/RF stages.
+* Branch penalty: 3 cycles (the 3 instructions in IF1, IF2, ID/RF are squashed).
+* No branch prediction in base model: The simulator models a simple "predict not-taken" scheme. Taken branches incur the full 3-cycle penalty. Not-taken branches incur no penalty.
+This is a conservative model. Real Loongson LA664 cores implement sophisticated branch predictors (tracking up to 1024 indirect branch targets, per Tom's Hardware), but the base LSX-64 simulator omits prediction for clarity.
+4.3.3 Structural Hazards
+* Register file: 2 read ports, 1 write port (classic single-issue design).
+* No structural hazards for ALU instructions.
+* Memory: Only load/store instructions access D-cache; no structural conflict with I-cache (Harvard architecture).
+4.4 Pipeline Diagram
+Instruction:  IF1  IF2  ID/RF  EX   MEM1  MEM2  WB
+Next insn:          IF1   IF2  ID/RF  EX   MEM1  MEM2  WB
+Next insn:                IF1   IF2  ID/RF  EX   MEM1  MEM2  WB
+
+Ideal CPI = 1.0 (one instruction per cycle after pipeline fill).
+  
+
+5. Memory Hierarchy
+5.1 Overview
+The memory hierarchy is modeled after Loongson's cache configuration (Loongson 3A6000 analysis):
+         ┌──────────────────────┐
+        │      CPU Core        │
+        └──────┬───────┬───────┘
+               │       │
+       ┌───────▼─┐  ┌──▼───────┐
+       │ L1-I$   │  │ L1-D$    │
+       │ 32 KB   │  │ 32 KB    │
+       │ 4-way   │  │ 4-way    │
+       │ 64B line│  │ 64B line │
+       │ 2-cycle │  │ 2-cycle  │
+       └───────┬─┘  └──┬───────┘
+               │       │
+        ┌──────▼───────▼──────┐
+        │      L2 Cache        │
+        │    256 KB            │
+        │    8-way set-assoc   │
+        │    64B line          │
+        │    8-cycle           │
+        └──────────┬───────────┘
+                   │
+        ┌──────────▼───────────┐
+        │    Main Memory       │
+        │    100-cycle latency  │
+        └──────────────────────┘
+
+5.2 Cache Parameters
+Level
+	Size
+	Associativity
+	Line Size
+	Latency (cycles)
+	Write Policy
+	L1-I
+	32 KB
+	4-way
+	64 B
+	2
+	N/A (read-only)
+	L1-D
+	32 KB
+	4-way
+	64 B
+	2
+	Write-back, write-allocate
+	L2
+	256 KB
+	8-way
+	64 B
+	8
+	Write-back, write-allocate
+	Main Memory
+	—
+	—
+	—
+	100
+	—
+	
+
+5.3 Cache Operation
+* L1 Instruction Cache (L1-I): Accessed in IF1–IF2 stages. On hit, instruction is available in IF2. On miss, the pipeline stalls until the line is fetched from L2 (or main memory).
+* L1 Data Cache (L1-D): Accessed in MEM1–MEM2 stages. On hit, data is available in MEM2. On miss, stalls until line arrives from L2.
+* L2 Unified Cache: Servs both I-cache and D-cache misses. 8-way set-associative with LRU replacement.
+* Replacement: LRU (Least Recently Used) for all cache levels.
+5.4 Memory Consistency Model
+LSX-64 uses a total store order (TSO) memory consistency model for simplicity. All stores are committed to the cache hierarchy in program order. The DBAR instruction acts as a full memory barrier.
+5.5 Address Translation (Specified, Not Simulated)
+LSX-64 specifies a 4-level page table structure for virtual-to-physical address translation (48-bit virtual address space), with 4 KB page granularity. The TLB has 64 entries, fully associative. This is specified for completeness but the simulator operates on physical addresses directly.
+  
+
+6. Instruction Encoding Summary
+6.1 Opcode Allocation
+LSX-64 uses a 6-bit primary opcode field (bits [31:26]), similar to LoongArch's top-6-bit opcode (LoongArch Reference Manual, Vol. 1):
+Opcode (6-bit)
+	Category
+	Example Instructions
+	000000
+	3R arithmetic/logical
+	ADD.D, SUB.D, AND, OR, SLL.D
+	000001
+	3R shift/bit-manip
+	SLL.W, SRL.W, ROTR.D, CLZ.D
+	000010
+	4R (fused ops)
+	(reserved for FMA)
+	000011
+	2R misc
+	EXT.W.B, CLO.D, NOP
+	000100
+	2RI8
+	ANDI (8-bit imm), PRELD
+	000101
+	2RI12 (imm ops)
+	ADDI.D, ORI, SLTI
+	000110
+	2RI12 (loads)
+	LD.B, LD.W, LD.D
+	000111
+	2RI12 (stores)
+	ST.B, ST.W, ST.D
+	001000
+	2RI16 (branches)
+	BEQ, BNE, BLT, BGE
+	001001
+	1RI21 (long branch)
+	BEQZ, BNEZ
+	001010
+	I26 (jump)
+	B, BL
+	001011
+	2RI16 (JIRL)
+	JIRL
+	001100
+	2RI20 (PC-relative)
+	PCADDI, LU12I.W
+	001101
+	2RI12 (atomics)
+	LL.W, SC.W, AMADD.W
+	001110
+	Vector (LSX-64V)
+	VADD.W, VLD, VST
+	001111
+	Reserved
+	—
+	
+
+  
+
+7. Privilege Levels and Exception Handling (Specified)
+7.1 Privilege Levels
+Following LoongArch's 4-level privilege scheme (Linux Kernel Docs):
+Level
+	Name
+	Usage
+	PLV0
+	Kernel
+	Operating system kernel
+	PLV1
+	Supervisor
+	Hypervisor / supervisor
+	PLV2
+	Hypervisor
+	Virtualization host
+	PLV3
+	User
+	Application code
+	
+
+The simulator operates at PLV3 (user mode) only. Privileged instructions are specified but not implemented.
+7.2 Exception Vector
+The BREAK instruction triggers a simulation halt (modeled as exception for diagnostic purposes).
+  
+
+8. Design Rationale
+8.1 Why No Delay Slots?
+MIPS introduced branch delay slots to hide the branch penalty in early pipelines. However, as pipelines deepened, delay slots became a compiler burden and a source of wasted instructions. LoongArch eliminated them (LoongArch Reference Manual, Vol. 1), and RISC-V never included them. LSX-64 follows this modern consensus: no delay slots, relying on branch prediction (or simple predict-not-taken in the base model) to manage branch penalties.
+8.2 Why 9 Instruction Formats?
+LoongArch's 9-format design enables wider immediates and larger branch offsets than the 3-format MIPS design or the 4-format base RISC-V design. The trade-off is slightly more complex decode logic, but the benefit is improved code density (fewer instructions needed for large constants and far branches).
+8.3 Why a 7-Stage Pipeline?
+A 7-stage pipeline balances:
+* Clock frequency: More stages = shorter logic paths = higher clock.
+* Branch penalty: More stages = higher flush penalty on mispredict.
+* Memory latency: Two MEM stages (MEM1, MEM2) accommodate L1 cache latency without blocking the EX stage for non-memory instructions.
+The 3-cycle branch penalty (flushing IF1, IF2, ID/RF) is moderate for a 7-stage design and comparable to other in-order RISC pipelines.
+  
+
+9. Simulator Implementation Notes
+The LSX-64 cycle-accurate simulator (lsx64_simulator.py) implements:
+* Full fetch-decode-execute loop with 7-stage pipeline
+* Register file with r0 hardwired to zero
+* Hazard detection with EX-to-EX and MEM-to-EX forwarding
+* Load-use stall (1 cycle)
+* Branch penalty (3 cycles, predict-not-taken)
+* Two-level cache hierarchy (L1 split, L2 unified) with LRU replacement
+* Cycle counting for CPI, IPC, stall breakdown, and cache statistics
+* A built-in assembler for writing test programs in LSX-64 assembly
+The simulator does not implement:
+* Out-of-order execution (the pipeline is in-order scalar)
+* Branch prediction (predict-not-taken only)
+* Floating-point operations
+* Virtual memory / TLB
+* Privileged mode instructions
+* LSX-64BT (binary translation) instructions
+  
+
+References
+1. LoongArch Reference Manual, Vol. 1: Basic Architecture — https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html
+2. Linux Kernel Documentation — LoongArch Introduction — https://docs.kernel.org/arch/loongarch/introduction.html
+3. RISC-V ISA Manual, RV64I — https://docs.riscv.org/reference/isa/v20240411/unpriv/rv64.html
+4. Wikipedia — RISC-V — https://en.wikipedia.org/wiki/RISC-V
+5. Loongson Technology — LoongArch Overview — https://www.loongson.cn/EN/application/list?id=39
+6. Tom's Hardware — Loongson 3A6000 Analysis — https://www.tomshardware.com/pc-components/cpus/chinas-loongson-cpu-seems-to-have-ipc-equivalent-to-zen-4-and-raptor-lake-but-slow-speeds-and-limited-core-count-keeps-3a6000-well-behind-modern-competition
+7. GCC Patches — LA664 Support — https://gcc.gnu.org/pipermail/gcc-patches/2023-November/636795.html
+8. Loongson 3A6000 Architecture Analysis — https://www.guiahardware.es/fr/Analyses-comparatives-de-l'architecture-du-Loongson-3A6000/

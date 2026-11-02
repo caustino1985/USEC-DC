@@ -1,0 +1,93 @@
+         19119 function calls (19004 primitive calls) in 0.019 seconds
+
+   Ordered by: cumulative time
+   List reduced from 275 to 30 due to restriction <30>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.019    0.019 /home/user/workspace/loongdiamond/src/loongdiamond/profiling.py:82(_quantum_workload)
+        1    0.000    0.000    0.012    0.012 /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1232(optimize)
+       72    0.001    0.000    0.007    0.000 /home/user/workspace/loongdiamond/src/loongdiamond/core.py:836(apply_single_qubit_gate)
+       34    0.000    0.000    0.007    0.000 /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1215(_evaluate_energy)
+       78    0.001    0.000    0.006    0.000 /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1102(_validate)
+       34    0.000    0.000    0.006    0.000 /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1141(execute)
+        1    0.000    0.000    0.006    0.006 /usr/local/lib/python3.14/site-packages/numpy/__init__.py:700(__getattr__)
+     11/1    0.000    0.000    0.006    0.006 <frozen importlib._bootstrap>:1360(_find_and_load)
+     11/1    0.000    0.000    0.005    0.005 <frozen importlib._bootstrap>:1308(_find_and_load_unlocked)
+     11/1    0.000    0.000    0.005    0.005 <frozen importlib._bootstrap>:914(_load_unlocked)
+      2/1    0.000    0.000    0.005    0.005 <frozen importlib._bootstrap_external>:753(exec_module)
+     43/2    0.000    0.000    0.005    0.003 <frozen importlib._bootstrap>:483(_call_with_frames_removed)
+      2/1    0.000    0.000    0.005    0.005 {built-in method builtins.exec}
+        1    0.000    0.000    0.005    0.005 /usr/local/lib/python3.14/site-packages/numpy/random/__init__.py:1(<module>)
+        1    0.000    0.000    0.005    0.005 <frozen importlib._bootstrap>:1401(_handle_fromlist)
+     12/2    0.000    0.000    0.005    0.003 {built-in method builtins.__import__}
+      123    0.000    0.000    0.005    0.000 /home/user/workspace/loongdiamond/src/loongdiamond/core.py:829(_tensor_ops)
+        3    0.000    0.000    0.005    0.002 /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1009(apply_two_qubit_depolarizing)
+      108    0.001    0.000    0.005    0.000 /usr/local/lib/python3.14/site-packages/numpy/lib/_shape_base_impl.py:1038(kron)
+      9/6    0.000    0.000    0.003    0.001 <frozen importlib._bootstrap_external>:1059(exec_module)
+      9/6    0.002    0.000    0.003    0.001 {built-in method _imp.exec_dynamic}
+       78    0.000    0.000    0.003    0.000 /usr/local/lib/python3.14/site-packages/numpy/_core/numeric.py:2225(allclose)
+        1    0.000    0.000    0.003    0.003 /usr/local/lib/python3.14/site-packages/numpy/random/_pickle.py:1(<module>)
+      432    0.001    0.000    0.003    0.000 /usr/local/lib/python3.14/site-packages/numpy/lib/_shape_base_impl.py:513(expand_dims)
+       78    0.002    0.000    0.003    0.000 /usr/local/lib/python3.14/site-packages/numpy/_core/numeric.py:2319(isclose)
+       78    0.001    0.000    0.001    0.000 /usr/local/lib/python3.14/site-packages/numpy/linalg/_linalg.py:1269(eigvalsh)
+      432    0.001    0.000    0.001    0.000 /usr/local/lib/python3.14/site-packages/numpy/_core/numeric.py:1426(normalize_axis_tuple)
+       11    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:809(module_from_spec)
+        9    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:1051(create_module)
+        9    0.001    0.000    0.001    0.000 {built-in method _imp.create_dynamic}
+
+
+
+
+============================================================
+TOP CALLERS
+============================================================
+   Ordered by: cumulative time
+   List reduced from 275 to 30 due to restriction <30>
+
+Function                                                                                       was called by...
+                                                                                                   ncalls  tottime  cumtime
+/home/user/workspace/loongdiamond/src/loongdiamond/profiling.py:82(_quantum_workload)          <- 
+/home/user/workspace/loongdiamond/src/loongdiamond/core.py:1232(optimize)                      <-       1    0.000    0.012  /home/user/workspace/loongdiamond/src/loongdiamond/profiling.py:82(_quantum_workload)
+/home/user/workspace/loongdiamond/src/loongdiamond/core.py:836(apply_single_qubit_gate)        <-      68    0.000    0.005  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1141(execute)
+                                                                                                        4    0.000    0.001  /home/user/workspace/loongdiamond/src/loongdiamond/profiling.py:82(_quantum_workload)
+/home/user/workspace/loongdiamond/src/loongdiamond/core.py:1215(_evaluate_energy)              <-      34    0.000    0.007  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1232(optimize)
+/home/user/workspace/loongdiamond/src/loongdiamond/core.py:1102(_validate)                     <-      72    0.001    0.005  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:836(apply_single_qubit_gate)
+                                                                                                        3    0.000    0.000  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:848(apply_cnot)
+                                                                                                        3    0.000    0.000  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1009(apply_two_qubit_depolarizing)
+/home/user/workspace/loongdiamond/src/loongdiamond/core.py:1141(execute)                       <-      34    0.000    0.006  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1215(_evaluate_energy)
+/usr/local/lib/python3.14/site-packages/numpy/__init__.py:700(__getattr__)                     <-       1    0.000    0.006  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1232(optimize)
+<frozen importlib._bootstrap>:1360(_find_and_load)                                             <-       1    0.000    0.006  /usr/local/lib/python3.14/site-packages/numpy/__init__.py:700(__getattr__)
+                                                                                                        5    0.000    0.003  /usr/local/lib/python3.14/site-packages/numpy/random/_pickle.py:1(<module>)
+                                                                                                      3/2    0.000    0.001  {built-in method _imp.exec_dynamic}
+                                                                                                        2    0.000    0.005  {built-in method builtins.__import__}
+<frozen importlib._bootstrap>:1308(_find_and_load_unlocked)                                    <-    11/1    0.000    0.005  <frozen importlib._bootstrap>:1360(_find_and_load)
+<frozen importlib._bootstrap>:914(_load_unlocked)                                              <-    11/1    0.000    0.005  <frozen importlib._bootstrap>:1308(_find_and_load_unlocked)
+<frozen importlib._bootstrap_external>:753(exec_module)                                        <-     2/1    0.000    0.005  <frozen importlib._bootstrap>:914(_load_unlocked)
+<frozen importlib._bootstrap>:483(_call_with_frames_removed)                                   <-      11    0.000    0.000  <frozen importlib._bootstrap>:1131(find_spec)
+                                                                                                       10    0.000    0.000  <frozen importlib._bootstrap>:1308(_find_and_load_unlocked)
+                                                                                                        2    0.000    0.005  <frozen importlib._bootstrap>:1401(_handle_fromlist)
+                                                                                                      2/1    0.000    0.005  <frozen importlib._bootstrap_external>:753(exec_module)
+                                                                                                        9    0.000    0.001  <frozen importlib._bootstrap_external>:1051(create_module)
+                                                                                                      9/6    0.000    0.003  <frozen importlib._bootstrap_external>:1059(exec_module)
+{built-in method builtins.exec}                                                                <-     2/1    0.000    0.005  <frozen importlib._bootstrap>:483(_call_with_frames_removed)
+/usr/local/lib/python3.14/site-packages/numpy/random/__init__.py:1(<module>)                   <-       1    0.000    0.005  {built-in method builtins.exec}
+<frozen importlib._bootstrap>:1401(_handle_fromlist)                                           <-       1    0.000    0.005  /usr/local/lib/python3.14/site-packages/numpy/random/__init__.py:1(<module>)
+{built-in method builtins.__import__}                                                          <-    12/2    0.000    0.005  <frozen importlib._bootstrap>:483(_call_with_frames_removed)
+/home/user/workspace/loongdiamond/src/loongdiamond/core.py:829(_tensor_ops)                    <-      72    0.000    0.000  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:836(apply_single_qubit_gate)
+                                                                                                        6    0.000    0.001  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:848(apply_cnot)
+                                                                                                       45    0.000    0.004  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1009(apply_two_qubit_depolarizing)
+/home/user/workspace/loongdiamond/src/loongdiamond/core.py:1009(apply_two_qubit_depolarizing)  <-       3    0.000    0.005  /home/user/workspace/loongdiamond/src/loongdiamond/profiling.py:82(_quantum_workload)
+/usr/local/lib/python3.14/site-packages/numpy/lib/_shape_base_impl.py:1038(kron)               <-     108    0.001    0.005  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:829(_tensor_ops)
+<frozen importlib._bootstrap_external>:1059(exec_module)                                       <-     9/6    0.000    0.003  <frozen importlib._bootstrap>:914(_load_unlocked)
+{built-in method _imp.exec_dynamic}                                                            <-     9/6    0.002    0.003  <frozen importlib._bootstrap>:483(_call_with_frames_removed)
+/usr/local/lib/python3.14/site-packages/numpy/_core/numeric.py:2225(allclose)                  <-      78    0.000    0.003  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1102(_validate)
+/usr/local/lib/python3.14/site-packages/numpy/random/_pickle.py:1(<module>)                    <-       1    0.000    0.003  {built-in method builtins.exec}
+/usr/local/lib/python3.14/site-packages/numpy/lib/_shape_base_impl.py:513(expand_dims)         <-     432    0.001    0.003  /usr/local/lib/python3.14/site-packages/numpy/lib/_shape_base_impl.py:1038(kron)
+/usr/local/lib/python3.14/site-packages/numpy/_core/numeric.py:2319(isclose)                   <-      78    0.002    0.003  /usr/local/lib/python3.14/site-packages/numpy/_core/numeric.py:2225(allclose)
+/usr/local/lib/python3.14/site-packages/numpy/linalg/_linalg.py:1269(eigvalsh)                 <-      78    0.001    0.001  /home/user/workspace/loongdiamond/src/loongdiamond/core.py:1102(_validate)
+/usr/local/lib/python3.14/site-packages/numpy/_core/numeric.py:1426(normalize_axis_tuple)      <-     432    0.001    0.001  /usr/local/lib/python3.14/site-packages/numpy/lib/_shape_base_impl.py:513(expand_dims)
+<frozen importlib._bootstrap>:809(module_from_spec)                                            <-      11    0.000    0.001  <frozen importlib._bootstrap>:914(_load_unlocked)
+<frozen importlib._bootstrap_external>:1051(create_module)                                     <-       9    0.000    0.001  <frozen importlib._bootstrap>:809(module_from_spec)
+{built-in method _imp.create_dynamic}                                                          <-       9    0.001    0.001  <frozen importlib._bootstrap>:483(_call_with_frames_removed)
+
+
