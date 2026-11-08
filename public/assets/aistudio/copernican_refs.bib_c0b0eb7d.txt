@@ -1,0 +1,107 @@
+@article{stromback2022pqc,
+  author  = {Str\"omback, Frej and Rantatalo, Carl and Wiggberg, Mats and
+             Lindstr\"om, Jesper and Fischer-H\"ubner, Simone},
+  title   = {Performance of Post-Quantum Signature Schemes --- An Empirical
+             Study of NIST Standardization Candidates},
+  journal = {Journal of Cybersecurity},
+  year    = {2022},
+  volume  = {8},
+  number  = {1},
+  doi     = {10.1093/cybsec/tyac011}
+}
+
+@inproceedings{leslie2020legal,
+  author    = {Leslie, David and others},
+  title     = {Justice, Equity, and Accountability in Algorithmic Systems},
+  booktitle = {Proceedings of the 2020 AAAI/ACM Conference on AI, Ethics,
+               and Society},
+  year      = {2020},
+  publisher = {ACM},
+  doi       = {10.1145/3375627.3375838}
+}
+
+@inproceedings{alagic2023nist,
+  author    = {Alagic, Gorjan and Apon, Daniel and Cooper, David and
+               Dang, Quynh and Dang, Thinh and Kelsey, John and Lichtinger,
+               Jacob and Miller, Carl and Moody, Dustin and Peralta, Rene
+               and others},
+  title     = {Status Report on the Third Round of the NIST Post-Quantum
+               Cryptography Standardization Process},
+  booktitle = {NIST Interagency/Internal Report (NISTIR) 8413},
+  year      = {2022/2023},
+  institution = {National Institute of Standards and Technology}
+}
+
+@article{bernstein2019pqc,
+  author  = {Bernstein, Daniel J. and H\"ulsing, Andreas and K\"olbl, Stefan
+             and Niederhagen, Ruben and Rijneveld, Joost and Schwabe, Peter},
+  title   = {The SPHINCS\textsuperscript{+} Signature Framework},
+  journal = {IACR Cryptology ePrint Archive},
+  year    = {2019},
+  pages   = {1086}
+}
+
+@book{lessig1999code,
+  author    = {Lessig, Lawrence},
+  title     = {Code and Other Laws of Cyberspace},
+  publisher = {Basic Books},
+  year      = {1999},
+  address   = {New York}
+}
+
+@book{langbein2007trust,
+  author    = {Langbein, John H.},
+  title     = {The Contractarian Basis of the Law of Trusts},
+  publisher = {Yale Law Journal},
+  year      = {1995 / reprinted 2007},
+  note      = {105 Yale L.J. 625}
+}
+
+@article{schwarcz2019fiduciary,
+  author  = {Schwarcz, Steven L.},
+  title   = {Fiduciary Governance in an Algorithmic Age},
+  journal = {Washington University Law Review},
+  year    = {2019},
+  volume  = {97},
+  pages   = {101--154}
+}
+
+@article{peng2011reproducibility,
+  author  = {Peng, Roger D.},
+  title   = {Reproducible Research in Computational Science},
+  journal = {Science},
+  year    = {2011},
+  volume  = {334},
+  number  = {6060},
+  pages   = {1226--1227},
+  doi     = {10.1126/science.1213847}
+}
+
+@techreport{gao2022legacy,
+  author      = {{U.S. Government Accountability Office}},
+  title       = {Federal Legacy Systems: Additional Actions Needed to Address
+                 Critical Legacy Systems},
+  institution = {GAO},
+  number      = {GAO-22-105303},
+  year        = {2022}
+}
+
+@article{thomson2021cobol,
+  author  = {Thomson Reuters and Reuters Research},
+  title   = {COBOL at 62: Still Powering the Global Economy},
+  journal = {Reuters Technology Report},
+  year    = {2021},
+  note    = {Industry analysis; estimates 70--80\% of global financial
+             transactions processed by COBOL systems, approx. \$3 trillion
+             daily.}
+}
+
+@techreport{mitre2022cobol,
+  author      = {{The MITRE Corporation}},
+  title       = {COBOL Modernization \& the Mainframe Workforce Gap},
+  institution = {MITRE},
+  year        = {2022},
+  note        = {Cited in federal planning documents; confirms continuing
+                 majority share of COBOL in U.S. financial-sector
+                 transaction processing.}
+}

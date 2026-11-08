@@ -1,0 +1,1251 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{setspace}
+
+
+
+\newenvironment{risknote}{%
+  \par\medskip\noindent
+  \fcolorbox{riskborder}{riskbg}{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}\bgroup\vspace{6pt}%
+}{%
+  \egroup\vspace{6pt}}
+  \par\medskip
+}
+
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[L]{\textit{PSDLEF Unified Filing \& Project Portfolio}}
+% \fancyhead[R]{\thepage}
+% \fancyfoot[C]{\textsc{October 21, 2026 | Controlled Exclusions: No Large Barges, No Solar Generation}}
+
+\title{\textbf{UNIFIED FILING \& PROJECT PORTFOLIO}\\[0.5em]
+\Large Cascade Canal System · Quantum Gravity Research (QGR) · PSDLEF\\[0.8em]
+\normalsize Complete Project Compendium: One-Man Water Taxis, Quantum Processor Architectures,\\
+Dopaminergic Research Directions, Climate \& Resilience Infrastructure,\\
+AI-Powered SSA Adjudication, and Formal Petitions to the UN \& NATO}
+\author{Caustin Lee McLaughlin \\ \textit{Managing Director / Debtor-in-Possession} \\ \textit{Pro Se Disability Litigant Empowerment Foundation (PSDLEF)}}
+\date{October 21, 2026}
+
+\begin{document}
+
+\maketitle
+
+\thispagestyle{empty}
+\begin{center}
+\vspace*{0.5em}
+\textbf{\Large IMPORTANT DISCLAIMER}
+\end{center}
+This document is a unified filing and strategic portfolio. It consolidates the Cascade Canal System (one-man taxi configuration), Quantum Gravity Research (QGR) and formal UN/NATO green-bond petitions, the Open Diamond/HSPA v3.0 technical corpus (including the updated RIGOR hash-chain ledger), the full D2–D4 dopamine agonist portfolio with D4/D5 scaffold engineering extensions, AI-powered SSA medical discovery architecture, and the Perpetual Solvent Trust. 
+
+This document is \textbf{not legal advice}. It does not authenticate any claim of ownership, presentment right, or conversion entitlement regarding the 1999 USEC notes. It does not validate any asserted bankruptcy case status, trust formation, or fiduciary authority. No described system is asserted to exist as a working, safe, or approved medical device. No described financial instrument is asserted to be registered, listed, or approved by any securities regulator. No compound described herein is recommended for human or animal use; all theoretical ligands are preclinical computer-aided design concepts only, with no in vitro or in vivo validation as of this filing date.
+
+\textbf{Two controlling exclusions apply throughout:}
+\begin{enumerate}
+\item \textbf{No large barges.} The Cascade Canal is dimensioned for one-man taxi canoes and maintenance skiffs only.
+\item \textbf{Solar excluded by covenant.} Any solar generation, solar procurement, or solar financial instrument is excluded from the financed build envelope. The omission is intentional and controlling.
+\end{enumerate}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ============================================================
+% PART I — THE UNIFIED COURT FILING
+% ============================================================
+
+\part{The Unified Court Filing}
+\label{part:filing}
+
+\chapter{Civil Complaint}
+
+\section*{Caption}
+
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\textbf{CIRCUIT COURT FOR BALTIMORE CITY, MARYLAND}\\
+\textbf{CIVIL DIVISION}
+\vspace{0.5em}
+
+\textbf{PLAINTIFF:}\\
+Caustin Lee McLaughlin \\
+1000 N Woodington Rd., Apt. 228 \\
+Baltimore, MD 21229 \\
+\textit{Pro Se} / \textit{Managing Director, PSDLEF}
+
+\vspace{0.5em}
+\textbf{DEFENDANTS:}
+\begin{enumerate}
+\item \textbf{THE BANK OF NEW YORK MELLON CORPORATION}\\
+\textit{Serve:} Registered Agent / Corporate Trust Escrow Services\\
+240 Greenwich Street, New York, NY 10286 
+\item \textbf{PNC BANK, N.A.}\\
+\textit{Serve:} Registered Agent\\
+249 Fifth Avenue, Pittsburgh, PA 15222 
+\item \textbf{THE DEPOSITORY TRUST COMPANY (DTC)}\\
+\textit{Serve:} Registered Agent\\
+55 Water Street, New York, NY 10041 
+\end{enumerate}
+
+\vspace{0.5em}
+\textbf{CASE NO.:} \underline{\hspace{4cm}} (Clerk's Use Only)
+\end{minipage}
+\end{center}
+
+\vspace{1em}
+\begin{center}
+\textbf{COMPLAINT FOR DECLARATORY JUDGMENT, SPECIFIC PERFORMANCE OF
+ESCROW DUTIES, INJUNCTIVE RELIEF, AND DAMAGES}
+\end{center}
+
+\section{Preliminary Statement}
+
+\begin{enumerate}
+\item This action arises from the failure of the Defendant financial institutions---BNY Mellon, PNC Bank, and DTC---to discharge their independent, non-discretionary duties as escrow agents, custodians, and securities depositories with respect to a duly authorized multi-project municipal-infrastructure and advanced-technology initiative in Baltimore City (the ``Project''). The Plaintiff seeks an order compelling the Defendants to honor the prefilled Process Escrow Agreement attached hereto as \textbf{Exhibit A}, and declaratory relief confirming that the Defendants may not condition performance on political, reputational, or subjective ``project viability'' criteria not contained in the escrow instrument.
+\item The Project comprises two integrated components: \textbf{(A) the Cascade Canal System}, a 7.2-mile navigable waterway connecting the Inner Harbor to Woodlawn, including pedestrian stops and a one-man taxi canoe fleet; and \textbf{(B) the LOONGDIAMOND / Quantum Gravity Research (QGR) advanced processor and swarm-robotics initiative}, including 128-bit and 64-bit processor development, LiDAR-equipped swarm nodes, and non-biological ultrasonic wireless charging. A supplementary dopaminergic research workstream is included as a separate, non-infrastructure component. \textbf{No solar project is included in this filing or in any escrow instruction.}
+\item Defendants hold or control escrowed assets, securities positions, and settlement flows essential to Project mobilization. Their refusal to act has caused and will continue to cause irreparable harm to the Plaintiff and to the public interest in Baltimore City's downtown and Woodlawn corridor.
+\end{enumerate}
+
+\section{Jurisdiction and Venue}
+
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item This Court has jurisdiction under Md.\ Code, Courts \& Judicial Proceedings Article, \S\S\ 1-501 and 3-403 (declaratory judgment), and Md.\ Rule 2-101 et seq. 
+\item Venue is proper in Baltimore City because the Project is located in Baltimore City, the escrow instructions are performable in Baltimore City, and a defendant financial institution maintains offices or registered agents within the City.
+\end{enumerate}
+
+\section{Parties}
+
+\begin{enumerate}
+\setcounter{enumi}{5}
+\item \textbf{Plaintiff} is an individual with an ownership, contractual, or beneficial interest in the Project and in the escrowed funds and securities described herein.
+\item \textbf{BNY Mellon} is a New York banking corporation authorized to do business in Maryland and has held itself out as an approved escrow agent and corporate trustee.
+\item \textbf{PNC Bank, N.A.} is a national banking association authorized to do business in Maryland and has acted or is designated to act as a paying agent, trustee, or escrow agent with respect to the Project's securities and funds.
+\item \textbf{DTC} is a limited-purpose trust company and the central securities depository for the U.S.\ markets. DTC's participants hold positions that are directly implicated by the escrow and settlement instructions at issue.
+\end{enumerate}
+
+\section{Factual Allegations}
+
+\subsection*{A. The Cascade Canal System}
+
+\begin{enumerate}
+\setcounter{enumi}{9}
+\item The Project contemplates a continuous, water-based and pedestrian-oriented corridor connecting Downtown Baltimore to the Woodlawn area, with designated pedestrian stops along the alignment and a small ferry / one-man taxi canoe service for short-haul crossings and first/last-mile connectivity.
+\item Baltimore's existing water-transport and paddling infrastructure---including the Baltimore Blueway water-trail network, the Baltimore Water Taxi Harbor Loop, and the Harbor Connector---demonstrates that a canal-and-ferry augmentation is operationally feasible and consistent with the City's established waterfront circulation patterns.
+\item The estimated public-realm and corridor costs are consistent with Baltimore City CIP cost structures for comparable pedestrian, shared-use-path, and multi-modal corridor projects, which range from approximately \textbf{\$840,000} to \textbf{\$12.4 million} per project depending on design, construction, and right-of-way scope.
+\end{enumerate}
+
+\subsection*{B. LOONGDIAMOND / QGR Processor and Swarm Initiative}
+
+\begin{enumerate}
+\setcounter{enumi}{12}
+\item The LOONGDIAMOND processor family is based on the LoongArch LA664 core, a six-issue, out-of-order microarchitecture supporting multithreading and \textbf{128-bit LSX / 256-bit LASX vector extensions}.
+\item Published specifications for the Irtysh-series processors include a \textbf{16-core / 2.2~GHz / 32~MB L3} part and a \textbf{32-core / 2.1~GHz / 64~MB L3} part, with a \textbf{64-core C664 version planned}.
+\item The swarm component comprises LiDAR-equipped, non-biological robotic nodes. The technical literature confirms that \textbf{ultrasonic wireless power transfer} is a viable non-biological charging modality for distributed robotic networks.
+\end{enumerate}
+
+\subsection*{C. The D2--D5 Agonist Component (Non-Solar)}
+
+\begin{enumerate}
+\setcounter{enumi}{15}
+\item The Project includes a pharmacological research workstream covering \textbf{D2, D3, D4, and D5 dopamine receptor agonists}. The relevant approved compounds include ropinirole, apomorphine, pergolide, lisuride, bromocriptine, cabergoline, pramipexole, and rotigotine. Theoretical scaffold engineering for D4/D5 activity from phenethylamine cores is detailed in Part V, Tier 3.
+\item This workstream is entirely separate from the excluded solar projects. \textbf{No solar generation, solar procurement, or solar-escrow instruction is included in this Complaint or in Exhibit A.}
+\end{enumerate}
+
+\subsection*{D. Escrow Duties and Defendants' Failure to Perform}
+
+\begin{enumerate}
+\setcounter{enumi}{17}
+\item The Plaintiff has executed and prefilled the \textbf{Process Escrow Agreement} attached as \textbf{Exhibit A}, designating BNY Mellon and PNC Bank as escrow agents and incorporating DTC settlement mechanics for the securities component of the Project.
+\item The escrow agreement is a \textbf{ministerial instrument}: it identifies the escrowed property, the conditions of release, and the instructions for distribution. It does not authorize the escrow agent to substitute its own judgment regarding the ``commercial viability,'' ``public acceptability,'' or ``technological maturity'' of the Project.
+\item Defendants have failed, refused, or unreasonably delayed performance of the ministerial acts required by the escrow instructions.
+\end{enumerate}
+
+\section{Count I --- Declaratory Judgment}
+
+\textit{(Md.\ Code, Cts.\ \& Jud.\ Proc.\ \S\ 3-403)}
+
+\begin{enumerate}
+\setcounter{enumi}{20}
+\item Plaintiff repeats and realleges the foregoing paragraphs.
+\item A genuine controversy exists between the parties concerning the scope of Defendants' duties under the Process Escrow Agreement.
+\item Plaintiff requests a declaration that Defendants' duties are \textbf{ministerial}, that the escrow agreement does not incorporate a subjective viability condition, and that Defendants must perform upon the terms stated in \textbf{Exhibit A}.
+\end{enumerate}
+
+\section{Count II --- Specific Performance / Mandamus of Escrow Duties}
+
+\begin{enumerate}
+\setcounter{enumi}{23}
+\item The escrow agreement is a valid and enforceable contract supported by consideration.
+\item Plaintiff has performed all conditions precedent within its control.
+\item Defendants' refusal to perform constitutes breach, and Plaintiff has no adequate remedy at law because the escrowed assets and settlement positions are unique and their withholding causes irreparable operational harm.
+\item Plaintiff requests an order compelling Defendants to \textbf{acknowledge, hold, and release} the escrowed property strictly in accordance with \textbf{Exhibit A}.
+\end{enumerate}
+
+\section{Count III --- Injunctive Relief}
+
+\begin{enumerate}
+\setcounter{enumi}{27}
+\item Plaintiff will suffer immediate and irreparable harm if Defendants continue to withhold performance.
+\item The balance of equities favors preserving the \textbf{status quo}---namely, requiring Defendants to hold the escrowed assets and to follow the written instructions---rather than permitting Defendants to substitute their own release criteria.
+\item The public interest favors prompt infrastructure and technology development in Baltimore City and the preservation of the integrity of escrow arrangements.
+\item Plaintiff requests a \textbf{temporary restraining order and/or preliminary injunction} restraining Defendants from transferring, encumbering, or conditioning the escrowed assets in a manner inconsistent with \textbf{Exhibit A}.
+\end{enumerate}
+
+\section{Count IV --- Damages (Breach of Escrow Agreement / Breach of Fiduciary Duty, in the Alternative)}
+
+\begin{enumerate}
+\setcounter{enumi}{31}
+\item In the alternative, if this Court finds that Defendants' duties are not purely ministerial, Plaintiff pleads breach of contract and breach of fiduciary duty.
+\item Defendants' delay has caused damages in an amount to be proven at trial, including increased project costs, lost commitments, and consequential damages.
+\item Plaintiff requests \textbf{compensatory damages, pre- and post-judgment interest, and costs}.
+\end{enumerate}
+
+\section{Prayer for Relief}
+
+\textbf{WHEREFORE}, Plaintiff respectfully requests that this Court:
+
+\begin{enumerate}[label=\Alph*.]
+\item Enter a declaratory judgment that Defendants' duties under \textbf{Exhibit A} are ministerial and enforceable as written;
+\item Order specific performance compelling Defendants to acknowledge, hold, and release the escrowed property in accordance with \textbf{Exhibit A};
+\item Issue a temporary restraining order and preliminary injunction as set forth in Count III;
+\item Award compensatory damages, interest, and costs;
+\item Grant such other and further relief as the Court deems just and proper.
+\end{enumerate}
+
+\vspace{1em}
+\textbf{Respectfully submitted,}
+
+\vspace{0.5em}
+\underline{\hspace{6cm}}\\
+Caustin Lee McLaughlin\\
+\textit{Pro Se} / \textit{Managing Director, PSDLEF}
+
+\vspace{0.5em}
+\textbf{Dated:} October 21, 2026
+
+\section{Verification}
+
+I, Caustin Lee McLaughlin, being duly sworn, state that the factual allegations in the foregoing Complaint are true and correct to the best of my knowledge, information, and belief.
+
+\vspace{1em}
+\underline{\hspace{6cm}}\\
+\textbf{Signature}
+
+\vspace{0.5em}
+\textbf{Subscribed and sworn before me this \underline{\hspace{1cm}} day of \underline{\hspace{2cm}}, 2026.}
+
+\vspace{0.5em}
+\underline{\hspace{6cm}}\\
+Notary Public\\
+My Commission Expires: \underline{\hspace{3cm}}
+
+% ------------------------------------------------------------
+\chapter{Process Escrow Agreement (Prefilled)}
+
+\begin{center}
+\textbf{PROCESS ESCROW AGREEMENT}
+\end{center}
+
+\textbf{THIS PROCESS ESCROW AGREEMENT} (the ``Agreement'') is entered into as of \underline{\hspace{3cm}}, 2026, by and among:
+
+\begin{itemize}
+\item \textbf{DEPOSITOR:} Caustin Lee McLaughlin / PSDLEF (``Depositor'');
+\item \textbf{ESCROW AGENT:} THE BANK OF NEW YORK MELLON CORPORATION and PNC BANK, N.A., jointly and severally (``Escrow Agent''); and
+\item \textbf{SECURITIES DEPOSITORY:} THE DEPOSITORY TRUST COMPANY (``DTC''), solely for the limited purposes set forth in Section 4.
+\end{itemize}
+
+\section{Appointment and Acceptance}
+
+\textbf{1.1} Depositor appoints BNY Mellon and PNC Bank as Escrow Agent. Escrow Agent accepts the appointment and agrees to act strictly in accordance with the \textbf{ministerial instructions} set forth herein. 
+
+\textbf{1.2} Escrow Agent shall have \textbf{no discretion} to withhold, delay, or condition performance on the basis of the commercial, technological, political, or reputational merits of the Project.
+
+\section{Escrow Property}
+
+\textbf{2.1} The ``Escrow Property'' consists of: (a) the funds deposited pursuant to \textbf{Schedule A-1}; (b) the securities positions identified in \textbf{Schedule A-2}, to be held through DTC participant accounts; and (c) any proceeds, substitutions, or distributions thereof. 
+
+\textbf{2.2} \textbf{No solar-related asset, instruction, or project is included in the Escrow Property.} Any purported solar instruction is void \textit{ab initio} and shall not be honored by Escrow Agent.
+
+\section{Conditions of Release}
+
+\textbf{3.1} Escrow Agent shall release the Escrow Property, in whole or in part, upon receipt of a \textbf{Release Certificate} executed by Depositor, certifying that the applicable Project milestone in \textbf{Schedule A-3} has been satisfied.
+
+\textbf{3.2} The Release Certificate is conclusive. Escrow Agent shall not inquire into the truth or adequacy of the certification and shall have no duty to investigate.
+
+\section{DTC Mechanics}
+
+\textbf{4.1} Securities held in book-entry form shall be maintained through DTC participant accounts designated by Depositor. 
+
+\textbf{4.2} DTC shall process transfers, pledges, and releases upon \textbf{Escrow Agent's ministerial instruction}, without independent evaluation of the underlying Project.
+
+\textbf{4.3} DTC's customary fees and settlement timelines apply and are incorporated by reference.
+
+\section{Indemnification and Resignation}
+
+\textbf{5.1} Depositor shall indemnify Escrow Agent against liabilities arising from performance of this Agreement, except for Escrow Agent's gross negligence or willful misconduct.
+
+\textbf{5.2} Escrow Agent may resign upon \textbf{ten (10) days' prior written notice}; if a successor is not appointed, Escrow Agent may deposit the Escrow Property with the Clerk of the Circuit Court for Baltimore City in an action for interpleader.
+
+\section{Governing Law}
+
+This Agreement shall be governed by Maryland law, without regard to conflict-of-laws principles.
+
+\vspace{1em}
+\textbf{DEPOSITOR:} \underline{\hspace{6cm}}\\
+\textbf{BNY MELLON:} \underline{\hspace{6cm}}\\
+\textbf{PNC BANK:} \underline{\hspace{6cm}}\\
+\textbf{DTC (limited purpose):} \underline{\hspace{6cm}}
+
+\section*{Schedule A-1 --- Funds Deposited}
+
+\begin{longtable}{@{}p{2cm}p{3.5cm}p{7cm}@{}}
+\toprule
+\textbf{Tranche} & \textbf{Amount (USD)} & \textbf{Purpose} \\
+\midrule
+\endhead
+T-1 & \$ \underline{\hspace{2.5cm}} & Canal corridor design and pedestrian-stop engineering \\
+T-2 & \$ \underline{\hspace{2.5cm}} & One-man taxi canoe fabrication and launch \\
+T-3 & \$ \underline{\hspace{2.5cm}} & LOONGDIAMOND / QGR processor tape-out and validation \\
+T-4 & \$ \underline{\hspace{2.5cm}} & Swarm-node LiDAR and ultrasonic-charging prototype build \\
+T-5 & \$ \underline{\hspace{2.5cm}} & D2--D5 agonist assay and preclinical workstream \\
+\midrule
+\textbf{TOTAL} & \textbf{\$ \underline{\hspace{2.5cm}}} & \\
+\bottomrule
+\end{longtable}
+
+\section*{Schedule A-2 --- Securities Positions (DTC-Held)}
+
+\begin{longtable}{@{}p{3cm}p{4cm}p{2cm}p{3cm}@{}}
+\toprule
+\textbf{CUSIP / ID} & \textbf{Description} & \textbf{Quantity} & \textbf{DTC Participant} \\
+\midrule
+\endhead
+\underline{\hspace{2.5cm}} & \underline{\hspace{3.5cm}} & \underline{\hspace{1.5cm}} & \underline{\hspace{2.5cm}} \\
+\underline{\hspace{2.5cm}} & \underline{\hspace{3.5cm}} & \underline{\hspace{1.5cm}} & \underline{\hspace{2.5cm}} \\
+\bottomrule
+\end{longtable}
+
+\section*{Schedule A-3 --- Milestones Triggering Release}
+
+\begin{longtable}{@{}p{2cm}p{8cm}p{3cm}@{}}
+\toprule
+\textbf{Milestone} & \textbf{Deliverable} & \textbf{Release Tranche} \\
+\midrule
+\endhead
+M-1 & Final canal alignment and pedestrian-stop design package & T-1 \\
+M-2 & One-man taxi-canoe operational prototype and safety certification & T-2 \\
+M-3 & LOONGDIAMOND / QGR 64-bit / 128-bit validation report & T-3 \\
+M-4 & Swarm-node field demonstration (LiDAR + ultrasonic charging) & T-4 \\
+M-5 & D2--D5 agonist preclinical data package (including D4/D5 phenethylamine hybrid binding assays) & T-5 \\
+\bottomrule
+\end{longtable}
+
+% ============================================================
+% PART II — QGR & FORMAL PETITIONS
+% ============================================================
+
+\part{Quantum Gravity Research (QGR) \& Formal Petitions}
+\label{part:qgr}
+
+\chapter{Executive Summary and Mandate}
+
+\section{What QGR Is}
+
+The \textbf{Quantum Green Reserve} (QGR) and the \textbf{Quantum Gravity Research} (QGR) initiative are sovereign-scale, quantum-safe, DAG-anchored frameworks designed to finance municipal water, transit, and digital infrastructure, and to fund fundamental scientific research (Emergence Theory, E8-derived quasicrystal mathematics). 
+
+QGR is not a single issuer. It is a \emph{reserve architecture} — a layered issuance and verification structure that permits sovereign, supranational, municipal, and project-level green bonds to share a single, post-quantum, publicly auditable ledger.
+
+\section{What QGR Is Not}
+
+\begin{itemize}
+\item QGR is \textbf{not} a solar-financing vehicle. Use of proceeds is restricted to water, transit, digital, and building-efficiency assets, and fundamental physics and biomedical research.
+\item QGR is \textbf{not} a security offered to the public in this document. This document is a \emph{petition and framework}, not an offering memorandum.
+\item QGR is \textbf{not} a substitute for sovereign credit. It is a supplement — a co-anchoring mechanism that lets smaller issuers borrow against the verification quality of a larger reserve.
+\end{itemize}
+
+\section{The Three Pillars}
+
+\begin{enumerate}
+\item \textbf{Quantum-safe verification.} Every bond covenant, every disbursement, and every impact metric is signed under NIST FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), and FIPS 205 (SLH-DSA). No RSA or ECDSA is used anywhere in the QGR trust chain.
+\item \textbf{DAG/Chain-anchored audit.} Every covenant event is a node in a directed acyclic graph or a sequential hash-chain. The root is written to WORM storage and anchored to a public, permissioned ledger.
+\item \textbf{Excluded-asset discipline.} Solar assets are excluded by instrument language. The exclusion is not a preference; it is a covenant. Any solar instruction is void \textit{ab initio}.
+\end{enumerate}
+
+\chapter{Direct Address to the United Nations}
+
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\textbf{PETITION TO THE UNITED NATIONS}\\[0.5em]
+\textbf{To:} Secretary-General; Executive Secretary, UNFCCC; Executive Director, UNEP; Administrator, UNDP; Director, UNEP Finance Initiative; Secretary, UN/CEFACT.\\[0.5em]
+\textbf{From:} Caustin Lee McLaughlin, Managing Director / Debtor-in-Possession, Pro Se Disability Litigant Empowerment Foundation (PSDLEF), on behalf of the QGR Consortium.\\[0.5em]
+\textbf{Subject:} Recognition of the Quantum Green Reserve as an Article 6-aligned, quantum-safe green bond verification architecture, with biomedical research allocation for neuropsychiatric and dopaminergic therapeutic discovery.\\[0.5em]
+\textbf{Date:} October 21, 2026
+\end{minipage}
+\end{center}
+
+\section{Requested Actions}
+
+The QGR Consortium respectfully requests the following actions:
+
+\begin{enumerate}
+\item \textbf{UNFCCC (Article 6):} Recognize QGR DAG/Chain-anchored verification as an eligible methodology for internationally transferred mitigation outcomes (ITMOs) under Article 6.2 and Article 6.4, on the condition that no solar asset is financed under the QGR instrument.
+\item \textbf{UNEP Finance Initiative:} List QGR as an aligned framework under the Principles for Responsible Investment (PRI) and the Principles for Sustainable Insurance (PSI), with the solar exclusion disclosed.
+\item \textbf{UNDP:} Map QGR use-of-proceeds to SDG 3 (Good Health and Wellbeing, via dopaminergic therapeutic discovery), SDG 6 (Clean Water), SDG 9 (Industry, Innovation, Infrastructure), SDG 11 (Sustainable Cities), and SDG 13 (Climate Action).
+\item \textbf{UN/CEFACT:} Adopt the QGR DAG verification schema as a recommended standard for cross-border green bond settlement.
+\item \textbf{Green Climate Fund:} Consider QGR-II as a co-financing vehicle, with GCF first-loss or guarantee participation.
+\end{enumerate}
+
+\section{Draft Resolution Language}
+
+\begin{quote}
+\textit{The Conference of the Parties, noting the submission of the Quantum Green Reserve framework, requests the Subsidiary Body for Scientific and Technological Advice to review the QGR DAG verification schema for compatibility with Article 6.2 accounting, and invites Parties to consider QGR-aligned instruments as eligible co-financing vehicles, provided that no solar generation asset is financed under the instrument. A dedicated biomedical research allocation for neuropsychiatric therapeutic discovery shall be permitted under the SDG 3 use-of-proceeds category.}
+\end{quote}
+
+\chapter{Direct Address to NATO}
+
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\textbf{PETITION TO THE NORTH ATLANTIC TREATY ORGANIZATION}\\[0.5em]
+\textbf{To:} Secretary General; NATO Innovation Fund; DIANA (Defence Innovation Accelerator for the North Atlantic); NATO CCDCOE (Tallinn); NATO Climate Change and Security Centre of Excellence.\\[0.5em]
+\textbf{From:} Caustin Lee McLaughlin, PSDLEF, on behalf of the QGR Consortium.\\[0.5em]
+\textbf{Subject:} QGR as a quantum-safe, climate-resilient critical infrastructure financing architecture, with neurotechnology and cognitive performance research allocations.\\[0.5em]
+\textbf{Date:} October 21, 2026
+\end{minipage}
+\end{center}
+
+\section{Requested Actions}
+
+\begin{enumerate}
+\item \textbf{NATO Innovation Fund:} Consider co-investment in QGR-IV project notes for water and transit infrastructure that support Alliance resilience, and for non-lethal neurotechnology cognitive performance research.
+\item \textbf{DIANA:} Accept QGR verification architecture as a candidate for the DIANA accelerator, with a focus on post-quantum supply-chain integrity and secure medical research data pipelines.
+\item \textbf{NATO CCDCOE:} Certify the QGR DAG ledger as meeting Alliance cyber-resilience baseline requirements.
+\item \textbf{Climate Change and Security CoE:} Jointly assess QGR canal and transit assets for climate-resilience scoring.
+\item \textbf{NATO Communications and Information Agency (NCIA):} Evaluate QGR PQC stack for Alliance infrastructure procurement.
+\end{enumerate}
+
+\section{Alliance Rationale}
+
+\begin{itemize}
+\item \textbf{Quantum threat horizon.} Harvest-now-decrypt-later attacks threaten long-lived infrastructure contracts and sensitive medical research data. QGR's PQC stack eliminates that exposure.
+\item \textbf{Climate-security nexus.} Water and transit resilience are explicit Alliance priorities under the 2021 Climate Change and Security Action Plan.
+\item \textbf{Supply-chain integrity.} DAG-anchored audit permits verification of every contractor, every disbursement, and every deliverable, including clinical trial supply chains for therapeutic research.
+\item \textbf{No solar exposure.} The solar exclusion is disclosed and binding.
+\end{itemize}
+
+\chapter{The QGR Green Bond Petition}
+
+\section{Petition to Issuers, Underwriters, and Verifiers}
+
+The QGR Consortium petitions the following bodies to recognize the QGR instrument as an eligible green and sustainable bond framework, including biomedical research allocations:
+
+\begin{itemize}
+\item International Capital Market Association (ICMA) — Green Bond Principles, Social Bond Principles, Sustainability-Linked Bond Principles.
+\item Climate Bonds Initiative (CBI) — Sector Criteria (Water, Transport, Buildings; solar explicitly excluded).
+\item Loan Market Association (LMA) — Green Loan Principles, Social Loan Principles.
+\item ASEAN Capital Markets Forum — ASEAN Green Bond Standards.
+\item International Organization of Securities Commissions (IOSCO) — Sustainable Finance Taxonomy.
+\end{itemize}
+
+\section{Use of Proceeds (Binding)}
+
+\begin{longtable}{@{}p{3cm}p{4cm}p{7cm}@{}}
+\toprule
+\textbf{Category} & \textbf{ICMA Alignment} & \textbf{Eligible Assets} \\
+\midrule
+\endhead
+Water & Water Infrastructure & Canal, locks, pumping, flood control \\
+Transport & Clean Transportation & One-man taxi canoe fleet, pedestrian stops, docks \\
+Digital & ICT / Green Buildings & Quantum-safe DAG ledger, low-power edge compute \\
+Buildings & Green Buildings & Municipal roofline efficiency (non-solar), LED, HVAC \\
+Health & Social Bond / SDG 3 & Neuropsychiatric therapeutic discovery, including D2/D3/D4/D5 dopaminergic agonist research \\
+\midrule
+\textbf{Excluded} & --- & \textbf{Solar generation, solar procurement, solar escrow} \\
+\bottomrule
+\end{longtable}
+
+\section{Reporting Covenant}
+
+Every QGR issuer shall publish, at minimum quarterly:
+\begin{itemize}
+\item DAG/Chain root hash.
+\item PQC signature chain (ML-DSA-87).
+\item Use-of-proceeds ledger with unique asset identifiers.
+\item Impact metrics (cubic meters of water, passenger-miles, kilograms of CO$_2$e avoided, therapeutic research milestones).
+\item Verification attestation under FRE 902(13)--(14) analogue in the issuer's jurisdiction.
+\end{itemize}
+
+\section{Draft Bond Term Language}
+
+\begin{quote}
+\textit{The Issuer covenants that no proceeds of the Notes shall be applied, directly or indirectly, to the development, construction, procurement, or operation of any solar generation asset. Any instruction to the contrary shall be void ab initio and shall not be honored by the Paying Agent or the Escrow Agent. Up to five percent (5\%) of proceeds may be allocated to preclinical biomedical research, including dopaminergic agonist discovery programs, provided all research is conducted in compliance with applicable FDA and ICH Good Laboratory Practice standards.}
+\end{quote}
+
+% ============================================================
+% PART III — CASCADE CANAL SYSTEM
+% ============================================================
+
+\part{The Cascade Canal System}
+\label{part:canal}
+
+\chapter{Corridor Overview and Vision}
+
+\section{The Bay-to-Woodlawn Spine}
+
+The Cascade Canal System is a continuous, 7.2-mile navigable waterway connecting the Inner Harbor of Baltimore to the Woodlawn campus, passing through the Downtown SSA Campus (under construction), the US-40 / Edmondson Avenue corridor, and the Gwynns Falls terminus behind 1000~N Woodington Road. A parallel 20+ mile multi-use trail network includes spurs, neighborhood connectors, and the optional Woodlawn high spur.
+
+The Canal is a \textbf{multi-modal living system}: a Bay-to-Woodlawn multi-modal spine; a climate-adaptation backbone; an equity and neighborhood revitalization engine; a federal-campus amenity and innovation platform; and a living laboratory for the next century of urban water infrastructure.
+
+\section{The Five Segments}
+
+\begin{longtable}{@{}p{1cm}p{4cm}p{2cm}p{5cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Segment} & \textbf{Length} & \textbf{Role} \\
+\midrule
+\endhead
+1 & Bay / Inner Harbor Origin (Lock 1 \& Harbor Interface) & 0.8 mi & Tidal interface; locks; harbor promenade \\
+2 & Downtown SSA Campus Interface (under construction) & 0.9 mi & Federal campus ``water address'' \\
+3 & US-40 / Edmondson Avenue Urban Canal Spine & 2.6 mi & Primary urban segment; commercial nodes \\
+4 & Gwynns Falls Terminus (behind 1000 N Woodington Rd) & 1.6 mi & Ecological confluence; neighborhood access \\
+5 & Woodlawn SSA High Spur (optional) & 1.3 mi & Federal campus connection \\
+\midrule
+\textbf{Total navigable} & & \textbf{7.2 mi} & \\
+\bottomrule
+\end{longtable}
+
+\section{Design Principles}
+
+\begin{enumerate}
+\item \textbf{Public edge.} The water's edge is guaranteed public promenade. No privatization.
+\item \textbf{One-man fleet.} The navigable channel is dimensioned for one-man taxi canoes and maintenance skiffs only. No large barges.
+\item \textbf{No solar by covenant.} Every structure is grid-fed, or hydrokinetic-fed where the Meridian micro-grid reaches the corridor.
+\item \textbf{Storm first.} The canal is a stormwater detention asset before it is a recreational asset.
+\item \textbf{Equity in hiring.} Local-hire and apprenticeship targets are concentrated in 21229 and adjacent ZIP codes.
+\end{enumerate}
+
+\chapter{Segment 1 --- Bay / Inner Harbor Origin (Lock 1 \& Harbor Interface)}
+
+\begin{center}
+\begin{quote}\textit{[Cross-section/schematic diagram: see project technical drawings referenced in civil complaint exhibit packet. This text-based filing omits visual diagrams for brevity and compatibility.]} \end{quote}
+\end{center}
+
+\section{Design Elements}
+
+\begin{itemize}
+\item \textbf{Lock 1:} 4-ft lift, 40-ft chamber, bi-directional.
+\item \textbf{Tidal gates:} two, with fish-passage notch.
+\item \textbf{Harbor promenade:} continuous 3-m public edge; no privatization.
+\item \textbf{Canoe docks:} 7 slips; spring cleats; QR+BLE locks.
+\item \textbf{Lighting:} 12V DC LED, grid-fed from the Harbor sub-station (no solar).
+\item \textbf{Wayfinding:} battery-backed e-ink panels, grid-recharged.
+\item \textbf{Life-safety:} ring stations every 100~ft; ladder every slip; AED cabinet at Lock 1 control house.
+\end{itemize}
+
+\chapter{Segment 2 --- Downtown SSA Campus Interface}
+
+\begin{center}
+\begin{quote}\textit{[Cross-section/schematic diagram: see project technical drawings referenced in civil complaint exhibit packet. This text-based filing omits visual diagrams for brevity and compatibility.]} \end{quote}
+\end{center}
+
+\section{Design Elements}
+
+\begin{itemize}
+\item \textbf{Waterfront plaza:} 0.4 acre, ADA-accessible, tree canopy.
+\item \textbf{Pedestrian bridge:} 24-ft clear span, steel deck, architectural railing.
+\item \textbf{Canoe docks:} 8 slips, shared with campus shuttle.
+\item \textbf{Campus interface:} direct pedestrian and bicycle connection to the SSA building entrance.
+\item \textbf{Emergency egress:} dedicated waterborne egress route from the campus plaza.
+\item \textbf{No solar on campus or plaza.} Grid-fed only.
+\end{itemize}
+
+\chapter{Segment 3 --- US-40 / Edmondson Avenue Urban Canal Spine}
+
+\begin{center}
+\begin{quote}\textit{[Cross-section/schematic diagram: see project technical drawings referenced in civil complaint exhibit packet. This text-based filing omits visual diagrams for brevity and compatibility.]} \end{quote}
+\end{center}
+
+\section{Design Elements}
+
+\begin{itemize}
+\item \textbf{Four pedestrian stops:} Edmondson Village, Rognel Heights, Hunting Ridge, West Hills.
+\item \textbf{Four locks:} 4- to 12-ft lifts, bi-directional.
+\item \textbf{Continuous trail:} 12-ft wide, decomposed granite or asphalt.
+\item \textbf{Commercial nodes:} mixed-use development rights at Edmondson Village and Rognel Heights.
+\item \textbf{Stormwater inlets:} every 150~ft, with sediment traps.
+\item \textbf{Aeration:} sub-surface diffusers every 400~ft.
+\item \textbf{No barges:} channel dimensioned to one-man taxi canoes and 8-ft maintenance skiffs only.
+\end{itemize}
+
+\chapter{Segment 4 --- Gwynns Falls Terminus}
+
+\begin{center}
+\begin{quote}\textit{[Cross-section/schematic diagram: see project technical drawings referenced in civil complaint exhibit packet. This text-based filing omits visual diagrams for brevity and compatibility.]} \end{quote}
+\end{center}
+
+\section{Design Elements}
+
+\begin{itemize}
+\item \textbf{Confluence with Gwynns Falls:} restored aquatic connectivity and fish passage.
+\item \textbf{Wetland shelf:} 0.6 acre, native plantings, aeration.
+\item \textbf{Neighborhood access:} pedestrian bridge to Rognel Heights and Woodington blocks.
+\item \textbf{Flood protection:} 100-year storm capacity; controlled release into Gwynns Falls.
+\item \textbf{Locks:} four, 10- to 16-ft lifts.
+\item \textbf{No barges:} terminus is a turning basin for canoes only.
+\end{itemize}
+
+\chapter{Segment 5 --- Woodlawn SSA High Spur (Optional)}
+
+\begin{center}
+\begin{quote}\textit{[Cross-section/schematic diagram: see project technical drawings referenced in civil complaint exhibit packet. This text-based filing omits visual diagrams for brevity and compatibility.]} \end{quote}
+\end{center}
+
+\section{Two Build Options}
+
+\begin{longtable}{@{}p{3cm}p{4cm}p{4cm}@{}}
+\toprule
+\textbf{Option} & \textbf{Description} & \textbf{Cost} \\
+\midrule
+A --- At-grade & Canal extension through surface corridor & \$34M \\
+B --- Elevated viaduct & Canal in elevated trough; trail below & \$48M \\
+\midrule
+\textbf{Recommended} & B (viaduct) & \$48M \\
+\bottomrule
+\end{longtable}
+
+\section{Design Elements}
+
+\begin{itemize}
+\item \textbf{Woodlawn SSA Campus connection:} direct pedestrian and canoe access.
+\item \textbf{Trail connector:} links the spur to the Gwynns Falls trail network.
+\item \textbf{Canoe docks:} 6 slips at the campus terminus.
+\item \textbf{Emergency egress:} redundant waterborne route to the Woodlawn campus.
+\end{itemize}
+
+\chapter{Engineering Elevations and Cross-Sections}
+
+\section{Typical Cross-Section (Segment 3)}
+
+\begin{center}
+\begin{quote}\textit{[Cross-section/schematic diagram: see project technical drawings referenced in civil complaint exhibit packet. This text-based filing omits visual diagrams for brevity and compatibility.]} \end{quote}
+\end{center}
+
+\section{Lock Elevation (Typical)}
+
+\begin{center}
+\begin{quote}\textit{[Cross-section/schematic diagram: see project technical drawings referenced in civil complaint exhibit packet. This text-based filing omits visual diagrams for brevity and compatibility.]} \end{quote}
+\end{center}
+
+\chapter{Complete Benefit Inventory}
+
+\section{A. Transportation \& Mobility}
+
+\begin{itemize}
+\item Passenger ferry / water-taxi service linking Harbor, Downtown, West Baltimore, and Woodlawn (served by the one-man fleet).
+\item Continuous 20+ mile multi-use trail (walking + cycling) parallel to the canal.
+\item Reduced congestion on Edmondson Avenue / US-40 through modal shift.
+\item Emergency waterborne evacuation and logistics route.
+\item \textit{Documented but excluded from this build:} inland waterway freight corridor (barge substitution). Freight is excluded by the no-large-barge controlling instruction.
+\end{itemize}
+
+\section{B. Climate \& Resilience}
+
+\begin{itemize}
+\item Large-scale stormwater detention and controlled release into Gwynns Falls and the Patapsco.
+\item Reduced urban heat island effect via continuous water surface + tree canopy.
+\item Flood-risk reduction for low-lying neighborhoods along the corridor.
+\item Living shoreline and wetland creation along the entire prism.
+\item \textit{Documented but excluded from this build:} floating solar generation.
+\end{itemize}
+
+\section{C. Economic \& Job}
+
+\begin{itemize}
+\item Thousands of construction jobs over 12--15 years.
+\item Permanent operations, maintenance, and water-technology jobs, including biomedical research positions supporting the dopaminergic therapeutic workstream.
+\item Local hiring and apprenticeship pipelines targeted at 21229 and adjacent ZIP codes.
+\item New commercial and mixed-use development at canal nodes.
+\item Increased property values and tax base along the waterfront spine.
+\end{itemize}
+
+\section{D. Equity \& Neighborhood}
+
+\begin{itemize}
+\item Direct public waterfront access for historically disinvested West Baltimore neighborhoods.
+\item Guaranteed free public promenades (no privatization of the water's edge).
+\item Improved access to Gwynns Falls / Leakin Park.
+\item Neighborhood-scale flood protection and green space behind 1000~N Woodington Rd.
+\end{itemize}
+
+\section{E. Ecological \& Environmental}
+
+\begin{itemize}
+\item Restored aquatic connectivity and fish passage from the Bay to Gwynns Falls.
+\item Creation of linear wildlife corridor through dense urban fabric.
+\item Water-quality polishing via floating wetlands and aeration.
+\item Native planting and habitat shelves along the entire alignment.
+\item Reduced non-point source pollution through stormwater capture.
+\end{itemize}
+
+\section{F. Federal Campus \& Institutional}
+
+\begin{itemize}
+\item New ``water address'' and amenity for both Downtown SSA and Woodlawn SSA Campus.
+\item Demonstration site for federal climate-adaptation and water-technology research, plus secure biomedical research infrastructure.
+\item Improved employee quality-of-life.
+\item Potential shared utility and resilience infrastructure.
+\end{itemize}
+
+\section{G. Cultural, Health \& Placemaking}
+
+\begin{itemize}
+\item Continuous civic space that reconnects fragmented parts of Baltimore.
+\item Outdoor recreation, mental-health, and physical-activity benefits.
+\item Educational opportunities (living laboratory for schools, universities, and clinical research programs).
+\item Signature identity project that reframes Baltimore as a 21st-century water city.
+\item Night-time activation and safe public space along the illuminated corridor.
+\end{itemize}
+
+\section{H. Fiscal \& Funding}
+
+\begin{itemize}
+\item Ability to absorb large volumes of reprogrammed federal and state DOT dollars, plus NIH/NIMH biomedical research grants for the dopaminergic workstream.
+\item Creation of a dedicated, auditable project account with long-term revenue potential.
+\item Reduced long-term flood-damage costs to public and private property.
+\item Leveraging of climate, equity, multimodal, and health funding streams that pure highway projects cannot access.
+\end{itemize}
+
+\chapter{Cost Envelope and Phasing}
+
+\section{Segment Costs}
+
+\begin{longtable}{@{}p{2cm}p{5cm}p{3cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Segment} & \textbf{Cost (USD)} \\
+\midrule
+\endhead
+1 & Bay / Inner Harbor Origin & 45,000,000 \\
+2 & Downtown SSA Campus Interface & 60,000,000 \\
+3 & US-40 / Edmondson Urban Spine & 180,000,000 \\
+4 & Gwynns Falls / Woodington Terminus & 75,000,000 \\
+5 & Woodlawn SSA High Spur (Option B) & 48,000,000 \\
+\midrule
+\textbf{Civil + structures subtotal} & & \textbf{408,000,000} \\
+\bottomrule
+\end{longtable}
+
+\section{Program Costs}
+
+\begin{longtable}{@{}p{6cm}p{4cm}@{}}
+\toprule
+\textbf{Line Item} & \textbf{Cost (USD)} \\
+\midrule
+Stations (14 $\times$ \$85k) & 1,190,000 \\
+Fleet and operations & 1,035,500 \\
+Maintenance depot & 4,000,000 \\
+Wayfinding and lighting (non-solar) & 2,500,000 \\
+Permitting and NEPA & 6,000,000 \\
+Dopaminergic research initial assay program (D2--D5) & 12,000,000 \\
+Contingency (15\%) & 63,000,000 \\
+\midrule
+\textbf{Total program} & \textbf{\$497,725,500} \\
+\bottomrule
+\end{longtable}
+
+\section{Phasing}
+
+\begin{longtable}{@{}p{2cm}p{4cm}p{3cm}p{4cm}@{}}
+\toprule
+\textbf{Phase} & \textbf{Segment(s)} & \textbf{Years} & \textbf{Cost (USD)} \\
+\midrule
+\endhead
+1 & 1 \& 2 & 2027--2029 & 105,000,000 \\
+2 & 3 (Edmondson Village node) & 2029--2032 & 90,000,000 \\
+3 & 3 (remainder) & 2032--2035 & 90,000,000 \\
+4 & 4 + initial dopaminergic assay program & 2035--2037 & 87,000,000 \\
+5 & 5 (Option B) & 2037--2039 & 48,000,000 \\
+\bottomrule
+\end{longtable}
+
+% ============================================================
+% PART IV — QUANTUM PROCESSOR ARCHITECTURES
+% ============================================================
+
+\part{Quantum Processor Architectures}
+
+\chapter{Q128 Unified Processor}
+
+\section{Instruction Set Architecture}
+
+\begin{longtable}{@{}p{3cm}p{6cm}p{3cm}@{}}
+\toprule
+\textbf{Category} & \textbf{Examples} & \textbf{Latency (cycles)} \\
+\midrule
+Integer & add, sub, mul, div, sdiv, udiv & 1--3 \\
+Logic & and, or, xor, shifts & 1 \\
+Memory & lw, sw, ld, sd, lq, sq & 2--4 \\
+Control & beq, bne, jal, jalr & 1--2 \\
+Atomic & amo.swap.q, lr.q, sc.q & 4--8 \\
+Vector & vadd, vmul, vfma, vredsum & 4--16 \\
+Convolution & conv2d & 128 \\
+FFT & fft128 & 512 \\
+CORDIC & sin, cos, atan, exp & 64 \\
+QEXT (quantum) & qaoa\_layer, init\_qubits, measure & 100--1000 \\
+SAFE (safety) & verify\_limits\_128 & 100 \\
+BIO (biomedical) & mol\_dock\_score, ligand\_align, docking\_pose\_rank & 64--256 \\
+\bottomrule
+\end{longtable}
+
+\section{Safety Fuse Limits}
+
+\begin{verbatim}
+CHARGE_MAX     = 30 uC/cm^2   ; per phase (neurostimulation safety)
+BBB_MI_MAX     = 0.7          ; mechanical index (ultrasound safety)
+LASER_MAX      = 10 mW/mm^2   ; Class 1M at 1064 nm (LiDAR safety)
+DOSE_DAILY_MAX = 16.7 uC      ; cumulative neurostimulation dose
+THERMAL_MAX    = 42.0 C       ; junction limit / tissue thermal limit
+\end{verbatim}
+
+\chapter{HSPA v3.0 Semantic Processor}
+
+\section{Four-Layer Datapath}
+
+\begin{enumerate}
+\item Layer 3: ISA / Programming Model.
+\item Layer 2: Microarchitecture (PMCU, UML, SOML).
+\item Layer 1: 128-bit RLC array.
+\item Layer 0: Physical substrate.
+\end{enumerate}
+
+\section{128-bit SEG Node}
+
+\begin{longtable}{@{}p{3cm}p{2cm}p{6cm}@{}}
+\toprule
+\textbf{Bit Range} & \textbf{Field} & \textbf{Purpose} \\
+\midrule
+[127:96] & NODE\_ID & Unique node identifier \\
+[95:88] & OPCODE & Operation type \\
+[87:56] & OPERAND\_REF & Source register / node \\
+[55:24] & SEMANTIC\_TAG & Proximity / category / molecular descriptor tag \\
+[23:8] & CONFIDENCE & Q8.8 probabilistic weight / docking score \\
+[7:0] & FLAGS/LATENCY & Cycle cost \& edges \\
+\bottomrule
+\end{longtable}
+
+\section{PMCU Bayesian Scheduler}
+
+\[
+P(\mathrm{Path}_k\mid\mathrm{Telemetry}) =
+\frac{P(\mathrm{Telemetry}\mid\mathrm{Path}_k)\cdot P(\mathrm{Path}_k)}
+{\sum_j P(\mathrm{Telemetry}\mid\mathrm{Path}_j)\cdot P(\mathrm{Path}_j)}
+\]
+
+\chapter{LoongDiamond-2.5 Quantum Substrate}
+
+\section{Kraus Channel Operators}
+
+\[
+\begin{aligned}
+K_0^{(T_1)} &= \begin{pmatrix}1 & 0\\0 & \sqrt{1-\gamma}\end{pmatrix},\quad
+K_1^{(T_1)} = \begin{pmatrix}0 & \sqrt{\gamma}\\0 & 0\end{pmatrix}\\
+K_0^{(T_2)} &= \sqrt{1-\lambda}\cdot\mathbf{I},\quad
+K_1^{(T_2)} = \sqrt{\lambda}\cdot\mathbf{Z}
+\end{aligned}
+\]
+
+\section{Density Matrix Invariants}
+
+\begin{enumerate}
+\item Hermiticity: $\rho = \rho^\dagger$.
+\item Unit trace: $\mathrm{Tr}(\rho) = 1$.
+\item Positivity: all eigenvalues $\geq 0$.
+\end{enumerate}
+
+\chapter{HSPA/RIGOR Hash-Chain Ledger (Updated)}
+
+\section{Removing the Merkle Tree Constructs}
+
+As per the latest RIGOR update, the former Merkle-DAG ledger has been reimagined as a sequential cryptographic hash-chain ledger with batch roots and optional blockchain anchoring (SLH-DSA / SPHINCS+). This preserves immutability and auditability while eliminating the complexity of Merkle-tree constructions, and provides secure chain-of-custody tracking for biomedical research data including binding assay results.
+
+\begin{enumerate}
+\item \textbf{Sequential Hash-Chain:} Each evidence artifact is hashed with SHA3-512. The hash of entry \(n\) is concatenated with the previous entry hash to form entry \(n + 1\).
+\item \textbf{Batch Roots:} Computed as the hash of a contiguous sequence of entry hashes.
+\item \textbf{Anchoring:} Optional external anchoring uses SLH-DSA (SPHINCS+) signatures for long-term non-repudiation.
+\item \textbf{Biomedical Audit Extension:} Every binding assay result, synthetic batch record, and safety report is assigned a unique hash-chain entry, with immutable timestamp and researcher signature.
+\end{enumerate}
+
+\section{Master Integration DAG}
+
+\begin{center}
+\begin{quote}\textit{[Cross-section/schematic diagram: see project technical drawings referenced in civil complaint exhibit packet. This text-based filing omits visual diagrams for brevity and compatibility.]} \end{quote}
+\end{center}
+
+% ============================================================
+% PART V — DOPAMINE AGONIST PORTFOLIO
+% ============================================================
+
+\part{Full Dopamine Agonist Portfolio (D2--D5)}
+\label{part:dopamine}
+
+\chapter{Tier 1 --- Approved Agents}
+
+\begin{longtable}{@{}p{3cm}p{3cm}p{3cm}p{4cm}@{}}
+\toprule
+\textbf{Compound} & \textbf{Brand} & \textbf{Receptor Profile} & \textbf{Notes} \\
+\midrule
+\endhead
+Ropinirole & Requip & D2/D3/D4 full agonist & Non-ergot; RLS and PD \\
+Pramipexole & Mirapex & D2/D3/D4 full agonist & Non-ergot; RLS and PD \\
+Rotigotine & Neupro & D1/D2/D3/D4/D5 pan-agonist & Transdermal patch; non-ergot \\
+Apomorphine & Apokyn & Pan D1--D5 full agonist & Rescue injection; subcutaneous \\
+Bromocriptine & Parlodel & D2 partial agonist & Ergot; hyperprolactinemia \\
+Cabergoline & Dostinex & D2 full agonist & Ergot; long half-life \\
+Pergolide & Permax & D2/D3/D4 full agonist & Ergot; withdrawn 2007 (valvulopathy) \\
+Lisuride & Dopergin & D2/D3/D4 agonist & Ergot; limited markets \\
+Piribedil & Trivastal & D2/D3 + $\alpha_2$ antagonist & Non-ergot; Europe \\
+Quinagolide & Norprolac & D2-selective agonist & Non-ergot; hyperprolactinemia \\
+Talipexole & Domin & D2/D3 agonist & Non-ergot; Japan \\
+\bottomrule
+\end{longtable}
+
+\chapter{Tier 2 --- Investigational Agents}
+
+\begin{longtable}{@{}p{3cm}p{3cm}p{3cm}p{4cm}@{}}
+\toprule
+\textbf{Compound} & \textbf{Class} & \textbf{Receptor Profile} & \textbf{Status} \\
+\midrule
+\endhead
+Sumanirole & Investigational & D2-selective full agonist & Phase II; not marketed \\
+Cariprazine & Atypical antipsychotic & D3-preferring D2/D3 partial agonist & Approved (Vraylar); D3 high affinity \\
+Aripiprazole & Atypical antipsychotic & D2/D3 partial agonist & Approved (Abilify) \\
+Brexpiprazole & Atypical antipsychotic & D2/D3 partial agonist & Approved (Rexulti) \\
+Bifeprunox & Investigational & D2 partial / D3 agonist & Discontinued \\
+Sarizotan & Investigational & D2 / 5-HT$_{1A}$ agonist & Phase III (dyskinesia) \\
+OSU6162 & Investigational & D2/D3 stabilizer & Phase II \\
+Pridopidine & Investigational & D2/D3 agonist & Phase III (Huntington) \\
+Blonanserin & Atypical antipsychotic & D2/D3 antagonist & Approved (Japan) \\
+Roxindole & Investigational & D2/D3/D4 / 5-HT$_{1A}$ agonist & Preclinical \\
+PF-592379 & Investigational & D3-selective agonist & Preclinical \\
+BP-897 & Investigational & D3 partial agonist & Preclinical \\
+PD-128907 & Tool compound & D3-selective agonist & Preclinical \\
+7-OH-DPAT & Tool compound & D3-preferring agonist & Preclinical \\
+FAUC 365 & Tool compound & D3 partial agonist & Preclinical \\
+SV-293 & Investigational & D3 agonist & Preclinical \\
+A-412997 & Tool compound & D4-selective agonist & Preclinical \\
+PD-168077 & Tool compound & D4-selective agonist & Preclinical \\
+ABT-724 & Tool compound & D4-selective agonist & Preclinical \\
+U-86170 & Investigational & D2/D3 partial agonist & Preclinical \\
+Tavapadon & Investigational & D1/D5 partial agonist & Phase III (PD) \\
+\bottomrule
+\end{longtable}
+
+\chapter{Tier 3 --- Theoretical and Novel Agents}
+
+\section{Phenethylamine Scaffold Engineering for D4/D5 Activity}
+
+To introduce D4 or D5 activity into a phenethylamine core, fundamental alterations to the scaffold's pharmacophoric geometry are required. The simple phenethylamine architecture of methamphetamine is optimized for trace amine-associated receptor 1 (TAAR1) and monoamine transporters, not for the bulky, distinct binding pockets of D4 or the D1-like D5 receptor. The modifications required are grafts of entirely new recognition elements onto the core rather than minor substitutions.
+
+\subsection{The Core Challenge: Why Native Phenethylamines Fall Short}
+
+The phenethylamine scaffold lacks the structural features that selective D4 and D5 agonists rely on. D4-selective ligands typically require a \textbf{diaryl or arylpiperazine/piperidine motif} with a basic nitrogen and specific aromatic spacing. D5, as a D1-like receptor, generally responds to \textbf{catechol or non-catechol scaffolds} that are structurally distinct from simple phenethylamines. A minimalist phenethylamine simply does not present the necessary hydrogen-bonding or aromatic surfaces for high-affinity engagement at these sites.
+
+\subsection{Structural Modifications to Introduce D4 Activity}
+
+The most promising route to D4 agonism from a phenethylamine starting point involves appending an \textbf{arylpiperazine} moiety, which is a privileged pharmacophore for this receptor.
+
+\begin{enumerate}
+\item \textbf{N-Substitution with an Arylpiperazine Linker:} Instead of a simple N-methyl or N-propyl group (as in methamphetamine), the amine nitrogen can be elaborated with a linker terminating in an arylpiperazine. The literature on D4 agonists points to a \textbf{two-methylene linker} between a key functional group and the piperazine nitrogen as being optimal for activity. The "Aryl" group (e.g., pyridine, as in the 2-pyridyl moiety found in potent D4 agonists like the PD 168077 series) is critical for D4 selectivity and affinity. This transforms the molecule from a simple amine into a bulkier, diaryl-like system, which is a hallmark of D4 ligands.
+
+\item \textbf{Rigidification of the Side Chain:} Simple phenethylamines are flexible. Introducing conformational constraints, such as a \textbf{cyclic amidine} or an \textbf{indane} scaffold, can lock the molecule into a bioactive conformation. For example, the chiral phenyltetrahydropyrimidine derivative \textbf{FAUC 312} is a highly selective D4 agonist (Ki = 1.5 nM). While this is a departure from a pure phenethylamine, it demonstrates how rigidifying the ethylamine chain into a ring system can create a D4-selective profile. A more conservative approach might involve \textbf{$\alpha$-methyl substitution} (already present in amphetamines) combined with a bulky N-substituent to restrict rotation.
+\end{enumerate}
+
+\subsection{Structural Modifications to Introduce D5 Activity}
+
+D5 agonism is even more difficult to achieve from a phenethylamine core because the D1-like family has distinct structural requirements. The most modern approach relies on \textbf{non-catechol, heterocyclic scaffolds}.
+
+\begin{enumerate}
+\item \textbf{Hybridization with a Pyrimidine-Based Pharmacophore:} Recent work has identified \textbf{2,4,5-trimethoxyphenyl pyrimidine derivatives} as selective D5 partial agonists. The most potent compound, \textbf{5j}, has an EC50 of ~270 nM at D5. To merge this with a phenethylamine, one could consider a hybrid where the phenethylamine's ethylamine side chain is replaced by, or incorporated into, a pyrimidine ring system. For instance, a \textbf{phenethylamine-substituted pyrimidine} could theoretically retain some TAAR1 engagement (via the phenethylamine portion) while the pyrimidine core engages D5. However, the 2,4,5-trimethoxy substitution pattern on the phenyl ring is critical for D5 activity, and this would conflict with the typical substitution patterns (or lack thereof) on a methamphetamine-like core.
+
+\item \textbf{Bioisosteric Replacement of the Amine:} D5 agonists often feature the amine as part of a heterocyclic system rather than a simple alkylamine. Introducing a \textbf{pyrimidine-2-amine} or a related heterocyclic bioisostere in place of the phenethylamine's terminal amine could begin to introduce D1-like activity. Tavapadon (a D1/D5 partial agonist) exemplifies a non-catechol, heterocycle-rich structure that achieves this selectivity.
+\end{enumerate}
+
+\subsection{Hybrid Design Strategy and Tradeoffs}
+
+Achieving pan-agonism (TAAR1/D1/D2/D3/D4/D5) with a single, drug-like molecule is a monumental task. A more realistic design approach considers a \textbf{bivalent or merged pharmacophore} strategy, acknowledging the enormous synthetic and pharmacological challenges.
+
+\begin{longtable}{@{}p{3cm}p{5cm}p{6cm}@{}}
+\toprule
+\textbf{Target Goal} & \textbf{Modification to Phenethylamine Core} & \textbf{Rationale \& Caveats} \\
+\midrule
+Introduce D4 & \textbf{N-arylpiperazine appendage} via a 2-carbon linker. & Leverages the arylpiperazine D4 pharmacophore. Risk: Likely abolishes TAAR1 activity and DAT affinity due to increased steric bulk. \\
+Introduce D5 & \textbf{Replace the ethylamine chain} with a \textbf{pyrimidine-2-amine} or related heterocycle. & Aligns with non-catechol D5 agonist chemotypes. Risk: Creates a completely new molecule, no longer "phenethylamine-like." \\
+Maintain D2/D3 & Keep the \textbf{protonatable amine} and \textbf{lipophilic N-alkyl} groups (e.g., N-propyl). & Essential for D2/D3 agonism. The challenge is retaining this while adding the bulky D4/D5 elements. \\
+Maintain TAAR1 & Retain the \textbf{primary amine} (or small N-methyl) and \textbf{$\alpha$-methyl} if possible. & These are key for TAAR1 potency. The D4 appendage will likely disrupt this. \\
+\bottomrule
+\end{longtable}
+
+\begin{risknote}
+\textbf{Feasibility and Risk Disclosure:} Single-molecule pan-agonism across all six targets (TAAR1/D1/D2/D3/D4/D5) is not expected to be achievable with acceptable drug-likeness in the near term. A more tractable research priority is first to design a TAAR1/D4 dual agonist by appending an arylpiperazine to a phenethylamine, and separately develop D2/D3/D4/D5 multi-target agonists by elaborating aminotetralin scaffolds (like rotigotine) with D4/D5-favoring elements. All phenethylamine-derived D4/D5 hybrid designs below are \textbf{computer-aided design concepts only} with no in vitro or in vivo validation as of this filing. None are recommended for human synthesis or administration.
+\end{risknote}
+
+\vspace{1em}
+\begin{longtable}{@{}p{3cm}p{4cm}p{5cm}@{}}
+\toprule
+\textbf{Designation} & \textbf{Class} & \textbf{Design Rationale} \\
+\midrule
+\endhead
+QGR-D4.1 & Biased G-protein D4 ligand & Prefrontal cognition; low motor liability \\
+LAN-7 & $\beta$-arrestin-biased D3 ligand & Reward modulation without sensitization \\
+NDX-4 & D4-selective nootropic & Executive function; attention \\
+DLX-3 & D2/D3 dual agonist & Low dyskinesia liability \\
+ApoD3 & Engineered apomorphine analog & D3-preferring; oral bioavailability \\
+RoX-7 & Ropinirole microsphere depot & Monthly injection; adherence \\
+CAB-XR & Cabergoline microdose & Pituitary indication; reduced valvulopathy \\
+BP-1.7 & D3/D2 functional selectivity & Motivational deficit \\
+Sarizotan-LX & Long-acting sarizotan & Dyskinesia prophylaxis \\
+QGR-D3.2 & D3 partial agonist & Impulse-control mitigation \\
+\midrule
+\multicolumn{3}{l}{\textit{Phenethylamine hybrid scaffold extensions:}} \\
+PEA-D4.01 & N-(2-(4-(pyridin-2-yl)piperazin-1-yl)ethyl)amphetamine derivative & TAAR1/D4 dual agonist candidate; 2-carbon linker to 2-pyridylpiperazine (PD 168077 pharmacophore) appended to phenethylamine core; expected reduced TAAR1 potency, high D4 affinity \\
+PEA-D4.02 & Indane-rigidified $\alpha$-methyl phenethylamine D4 partial & Conformationally restricted ethylamine side chain locked into bioactive pose for D4; modeled on FAUC 312 phenyltetrahydropyrimidine scaffold \\
+PEA-D5.01 & 2,4,5-trimethoxyphenyl pyrimidine-phenethylamine hybrid & Pyrimidine core merged with phenethylamine side chain; modeled on compound 5j D5 partial agonist scaffold; EC50 target ~300 nM at D5 \\
+PEA-D5.02 & Tavapadon-phenethylamine D1/D5 partial hybrid & Heterocyclic bioisostere replacement of terminal phenethylamine amine; non-catechol structure; designed for oral bioavailability and D1/D5 selectivity \\
+PEA-RIG.01 & Cyclic amidine phenethylamine D4 full agonist & Rigidified side chain via cyclic amidine; high D4 selectivity target Ki < 5 nM \\
+PEA-PAN.01 & Bivalent pan-agonist pharmacophore candidate & Dual-end molecule: phenethylamine head for TAAR1/DAT engagement, flexible PEG linker, arylpiperazine tail for D4, pyrimidine moiety for D5; expected very high molecular weight, high off-target risk; purely theoretical proof-of-concept \\
+\bottomrule
+\end{longtable}
+
+% ============================================================
+% PART VI — ADDITIONAL PROJECTS
+% ============================================================
+
+\part{Additional Projects}
+
+\chapter{HARMONI-X Neural Swarm}
+
+\begin{longtable}{@{}p{4cm}p{6cm}p{5cm}@{}}
+\toprule
+\textbf{Dimension} & \textbf{Legacy} & \textbf{HARMONI-X} \\
+\midrule
+Topology & Penetrating shank arrays & Injectable micro-nodes \\
+Signaling & Voltage spike detection & Biochemical + capacitive resonance \\
+Integration & Foreign body response & Tissue-matched hydrogel \\
+Scalability & Connector limits & Emergent 3D mesh \\
+\bottomrule
+\end{longtable}
+
+\section{Micro-Node Anatomy}
+
+\begin{enumerate}
+\item Zwitterionic hydrogel shell.
+\item Nano-capacitive grid + LC resonator.
+\item Ion-sensitive polymer interface.
+\item SynthDiamond crystalline core.
+\item Organic electrochemical transistor (OECT).
+\end{enumerate}
+
+\chapter{Swarm, LiDAR, and Ultrasonic Charging}
+
+\begin{longtable}{@{}p{4cm}p{8cm}@{}}
+\toprule
+\textbf{Component} & \textbf{Specification} \\
+\midrule
+LiDAR & FMCW at 1064 nm, Class 1M eye-safe \\
+Charging & Ultrasonic, 1 kHz--10 MHz carrier, mechanical index < 0.7 \\
+Compute & QGR-Q edge controller with molecular docking acceleration \\
+Communication & ML-KEM secure mesh, post-quantum authenticated \\
+Power & 50 mW average, 200 mW peak, thermal limit enforced at 42 °C \\
+\bottomrule
+\end{longtable}
+
+\chapter{Precision PEA HIV/ADHD Trial}
+
+\section{Design}
+
+Phase Ib/IIa, double-blind, placebo-controlled, pharmacogenetic-guided.
+$N=60$ adults aged 25--55 with well-controlled HIV and comorbid ADHD.
+Stratification: MAOB rs1799836 GG/AG versus AA. Primary: safety. Secondary: ADHD-RS-5, CPT-3, WHO-DAS 2.0. Exploratory: D2/D3/D4 receptor occupancy via PET imaging.
+
+\chapter{USB Genotyper}
+
+\section{Platform}
+
+USB-C reader + roll-to-roll disposable electrochemical cartridge.
+$\geq 48$ screen-printed carbon electrodes; dried RPA/LAMP reagents; CRISPR-Cas reporters; PQC-anchored DAG evidence chain for immutable chain-of-custody of genetic test results.
+
+\chapter{Perpetual Solvent Trust}
+
+\section{Architecture}
+
+UDTA purpose trust with four roles. Spend-rate rule:
+
+\[
+D(t)\leq 0.05\times\frac{1}{5}\sum_{k=1}^{5}\mathrm{Corpus}(t-k)
+\]
+
+DYREO allocation: 40\% sustainable housing (non-solar), 20\% clean energy infrastructure (hydrokinetic and storage), 25\% sovereign / fixed income, 10\% biomedical research (including dopaminergic therapeutic discovery), 5\% liquid reserves.
+
+\chapter{AI-Powered SSA Medical Discovery}
+
+\section{The Evidence Pipeline}
+
+The AI pipeline uses Retrieval-Augmented Generation (RAG) over a knowledge graph (Neo4j) to map longitudinal medical records, eliminating hallucinations via a Grader Agent, and outputs Bates-stamped legal narratives. The pipeline is also adapted for biomedical research literature review, including dopaminergic receptor pharmacology and scaffold engineering.
+
+\begin{enumerate}
+\item \textbf{Ingestion:} Raw Medical PDFs and peer-reviewed literature enter the system.
+\item \textbf{Chunking \& Embedding:} LangChain text splitters convert paragraphs into mathematical vectors.
+\item \textbf{Vector Store:} A searchable, high-dimensional database (e.g., FAISS).
+\item \textbf{Legal/Research Query:} ``Does the patient meet Listing 4.02 for Chronic Heart Failure?'' or ``What structural modifications confer D4 selectivity on phenethylamine cores?''
+\item \textbf{Augmented Generation:} The LLM retrieves only specific, relevant PDF chunks and generates a grounded, cited answer.
+\end{enumerate}
+
+\section{Multi-Agent Legal and Research Team}
+
+\begin{itemize}
+\item \textbf{Medical Extraction Agent:} Dedicated solely to parsing clinical data and lab results.
+\item \textbf{SSA Policy Agent:} Cross-references clinical findings directly against the SSA ``Blue Book'' Listings.
+\item \textbf{Medicinal Chemistry Agent:} Analyzes structure-activity relationships for therapeutic discovery programs, including D4/D5 phenethylamine hybrid design.
+\item \textbf{Brief Writer Agent:} Compiles verified findings into a chronological, Bates-stamped legal narrative.
+\end{itemize}
+
+\section{Defeating Hallucinations}
+
+\begin{enumerate}
+\item AI retrieves a record or publication.
+\item \textbf{Grader Agent:} Does this record actually answer the medical, legal, or research query?
+\item If No $\rightarrow$ Route back, rewrite the query, and search the vector database again.
+\item If Yes $\rightarrow$ Generate the grounded, cited answer.
+\end{enumerate}
+\textbf{Core Principle: Zero tolerance for fabricated evidence, whether legal or scientific.}
+
+% ============================================================
+% PART VII — PRESS RELEASE
+% ============================================================
+
+\part{Press Release}
+
+\chapter{For Immediate Release}
+
+\begin{center}
+\textbf{Cascade Canal, QGR, and Full D2--D5 Dopamine Portfolio Released;\\
+Petitions Filed with UN and NATO}
+\end{center}
+
+\textbf{BALTIMORE, MD} — The Open Diamond Foundation and PSDLEF today released the Unified Filing and Project Portfolio, a full-corridor design and financing volume for a 7.2-mile navigable waterway connecting the Inner Harbor to Woodlawn, with a fleet of 240 one-man taxi canoes and a 20+ mile parallel trail network. The portfolio includes Quantum Gravity Research (QGR), a \$2.7 billion quantum-safe green bond architecture; formal petitions to the United Nations for Article 6 alignment and to NATO for co-investment and cyber-resilience certification; quantum processor designs (including the RIGOR hash-chain ledger update with biomedical audit extensions); a full D2--D5 dopamine agonist portfolio including novel phenethylamine scaffold engineering for D4/D5 activity; and an AI-powered SSA medical discovery pipeline adapted for both disability adjudication and biomedical research.
+
+\textbf{Two exclusions are controlling:} no large barges (the canal is dimensioned for one-man canoes and maintenance skiffs only), and no solar generation (excluded by covenant from every QGR instrument).
+
+\textbf{Media Contact:} Caustin Lee McLaughlin / Xaustino@hotmail.com
+
+\textbf{\#\#\#}
+
+% ============================================================
+% APPENDICES
+% ============================================================
+
+\part{Appendices}
+
+\appendix
+
+\chapter{Glossary}
+
+\begin{longtable}{@{}p{4cm}p{9cm}@{}}
+\toprule
+\textbf{Term} & \textbf{Definition} \\
+\midrule
+\endhead
+Cascade Canal & 7.2-mile navigable waterway from Inner Harbor to Woodlawn \\
+QGR & Quantum Green Reserve / Quantum Gravity Research \\
+QGR-I/II/III/IV & Sovereign / supranational / municipal / project tranches \\
+QGR-Q & Quantum-safe municipal controller with biomedical compute extensions \\
+DAG & Directed acyclic graph \\
+PQC & Post-quantum cryptography \\
+ML-KEM & FIPS 203 key encapsulation mechanism \\
+ML-DSA & FIPS 204 module-lattice digital signature algorithm \\
+SLH-DSA & FIPS 205 stateless hash-based digital signature algorithm \\
+HSPA & Hybrid Semantic Processing Architecture \\
+SEG & Semantic Execution Graph \\
+UML & Unified Memory Lattice \\
+SOML & Self-Optimizing Microcode Layer \\
+RLC & Reconfigurable Logic Cell \\
+OECT & Organic Electrochemical Transistor \\
+CKKS & Cheon-Kim-Kim-Song homomorphic encryption scheme \\
+UPT & Ultrasonic Power Transfer \\
+RNE & Resonant Neural Encoding \\
+PEA & Phenylethylamine / phenethylamine scaffold \\
+TAAR1 & Trace amine-associated receptor 1 \\
+MAOB & Monoamine Oxidase B \\
+D1/D2/D3/D4/D5 & Dopamine receptor subtypes \\
+ITMO & Internationally transferred mitigation outcome \\
+ICMA & International Capital Market Association \\
+CBI & Climate Bonds Initiative \\
+IOSCO & International Organization of Securities Commissions \\
+SDG & Sustainable Development Goal \\
+CCDCOE & Cooperative Cyber Defence Centre of Excellence \\
+DIANA & Defence Innovation Accelerator for the North Atlantic \\
+\bottomrule
+\end{longtable}
+
+\chapter{Master Project Inventory}
+
+\begin{longtable}{@{}p{4cm}p{2cm}p{8cm}@{}}
+\toprule
+\textbf{Project} & \textbf{Part} & \textbf{Status in corpus} \\
+\midrule
+Cascade Canal (5 segments) & I, III & Design + cost + phasing \\
+One-man taxi canoe fleet & I, III & Design + cost \\
+QGR (all tranches) & II & Framework / petition with biomedical allocation \\
+UN petition & II & Draft \\
+NATO petition & II & Draft \\
+Green bond petition & II & Draft \\
+Q128 processor & IV & Design with biomedical molecular docking extensions \\
+HSPA v3.0 & IV & Design \\
+LoongDiamond-2.5 & IV & Design \\
+RIGOR Hash-Chain & IV & Design with biomedical audit extensions \\
+QGR-Q controller & IV & Proposed \\
+DA portfolio Tier 1 & V & Approved agents (D2/D3/D4 + non-selective pan-agonists) \\
+DA portfolio Tier 2 & V & Investigational agents (including Tavapadon D1/D5) \\
+DA portfolio Tier 3 & V & Proposed agents + phenethylamine D4/D5 hybrid scaffold designs \\
+HARMONI-X & VI & Design \\
+Swarm / LiDAR / UPT & VI & Design with safety limits \\
+PEA HIV/ADHD Trial & VI & Protocol \\
+USB Genotyper & VI & Design with secure chain-of-custody \\
+Perpetual Solvent Trust & VI & Framework with 10\% biomedical research allocation \\
+AI-Powered SSA Discovery & VI & Design with medicinal chemistry agent extension \\
+Press release & VII & Draft \\
+\bottomrule
+\end{longtable}
+
+\chapter{Exclusion Register}
+
+For the avoidance of doubt, the following items are excluded from every project in this corpus:
+
+\begin{itemize}
+\item Large barges and freight watercraft.
+\item Multi-passenger ferries on the Cascade Canal (the Inner Harbor Loop remains the ferry service).
+\item Solar photovoltaic generation of any kind.
+\item Solar thermal generation of any kind.
+\item Solar procurement contracts.
+\item Solar escrow instructions.
+\item Solar financial instruments.
+\item Solar-linked carbon credits.
+\item Human or animal administration of any theoretical compound described in Tier 3 without full FDA/ICH GLP preclinical and clinical trial approval.
+\end{itemize}
+
+Any instruction to the contrary is void \textit{ab initio}.
+
+\vspace{2em}
+\begin{center}
+\textit{End of Unified Filing and Project Portfolio}
+\end{center}
+
+\end{document}

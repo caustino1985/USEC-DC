@@ -1,0 +1,83 @@
+================================================================================
+OFFICIAL OMNIBUS 1-CLICK DISPATCH BATCH TRANSMITTAL MANIFEST
+IN RE ESTATE OF CAUSTIN LEE MCLAUGHLIN & JUAN JOSE FERNANDEZ
+TOTAL SETTLEMENT RES: $500,000,000.00 / 45,850,000 CENTRUS ENERGY (NYSE: LEU)
+ZERO TUCKER ACT POOL INVARIANT: $0.00
+BATCH EXECUTION TIMESTAMP: 2026-11-03T00:46:11.980Z
+================================================================================
+
+TRANSMITTAL PACKAGES & DELIVERY RECEIPTS:
+
+--------------------------------------------------------------------------------
+[PACKAGE 1 OF 5]
+RECIPIENT: Circuit Court for Baltimore County, Maryland (Clerk of Court / MDEC Electronic Intake)
+TO: saocircuitcourtmdec@baltimorecountymd.gov
+CC: Xaustino@hotmail.com
+SUBJECT: NOTICE OF PRESENTMENT & RULE 18 CONSOLIDATED EXACTION OF LIBERTY — Case No. C-03-CV-26-004128
+RECEIPT ID: MDEC-TX-PVHHHU-2026
+TRANSMISSION TIMESTAMP: 11/2/2026, 7:46:08 PM EST
+ATTACHED EXHIBITS (4):
+  - Omnibus_Consolidated_Mandamus_Petition_Baltimore_County.pdf [PDF/A-3, 4.8 MB] (SHA-256: 9f83b4ac1087e59871fa28419cb7891240c7e5a1b3c9)
+  - Rule_18_Consolidated_Exaction_of_Liberty_Manifest.pdf [PDF/A-3, 2.1 MB] (SHA-256: c87a1024b3329f65d87a4128b90123ef456789abcd01)
+  - Maryland_Rule_1-325e_Verified_IFP_Affidavit.pdf [PDF/A-3, 820 KB] (SHA-256: 34901abcd789ef01234567890abcdef1234567890123)
+  - Marriage_Certificate_Towson_MD_License_0309504160039411.pdf [PDF, 1.2 MB] (SHA-256: 7891240c7bc1q9f83b4ac1087e59871fa28419cb25c9)
+
+--------------------------------------------------------------------------------
+[PACKAGE 2 OF 5]
+RECIPIENT: The Bank of New York Mellon (Corporate Trust Operations & DTC Participant Clearing Desk)
+TO: corptrust@bnymellon.com
+CC: mark.somerstein@ropesgray.com, csctrust@cscinfo.com, Xaustino@hotmail.com
+SUBJECT: MANDATORY CUSTODIAL TRANSFER INSTRUCTION & DTC CLEARING DIRECTIVE — USEC / Centrus 1999 Indenture
+RECEIPT ID: BNYM-TX-HERJDQ-2026
+TRANSMISSION TIMESTAMP: 11/2/2026, 7:46:09 PM EST
+ATTACHED EXHIBITS (3):
+  - BNY_Mellon_DTC_Participant_Clearing_Directive.pdf [PDF/A-3, 3.2 MB] (SHA-256: 59871fa28419cb7891240c7bc1q9f83b4ac1087e5a1)
+  - SEC_Form_13F_CUSIP_Reconciliation_Exhibit.pdf [PDF/A-3, 1.9 MB] (SHA-256: 000089843202000752281235pnc917300aa1917300ab9)
+  - Certificate_of_Incumbency_and_Authority_Matrix_Tabs_A_D.pdf [PDF/A-3, 1.4 MB] (SHA-256: 1024crystalskyberdilithium87fips203204pqcstamp)
+
+--------------------------------------------------------------------------------
+[PACKAGE 3 OF 5]
+RECIPIENT: U.S. Court of Appeals for the District of Columbia Circuit (Clerk of Court / Appellate Intake)
+TO: dcd_intake@dcd.uscourts.gov
+CC: intake@cadc.uscourts.gov, Xaustino@hotmail.com
+SUBJECT: PETITION FOR SUPERVISORY MANDAMUS & IN CUSTODIA LEGIS REVIEW — Case No. 24-10492
+RECEIPT ID: CADC-TX-3BBC35-2026
+TRANSMISSION TIMESTAMP: 11/2/2026, 7:46:10 PM EST
+ATTACHED EXHIBITS (3):
+  - Master_Federal_Appellate_Mandamus_Omnibus_DC_Circuit.pdf [PDF/A-3, 5.1 MB] (SHA-256: dc2410492ddc242383mandamusscotusallwritsact1651)
+  - Mullane_Due_Process_13F_Information_Theoretic_Proof.pdf [PDF/A-3, 2.4 MB] (SHA-256: mullane339us306mennonite462us791pidsexp10)
+  - Federal_Rule_18_Consolidated_Exaction_Statement.pdf [PDF/A-3, 2.8 MB] (SHA-256: frcp18exactionoflibertyiterations1through4fed)
+
+--------------------------------------------------------------------------------
+[PACKAGE 4 OF 5]
+RECIPIENT: Manufacturers and Traders Trust Company (M&T Bank) (Business Banking & Corporate Trust Services)
+TO: commercialservices@mtb.com
+CC: corptrust@mtb.com, Xaustino@hotmail.com
+SUBJECT: INSTITUTIONAL ACCOUNT ONBOARDING & SIGNATURE PACKAGE — Americana Digital Reserve LLC
+RECEIPT ID: MTB-TX-PE1CYU-2026
+TRANSMISSION TIMESTAMP: 11/2/2026, 7:46:10 PM EST
+ATTACHED EXHIBITS (3):
+  - MT_Bank_Master_Services_Agreement_Signed.pdf [PDF, 3.6 MB] (SHA-256: mtb022000046mantus33msaaccountcontrolagreement)
+  - MT_Bank_Corporate_Banking_Resolution_Dual_Signatory.pdf [PDF, 1.5 MB] (SHA-256: mtbcorpbankingresdualsignatureover5000000)
+  - Beneficial_Ownership_FinCEN_31CFR1010_230.pdf [PDF, 950 KB] (SHA-256: fincenbeneficialownership25pctmclaughlinfernandez)
+
+--------------------------------------------------------------------------------
+[PACKAGE 5 OF 5]
+RECIPIENT: Secretary of State of Wyoming (Business Division / Statutory Trust Filings)
+TO: business@wyo.gov
+CC: Xaustino@hotmail.com
+SUBJECT: STATUTORY PURPOSE & LIQUIDATION TRUST FILING — Americana Liquidation & Sovereign Purpose Trust
+RECEIPT ID: WYSOS-TX-5C9O2D-2026
+TRANSMISSION TIMESTAMP: 11/2/2026, 7:46:11 PM EST
+ATTACHED EXHIBITS (3):
+  - Wyoming_Certificate_of_Trust_Executed.pdf [PDF, 1.8 MB] (SHA-256: wyostatann1723101certificateoftrustsoswyogov)
+  - Consent_of_Registered_Agent_Wyoming.pdf [PDF, 640 KB] (SHA-256: wyoregisteredagentsolutions1621centralavecheyenne)
+  - Master_Trust_Indenture_Liquidation_Schedule.pdf [PDF, 2.9 MB] (SHA-256: mastertrustindentureliquidation45850000leushares)
+
+
+================================================================================
+PQC SIGNATURE & TRUST PROTECTOR ATTESTATION:
+ML-KEM-1024 / ML-DSA-87 CRYPTOGRAPHIC VERIFICATION SEALED
+AUTHORIZED TRUSTEE & DEBTOR-IN-POSSESSION: /s/ Caustin Lee McLaughlin
+CO-TRUSTEE: /s/ Juan Jose Fernandez
+================================================================================

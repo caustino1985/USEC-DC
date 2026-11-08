@@ -13,6 +13,8 @@ import { WyomingLiquidationTrustView } from './components/WyomingLiquidationTrus
 import { AlgorithmsSuiteView } from './components/AlgorithmsSuiteView';
 import { EmailDispatchModal } from './components/EmailDispatchModal';
 import { GoogleWorkspaceHub } from './components/GoogleWorkspaceHub';
+import { CaseScienceDataHub } from './components/CaseScienceDataHub';
+import { CustomCusipGeneratorView } from './components/CustomCusipGeneratorView';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<AppTab>('document');
@@ -22,6 +24,8 @@ export default function App() {
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium');
   const [isExportModalOpen, setIsExportModalOpen] = useState<boolean>(false);
   const [isEmailModalOpen, setIsEmailModalOpen] = useState<boolean>(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
+  const [isTranslating, setIsTranslating] = useState<boolean>(false);
 
   const handleSelectPart = (partId: string) => {
     setActivePartId(partId);
@@ -51,6 +55,9 @@ export default function App() {
         setFontSize={setFontSize}
         onOpenExportModal={() => setIsExportModalOpen(true)}
         onOpenEmailModal={() => setIsEmailModalOpen(true)}
+        selectedLanguage={selectedLanguage}
+        onSelectLanguage={setSelectedLanguage}
+        isTranslating={isTranslating}
       />
 
       {/* Harmonization status alert banner */}
@@ -75,13 +82,29 @@ export default function App() {
               showLineNumbers={showLineNumbers}
               fontSize={fontSize}
               searchQuery={searchQuery}
+              onOpenExportModal={() => setIsExportModalOpen(true)}
+              onOpenEmailModal={() => setIsEmailModalOpen(true)}
+              selectedLanguage={selectedLanguage}
+              onSelectLanguage={setSelectedLanguage}
+              isTranslating={isTranslating}
+              setIsTranslating={setIsTranslating}
             />
           </div>
+        )}
+
+        {/* Custom CUSIP Portfolio & Court-Ready Document Generator */}
+        {activeTab === 'customCusip' && (
+          <CustomCusipGeneratorView />
         )}
 
         {/* Google Workspace & Firebase Hub */}
         {activeTab === 'workspace' && (
           <GoogleWorkspaceHub />
+        )}
+
+        {/* PACER / State Case Info & NIH PubMed / Science Data Hub */}
+        {activeTab === 'dataHub' && (
+          <CaseScienceDataHub />
         )}
 
         {/* Rule 18 Consolidated Exaction of Liberty (All 4 Iterations) */}
@@ -126,6 +149,7 @@ export default function App() {
           showLineNumbers={false}
           fontSize="small"
           searchQuery=""
+          selectedLanguage={selectedLanguage}
         />
       </div>
 

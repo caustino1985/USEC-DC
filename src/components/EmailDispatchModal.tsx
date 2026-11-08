@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { EMAIL_PRESENTATION_PACKAGES, UNIFIED_DOCUMENT_METADATA } from '../data/unifiedDocumentData';
 import { EmailPresentationPackage } from '../types/document';
-import { getAccessToken, db } from '../firebase';
+import { getAccessToken, db, auth } from '../firebase';
 import { sendLegalEmail } from '../services/googleWorkspaceService';
 import { collection, addDoc } from 'firebase/firestore';
 
@@ -140,18 +140,21 @@ ${currentPkg.emailBody}`;
           });
           sentViaGmail = true;
 
-          // Log to Firestore workspace_activity
+          // Log to Firestore workspace_activity if authenticated
           try {
-            await addDoc(collection(db, 'workspace_activity'), {
-              service: 'gmail',
-              action: '1-Click Batch Transmit',
-              resourceTitle: `${pkg.recipientOrg}: ${pkg.subject}`,
-              recipient: pkg.toEmail,
-              receiptId,
-              timestamp: new Date().toISOString(),
-              status: 'Delivered',
-              exhibitsCount: pkg.attachedDocuments.length
-            });
+            if (auth.currentUser) {
+              await addDoc(collection(db, 'workspace_activity'), {
+                uid: auth.currentUser.uid,
+                service: 'gmail',
+                action: '1-Click Batch Transmit',
+                resourceTitle: `${pkg.recipientOrg}: ${pkg.subject}`,
+                recipient: pkg.toEmail,
+                receiptId,
+                timestamp: new Date().toISOString(),
+                status: 'Delivered',
+                exhibitsCount: pkg.attachedDocuments.length
+              });
+            }
           } catch (dbErr) {
             console.warn('Firestore activity log skipped:', dbErr);
           }

@@ -14,8 +14,10 @@ import {
   FileText
 } from 'lucide-react';
 import { WYOMING_LIQUIDATION_TRUST_DOCUMENTS, UNIFIED_DOCUMENT_METADATA } from '../data/unifiedDocumentData';
+import { WyomingLiquidationTrustDashboard } from './WyomingLiquidationTrustDashboard';
 
 export const WyomingLiquidationTrustView: React.FC = () => {
+  const [activeSubView, setActiveSubView] = useState<'dashboard' | 'instruments'>('dashboard');
   const [selectedDocId, setSelectedDocId] = useState<string>(WYOMING_LIQUIDATION_TRUST_DOCUMENTS[0].id);
   const [copied, setCopied] = useState<boolean>(false);
 
@@ -59,6 +61,45 @@ ${currentDoc.sections.map(s => `--- ${s.heading} ---\n${s.content}`).join('\n\n'
           </div>
         </div>
       </div>
+
+      {/* Subview Navigation Tabs */}
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
+        <button
+          onClick={() => setActiveSubView('dashboard')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            activeSubView === 'dashboard'
+              ? 'bg-gradient-to-r from-amber-500/30 to-indigo-500/30 text-white border border-amber-500/50 shadow-lg shadow-indigo-950/40'
+              : 'text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent'
+          }`}
+        >
+          <Building2 className="w-4 h-4 text-amber-400" />
+          <span>Beneficiary &amp; Settlement Dashboard</span>
+          <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[10px]">
+            Real-Time
+          </span>
+        </button>
+
+        <button
+          onClick={() => setActiveSubView('instruments')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            activeSubView === 'instruments'
+              ? 'bg-gradient-to-r from-amber-500/30 to-indigo-500/30 text-white border border-amber-500/50 shadow-lg shadow-indigo-950/40'
+              : 'text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent'
+          }`}
+        >
+          <FileText className="w-4 h-4 text-indigo-400" />
+          <span>Statutory Trust Instruments</span>
+          <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono text-[10px]">
+            4 Instruments
+          </span>
+        </button>
+      </div>
+
+      {/* Conditional Rendering: Dashboard View vs Instruments View */}
+      {activeSubView === 'dashboard' ? (
+        <WyomingLiquidationTrustDashboard />
+      ) : (
+        <>
 
       {/* Trust Highlights Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
@@ -194,11 +235,13 @@ ${currentDoc.sections.map(s => `--- ${s.heading} ---\n${s.content}`).join('\n\n'
             </div>
             <div className="text-right text-slate-500 text-[10px]">
               Executed at Baltimore, MD / Towson, MD<br />
-              November 1, 2026
+              November 3, 2026
             </div>
           </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 };

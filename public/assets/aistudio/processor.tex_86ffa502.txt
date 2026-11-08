@@ -1,0 +1,2329 @@
+% ============================================================================
+%  IN THE UNITED STATES COURT OF INTERNATIONAL TRADE
+%
+%  COMPLAINT AND PETITION FOR DECLARATORY, MANDAMUS, AND INJUNCTIVE RELIEF
+%  WITH ATTACHED PATENT SPECIFICATION, PCT FILING MATERIALS, POST-QUANTUM
+%  CRYPTOGRAPHIC INTEGRATION BLUEPRINTS, COMPLETE DIAGRAM SETS (FIGS 1-32
+%  + CIT FIGS 1-4 + OPEN DIAMOND DIAGRAMS), AND MANUFACTURING DESIGNS
+%
+%  Compiles with: pdflatex (two passes)
+%  Only base TeX Live packages. All figures are ASCII.
+%  DAG-only architecture. No Merkle constructions anywhere.
+% ============================================================================
+\documentclass[10pt,letterpaper,oneside]{report}
+
+% ---------------- Core packages ----------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{textcomp}
+\usepackage{url}
+\usepackage{titlesec}
+
+% ---------------- Colors ----------------
+\definecolor{odfblue}{RGB}{20,55,110}
+\definecolor{odfnavy}{RGB}{10,25,55}
+\definecolor{odfgreen}{RGB}{30,110,60}
+\definecolor{odfred}{RGB}{150,35,35}
+\definecolor{odfgold}{RGB}{170,130,30}
+\definecolor{odfpurple}{RGB}{90,50,130}
+\definecolor{odfgray}{RGB}{95,95,95}
+\definecolor{codebg}{RGB}{245,245,248}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=odfnavy,
+    citecolor=odfnavy,
+    urlcolor=odfnavy,
+    pdftitle={CIT Filing and Complete Open Diamond / HSPA v3.0 Technical Corpus},
+    pdfauthor={Caustin Lee McLaughlin},
+    pdfsubject={DAG-Only Patent Specification, PCT Filing, PQC Integration, Manufacturing Blueprints},
+    pdfkeywords={CIT, USPTO, DAG, HSPA, LoongArch, diamond, PQC, PCT}
+}
+
+% ---------------- Listings ----------------
+\lstdefinestyle{ascii}{
+    backgroundcolor=\color{white},
+    basicstyle=\ttfamily\scriptsize,
+    frame=single,
+    rulecolor=\color{black},
+    breaklines=false,
+    numbers=none,
+    captionpos=b
+}
+\lstdefinestyle{code}{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\scriptsize,
+    commentstyle=\color{odfgreen}\itshape,
+    keywordstyle=\color{odfblue}\bfseries,
+    stringstyle=\color{odfred},
+    frame=single,
+    rulecolor=\color{odfgray},
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{odfgray},
+    captionpos=b,
+    tabsize=2
+}
+\lstdefinestyle{xml}{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\tiny,
+    keywordstyle=\color{odfblue}\bfseries,
+    stringstyle=\color{odfred},
+    frame=single,
+    rulecolor=\color{odfgray},
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{odfgray},
+    captionpos=b
+}
+\lstdefinestyle{rlang}{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\scriptsize,
+    commentstyle=\color{odfgreen}\itshape,
+    keywordstyle=\color{odfblue}\bfseries,
+    stringstyle=\color{odfred},
+    frame=single,
+    rulecolor=\color{odfgray},
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{odfgray},
+    captionpos=b
+}
+\lstset{style=ascii}
+
+% ---------------- Headers / footers ----------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{McLaughlin v. United States et al. --- CIT No. 26-00\_\_\_\_}}
+\fancyhead[R]{\small\textcolor{odfblue}{\thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ---------------- Theorem environments ----------------
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{invariant}[theorem]{Invariant}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% ---------------- Shortcuts ----------------
+\newcommand{\odf}{\textsc{ODF}}
+\newcommand{\hspa}{\textsf{HSPA}}
+\newcommand{\raci}{\textsf{RACI}}
+\newcommand{\qsp}{\textsf{QSP}}
+\newcommand{\uose}{\textsf{UOSE}}
+\newcommand{\pmut}{\textsf{PMUT}}
+\newcommand{\dvni}{\textsf{DVNI}}
+\newcommand{\eda}{\textsf{EDA}}
+\newcommand{\endd}{\textsf{ENDD}}
+\newcommand{\la}{\textsf{LoongArch}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\micro}{\ensuremath{\mu}}
+
+% ============================================================================
+\begin{document}
+
+% ---------------- Title page ----------------
+\begin{titlepage}
+\centering
+\vspace*{0.8cm}
+
+{\Large\bfseries\color{odfnavy} IN THE UNITED STATES COURT OF INTERNATIONAL TRADE\par}
+{\large BEFORE THE HONORABLE JUDGES THEREOF\par}
+
+\vspace{0.6cm}
+\rule{\textwidth}{0.8pt}
+\vspace{0.4cm}
+
+{\Huge\bfseries\color{odfblue} COMPLAINT AND PETITION\par}
+{\large for Declaratory, Mandamus, and Injunctive Relief\par}
+
+\vspace{0.4cm}
+{\LARGE\bfseries WITH ATTACHED\par}
+{\large Patent Specification, PCT Filing Materials,\\
+Post-Quantum Cryptographic Integration Blueprints,\\
+Complete Diagram Sets (FIGS 1--32 + CIT FIGS 1--4),\\
+and Manufacturing Designs\par}
+
+\vspace{0.4cm}
+\rule{\textwidth}{0.8pt}
+\vspace{0.6cm}
+
+{\Large\bfseries CAUSTIN LEE MCLAUGHLIN,\\
+\textit{Plaintiff, Pro Se}\par}
+{\Large\bfseries v.\par}
+{\bfseries UNITED STATES OF AMERICA;\\
+UNITED STATES PATENT AND TRADEMARK OFFICE;\\
+DEPARTMENT OF COMMERCE;\\
+DEPARTMENT OF HOMELAND SECURITY;\\
+and JOHN AND JANE DOE FEDERAL ACTORS 1--5,\\
+\textit{Defendants.}\par}
+
+\vspace{0.6cm}
+{\bfseries Civil Action No.: CIT 26-00\_\_\_\_\par}
+{\bfseries DEMAND FOR JURY TRIAL\par}
+
+\vfill
+
+\begin{tabular}{ll}
+\toprule
+\textbf{Document ID} & CIT-2026-DAG-PQC-001 \\
+\textbf{Revision} & 1.0 (Unified) \\
+\textbf{Architecture} & DAG-only; no Merkle constructions \\
+\textbf{ISA Coverage} & RISC-V (RV32I / RV64GC / RV128I); x86 (32/64); ARMv7 (A32/T32); ARMv8 (AArch64/AArch32); LoongArch (LA32R/LA32S/LA64) \\
+\textbf{Figures} & 32 HSPA + 4 CIT + 4 Open Diamond \\
+\textbf{Manufacturing} & Diamond probe stack, ZU9EG 10-layer PCB, GDSII mask layers, BOM \\
+\textbf{License} & CC-BY-SA-4.0 (Doc), Apache-2.0 / GPL-3.0 (Code) \\
+\textbf{Date} & \today \\
+\bottomrule
+\end{tabular}
+
+\vfill
+{\footnotesize This document compiles with a standard TeX Live distribution. All figures are ASCII renderings inside verbatim environments. Cryptographic integrity is realized exclusively through content-addressed DAG structure. No Merkle tree, Merkle root, or Merkle proof appears anywhere in this filing.\par}
+\end{titlepage}
+
+% ---------------- TOC / Lists ----------------
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+
+% ============================================================================
+\part{Complaint and Petition (CIT Pleading)}
+% ============================================================================
+
+\chapter{Nature of the Action}
+
+\begin{enumerate}[leftmargin=*]
+    \item Plaintiff Caustin Lee McLaughlin brings this action against the United States and its instrumentalities under:
+    \begin{enumerate}
+        \item the Administrative Procedure Act, 5 U.S.C. \S\S\,701--706;
+        \item the Mandamus Act, 28 U.S.C. \S\,1361;
+        \item the Declaratory Judgment Act, 28 U.S.C. \S\S\,2201--2202;
+        \item the Patent Act, 35 U.S.C. \S\S\,1 \textit{et seq.}, in its international dimension under the Patent Cooperation Treaty (PCT); and
+        \item the Fifth Amendment Due Process Clause.
+    \end{enumerate}
+
+    \item Plaintiff seeks declaratory and injunctive relief and a writ of mandamus compelling Defendants to:
+    \begin{enumerate}
+        \item accept, docket, and transmit Plaintiff's international patent application under the PCT;
+        \item recognize the attached DAG-only hardware abstraction layer blueprints as sufficiently enabled under 35 U.S.C. \S\,112; and
+        \item preserve and process the attached PQC integration claims under NIST FIPS 203/204 without further administrative delay.
+    \end{enumerate}
+
+    \item The technical subject matter described in Parts II through VIII is novel and constitutes eligible subject matter under 35 U.S.C. \S\,101 / MPEP 2106, because each claim element is bound to concrete physical hardware (MMIO register states, DMA descriptor chains, CPU affinity masks, hardware-enforced fan-in barriers, CVD diamond MESFETs, and 10-layer carrier-board interconnect topologies).
+
+    \item \textbf{Jurisdictional Note.} Plaintiff acknowledges that the CIT has limited subject-matter jurisdiction. Plaintiff pleads in the alternative that CIT jurisdiction is properly invoked under 28 U.S.C. \S\,1581(i) as to imported technology, and 28 U.S.C. \S\,1331 / \S\,1361 for the mandamus and APA claims, reserving the right to transfer any claims outside CIT jurisdiction to the United States District Court for the District of Maryland under 28 U.S.C. \S\,1631.
+\end{enumerate}
+
+\chapter{Jurisdiction and Venue}
+
+\begin{enumerate}[leftmargin=*,resume]
+    \item Subject-matter jurisdiction is conferred under 28 U.S.C. \S\,1331 (federal question), 28 U.S.C. \S\,1361 (mandamus), 28 U.S.C. \S\,1581(i) (residual CIT jurisdiction), 5 U.S.C. \S\,702 (APA sovereign immunity waiver), and 28 U.S.C. \S\S\,2201--2202 (declaratory relief).
+    \item Venue is proper under 28 U.S.C. \S\,1391(e)(1) because Defendants are agencies of the United States and the operative administrative decisions have been issued from Washington, D.C. and Baltimore, Maryland.
+\end{enumerate}
+
+\chapter{Parties}
+
+\begin{enumerate}[leftmargin=*,resume]
+    \item \textbf{Plaintiff Caustin Lee McLaughlin} is an individual residing in Baltimore, Maryland, appearing \textit{pro se}.
+    \item \textbf{Defendant United States of America} is the sovereign respondent.
+    \item \textbf{Defendant USPTO} is the receiving office (RO/US) and administering agency for the PCT and the Patent Act.
+    \item \textbf{Defendant Department of Commerce} is the cabinet-level department of which the USPTO is a constituent.
+    \item \textbf{Defendant DHS} is joined for issues arising under its cybersecurity and critical-infrastructure mandates relevant to post-quantum cryptographic migration.
+    \item \textbf{Defendants John and Jane Doe Federal Actors 1--5} are unnamed federal officers sued in their individual capacities.
+\end{enumerate}
+
+\chapter{Statement of Facts}
+
+\begin{enumerate}[leftmargin=*,resume]
+    \item Plaintiff has developed a deterministic, DAG-only execution architecture for hardware abstraction layers, device drivers, and integrated development environments, integrated with NIST FIPS 203 (ML-KEM-1024) and FIPS 204 (ML-DSA-87) post-quantum cryptographic primitives, and realized on (a) a diamond-substrate neural prosthetic and (b) a Xilinx Zynq UltraScale+ MPSoC carrier board.
+    \item The subject matter is documented in Parts II--VIII (technical disclosure) and claimed in Part IX (Claims 1--28).
+    \item Administrative delay and inconsistent adjudication have threatened the priority date of Plaintiff's international filing and have created substantial uncertainty as to the treatment of DAG-based hardware claims under 35 U.S.C. \S\,101.
+    \item Plaintiff has complied with all prerequisites for international transmittal and for prospective mandamus relief.
+\end{enumerate}
+
+\chapter{Prayer for Relief}
+
+WHEREFORE, Plaintiff respectfully requests that this Court:
+
+\begin{enumerate}[label=\Alph*.]
+    \item \textbf{Declare} that the DAG-only execution architecture is patent-eligible subject matter under 35 U.S.C. \S\,101;
+    \item \textbf{Declare} that the PCT filing materials and USPTO specification satisfy 35 U.S.C. \S\,112 enablement and written description;
+    \item \textbf{Issue a Writ of Mandamus} compelling Defendants to accept, docket, and transmit Plaintiff's international patent application without further delay;
+    \item \textbf{Issue a Permanent Injunction} prohibiting Defendants from rejecting Plaintiff's claims on \S\,101 grounds absent a particularized, element-by-element analysis under MPEP 2106;
+    \item \textbf{Award} costs and fees under the Equal Access to Justice Act, 28 U.S.C. \S\,2412; and
+    \item \textbf{Grant} such other relief as this Court deems just, proper, and equitable.
+\end{enumerate}
+
+\vspace{12pt}
+\noindent Respectfully submitted,
+
+\vspace{24pt}
+\noindent\rule{3in}{0.4pt}\\
+\textbf{Caustin Lee McLaughlin}\\
+\textit{Plaintiff, Pro Se}\\
+Baltimore, Maryland\\
+\texttt{bizcaustin@gmail.com}
+
+\vspace{18pt}
+\noindent Dated: \today
+
+\chapter{Verification and Certificate of Service}
+
+I, CAUSTIN LEE MCLAUGHLIN, declare under penalty of perjury pursuant to 28 U.S.C. \S\,1746 that I am the Plaintiff; that I have read the foregoing Complaint and Petition and know its contents; that the factual allegations are true and correct to the best of my knowledge, information, and belief; that the scientific, technical, and legal authorities cited are accurately represented; and that I am proceeding \textit{pro se} due to documented inability to secure retained counsel.
+
+\vspace{18pt}
+\noindent Executed on this \_\_\_ day of \_\_\_\_\_\_\_\_\_\_\_\_, 2026.
+
+\vspace{24pt}
+\noindent\rule{3in}{0.4pt}\\
+CAUSTIN LEE MCLAUGHLIN\\
+Plaintiff, \textit{Pro Se}
+
+\vspace{12pt}
+\noindent\textbf{CERTIFICATE OF SERVICE.} I certify that on this \_\_\_ day of \_\_\_\_\_\_\_\_\_\_\_\_, 2026, a copy of this Complaint and Petition was served via certified mail, return receipt requested, on: (1) Attorney General of the United States, U.S. DOJ, 950 Pennsylvania Ave NW, Washington DC 20530; (2) Office of the General Counsel, USPTO, 600 Dulany Street, Alexandria VA 22314; (3) Office of the General Counsel, Department of Commerce, 1401 Constitution Ave NW, Washington DC 20230; (4) Office of the General Counsel, DHS, Washington DC 20528; and (5) Clerk of the Court, CIT, 1 Federal Plaza, New York NY 10278.
+
+\vspace{18pt}
+\noindent\rule{3in}{0.4pt}\\
+CAUSTIN LEE MCLAUGHLIN\\
+Plaintiff, \textit{Pro Se}
+
+% ============================================================================
+\part{Open Diamond Electrophoretic Neuroprosthetic Platform}
+% ============================================================================
+
+\chapter{Executive Summary}
+
+The Open Diamond Neuroprosthetic Platform is a fully implantable, silicon-free neural interface fabricated on a 20~\micro m single-crystal CVD diamond substrate. It achieves neural activation without genetic modification and without any injection of electrical current into tissue. The mechanism is the spatiotemporal superposition of an FMCW lidar beam (1064~nm) and a focused ultrasound field (1--5~MHz) onto functionalized nanoparticles delivered to the central nervous system via cerebrospinal fluid.
+
+\section{Design Principles}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Safety-first}: every actuator path gated by hardware-enforced safety limits.
+    \item \textbf{Human-in-the-loop}: automatic mandatory review on \raci{} threshold breach.
+    \item \textbf{Open and auditable}: all code, all masks, all proofs public.
+    \item \textbf{Silicon-free option}: the diamond variant eliminates silicon entirely from the compute core.
+    \item \textbf{DAG-only integrity}: all cryptographic integrity, all dependency tracking, and all execution scheduling use directed acyclic graphs exclusively.
+    \item \textbf{Full multi-ISA backwards compatibility}: legacy binaries from RISC-V, x86, ARM, and LoongArch execute without recompilation (Part V).
+\end{enumerate}
+
+\chapter{Physical Layer Stack and Cross-Section}
+
+\begin{table}[h]
+\centering
+\caption{Open Diamond probe layer stack (manufacturing design).}
+\label{tab:layers}
+\begin{tabular}{clll}
+\toprule
+\textbf{Layer} & \textbf{Function} & \textbf{Material} & \textbf{Thickness} \\
+\midrule
+1 & Compute core (Q128 Diamond) & CVD diamond & 20~\micro m \\
+2 & Electrophoresis array (144$\times$233) & Diamond MESFET + Pt/Ir & 5~\micro m \\
+2A & Nanoparticle reservoir & Glass + Parylene-C & 50~\micro m \\
+3 & PMUT ultrasound array & PZT / AlN & 3~\micro m \\
+4 & Diamond photonic waveguides & CVD diamond ridge & 2~\micro m \\
+5 & VCSEL sources (1064 nm) & InGaAsP & 4~\micro m \\
+6 & MEMS spatial modulator & Polysilicon & 5~\micro m \\
+7 & Encapsulation & Parylene-C & 5~\micro m \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
++-------------------------------------------------------------------+
+|  Probe Cross-Section (side view, not to scale)                    |
++-------------------------------------------------------------------+
+|  [7] Parylene-C encapsulation .......... 5 um                     |
+|  [6] MEMS spatial modulator ............ 5 um                     |
+|  [5] VCSEL array (1064 nm) ............. 4 um                     |
+|  [4] Diamond photonic waveguides ....... 2 um                     |
+|  [3] PMUT ultrasound array ............. 3 um                     |
+|  [2A] Nanoparticle reservoir (glass) ... 50 um (bonded)           |
+|  [2] Electrophoresis array (144x233) ... 5 um                     |
+|  [1] Q128 CVD diamond compute core ..... 20 um                    |
++-------------------------------------------------------------------+
+                          |
+                          v
+              Tissue (cortex surface)
+\end{verbatim}
+\caption{Probe layer cross-section (manufacturing view).}
+\label{fig:probe-xsec}
+\end{figure}
+
+\chapter{Non-Electrical Superposition Physics}
+
+\section{Superposition Region}
+\begin{equation}
+\mathcal{S} = \mathcal{O} \cap \mathcal{M} \cap \mathcal{N}
+\end{equation}
+where $\mathcal{O}$ is the optical focal volume, $\mathcal{M}$ is the mechanical focal volume, and $\mathcal{N}$ is the region with nanoparticle density above threshold.
+
+\section{Activation Equation}
+\begin{equation}
+R_{\mathrm{release}}(x,t) = \kappa \, I_{\mathrm{opt}}(x,t) \, P_{\mathrm{ac}}(x,t) \, \rho_n(x)
+\end{equation}
+\begin{equation}
+\int_{t_0}^{t_0+\Delta t} R_{\mathrm{release}}(x,t)\,dt > R_{\mathrm{th}}
+\end{equation}
+
+\chapter{Lidar Subsystem}
+
+\begin{equation}
+s_{tx}(t) = A \cos\!\left(2\pi\!\left(f_0 t + \tfrac{1}{2}\kappa t^2\right)\right)
+\end{equation}
+\begin{equation}
+f_b = \kappa \tau + \frac{2v}{\lambda}
+\end{equation}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+   ADC samples (200 MS/s, 12-bit)
+            |
+            v
+   +----------------------+
+   | Range FFT (fft128)   |
+   +----------+-----------+
+              |
+              v
+   +----------------------+
+   | Doppler FFT (fft128) |
+   +----------+-----------+
+              |
+              v
+   +----------------------+
+   | CFAR detection       |
+   +----------+-----------+
+              |
+              v
+   +----------------------+
+   | Kalman tracker       |
+   | (Rust + Kani proof)  |
+   +----------+-----------+
+              |
+              v
+   Point cloud -> cross-modal router -> therapy loop
+\end{verbatim}
+\caption{Lidar range--Doppler processing DAG.}
+\label{fig:lidar-dag}
+\end{figure}
+
+\chapter{CSF-Distributed Nanotechnology}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+   Intrathecal injection
+            |
+            v
+   CSF circulation -> diffuse distribution
+            |
+            v
+   Surface functionalization -> regional accumulation
+            |
+            v
+   Lidar tracking -> 3D density map rho_n(x)
+            |
+            v
+   Therapy loop -> superposition planning
+            |
+            v
+   Activation only in S = O & M & N
+\end{verbatim}
+\caption{Nanoparticle administration and tracking DAG.}
+\label{fig:nano-dag}
+\end{figure}
+
+\chapter{Pure-R Driver Ecosystem (Reference Implementation)}
+
+The complete R reference implementation (\texttt{hspa\_pure\_r.R}, GPL-3.0) provides the driver ecosystem: VM state, HAL, PMUT, DVNI, EDA, ENDD, UOSE, QSP, RACI, and the therapy loop. Key excerpt:
+
+\begin{lstlisting}[style=rlang, caption={RACI coherence calculation.}, label={lst:r-raci}]
+raci_calculate <- function(csv_reasoning, e_y, csv_evidence, e_x,
+                            w_reasoning = 0.6, w_evidence = 0.4) {
+  cos_sim <- function(a, b) sum(a * b) / (sqrt(sum(a^2)) * sqrt(sum(b^2)))
+  reasoning_score <- cos_sim(csv_reasoning, e_y)
+  evidence_score  <- cos_sim(csv_evidence, e_x)
+  raci <- reasoning_score * w_reasoning + evidence_score * w_evidence
+  max(0, min(1, raci))
+}
+\end{lstlisting}
+
+% ============================================================================
+\part{Q128 Unified Processor: ISA and Multi-ISA Backwards Compatibility}
+% ============================================================================
+
+\chapter{Q128 Base ISA}
+
+\begin{table}[h]
+\centering
+\caption{Q128 instruction categories.}
+\label{tab:isa}
+\begin{tabular}{lll}
+\toprule
+\textbf{Category} & \textbf{Example instructions} & \textbf{Latency (cycles)} \\
+\midrule
+Integer & add, sub, mul, div, sdiv, udiv & 1--32 \\
+Logic & and, or, xor, shifts & 1 \\
+Memory & lw, sw, ld, sd, lq, sq & 2--4 \\
+Control & beq, bne, jal, jalr & 1--2 \\
+Atomic & amo.swap.q, lr.q, sc.q & 4--8 \\
+Vector & vadd, vmul, vfma, vredsum & 4--16 \\
+\texttt{conv2d} & 2D convolution & 128 \\
+\texttt{fft128} & 128-point complex FFT & 512 \\
+\texttt{cordic} & sin, cos, atan, exp & 64 \\
+QEXT quantum & qaoa\_layer, init\_qubits, measure & 100--1000 \\
+SAFE safety & verify\_limits\_128 & 100 \\
+Legacy decode & decode\_rv32/rv64/x86/armv8/loongarch & 1--4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{Backwards-Compatible Execution Modes}
+
+\begin{table}[h]
+\centering
+\caption{Supported ISA execution modes.}
+\label{tab:isa-modes}
+\small
+\begin{tabular}{lll}
+\toprule
+\textbf{Mode} & \textbf{Binary Format} & \textbf{Execution} \\
+\midrule
+RV32I & 32-bit RISC-V & Native (zero-extend) \\
+RV64GC & 64-bit RISC-V (C, M, A, F, D) & Native \\
+RV128I & 128-bit RISC-V & Native \\
+x86-32 & IA-32 & Hardware-assisted DBT \\
+x86-64 & AMD64 & Hardware-assisted DBT \\
+ARMv7-A32 & ARM 32-bit & Hardware-assisted DBT \\
+ARMv7-T32 & Thumb-2 & Hardware-assisted DBT \\
+ARMv8-AArch64 & ARM 64-bit & Hardware-assisted DBT \\
+ARMv8-AArch32 & ARM 32-bit compat & Hardware-assisted DBT \\
+LoongArch LA64 & 64-bit LoongArch & Near-native DBT (1.1--1.8$\times$) \\
+LoongArch LA32S & Standard 32-bit & DBT (1.8--2.8$\times$) \\
+LoongArch LA32R & Reduced 32-bit & DBT (2--3$\times$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{Full Multi-ISA Specification (Reference)}
+
+The full multi-ISA backwards compatibility specification (FIGS 23--32) is disclosed in the HSPA v3.0 chapters below. It includes:
+- FIG 23: Multi-ISA Decode Front-End (5-bit mode selector, 13 ISA modes)
+- FIG 24: Cross-ISA Register File Aliasing (128 $\times$ 128-bit physical register file)
+- FIG 25: Memory Consistency Translation (TSO, ARM weak, RVWMO, LoongArch weak)
+- FIG 26: Syscall Dispatcher and ABI Translation (all ISAs, including \code{syscall 0} for LoongArch)
+- FIG 27: Dynamic Binary Translation Cache
+- FIG 28: Self-Modifying Code Detection
+- FIG 29: LoongArch Decode and Execution Path
+- FIG 30: LoongArch Register Mapping (32 GPR + 32 FPR + 32 VR)
+- FIG 31: LoongArch Memory Model and DBAR Translation (including LA664 fine-grained hints)
+- FIG 32: LoongArch LSX/LASX Vector Translation
+
+% ============================================================================
+\part{HSPA v3.0 Semantic Processing (Figures 1--22)}
+% ============================================================================
+
+\chapter{Master Figure-to-Claim Matrix}
+
+\begin{table}[h]
+\centering
+\caption{Master figure-to-claim matrix (FIGS 1--22).}
+\label{tab:master-matrix-hspa}
+\small
+\begin{tabular}{cp{3.5cm}p{3.0cm}p{2.4cm}}
+\toprule
+\textbf{FIG} & \textbf{Title} & \textbf{Core Element} & \textbf{Claims} \\
+\midrule
+1 & HSPA Core Architecture & 4-Layer DAG & 1, 6, 10 \\
+2 & 128-Bit SEG Node & Node Allocation & 1(a), 2 \\
+3 & PMCU Bayesian Scheduler & Hardware Bayesian & 1(b), 3, 7 \\
+4 & Unified Memory Lattice & 128-Bit CAM & 1(d), 4, 8 \\
+5 & SOML Safe-Commit & Sandboxed Morphing & 1, 5, 9 \\
+6 & Asymmetric N-Refinement & Dual-Clock HTC & 1, 3, 5 \\
+7 & LoongDiamond-2.5 & Density-Matrix Quantum & 1, 0x40 \\
+8 & PQC Trust Chain (DAG) & DAG Anchoring & 9 \\
+9 & ZU9EG PCB Stackup & 10-Layer Board & 1, 8 \\
+10 & HARMONI-X & Accessibility & 1, 10 \\
+11 & RLC Microarchitecture & ALM Morphing & 1(c), 3 \\
+12 & Multi-Layer FSM & Execution Pipeline & 1, 3, 7 \\
+13 & Bayesian Q16.16 & Fixed-Point & 1(b), 3, 7 \\
+14 & UML Adjacency & Hamming Router & 4, 8 \\
+15 & Verification & Testbench & Best Mode \\
+16 & Thermal \& Clock & DTTE \& PLL & 1, 5, 8 \\
+17 & Fault Tolerance & TMR + ECC & 1, 4, 9, 10 \\
+18 & DRS & Cost Model & 5, 9, 11 \\
+19 & HTG Scheduler & VLIW Queue & 3, 7 \\
+20 & DPS Unit & IEEE 754 & 1(c), 2 \\
+21 & NSP Fabric & Spike Compute & 1(a), 0x3A \\
+22 & HTM Controller & Transactional Memory & 1(d), 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{FIG 1: HSPA Core System Architecture}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
++---------------------------------------------------------------------------+
+| LAYER 3 - ISA / PROGRAMMING MODEL                                         |
+| Meta-ISA Translator (MIT)                                                 |
+| [RISC-V / x86 / ARM / LoongArch Binary Input] -> Semantic Instruction     |
+| Set (SIS)                                                                 |
++---------------------------------------------------------------------------+
+                              | (32-Bit Fixed / 128-Bit Graph Translation)
+                              v
++---------------------------------------------------------------------------+
+| LAYER 2 - MICROARCHITECTURE                                               |
+| Probabilistic Microcontroller  |  Unified Memory Lattice  |  SOML         |
++---------------------------------------------------------------------------+
+                              | (Dynamic DAG Node Scheduling)
+                              v
++---------------------------------------------------------------------------+
+| LAYER 1 - GATE / DATAPATH                                                 |
+| 128-Bit Reconfigurable Logic Cell (RLC) Array / HTC Cluster                |
+| [4-Bit ALM Logic Morphing + 16-Entry Semantic Tag Lookups]                |
++---------------------------------------------------------------------------+
+                              | (Configuration Bits & Pin Allocations)
+                              v
++---------------------------------------------------------------------------+
+| LAYER 0 - PHYSICAL / SUBSTRATE                                            |
+| Xilinx Zynq UltraScale+ MPSoC (ZU9EG / ZU7EV) / 7nm TSMC ASIC             |
++---------------------------------------------------------------------------+
+\end{verbatim}
+\caption{FIG. 1 --- HSPA Core System Architecture.}
+\label{fig:hspa-1}
+\end{figure}
+
+\chapter{FIG 2: 128-Bit SEG Node Bit Structure}
+
+\begin{table}[h]
+\centering
+\caption{128-bit SEG node bit field allocation.}
+\label{tab:seg-node-hspa}
+\begin{tabular}{llclp{4.0cm}}
+\toprule
+\textbf{Bit Range} & \textbf{Field} & \textbf{Width} & \textbf{Format} & \textbf{Purpose} \\
+\midrule
+[127:96] & NODE\_ID & 32 & Unsigned Int & Unique Node ID \\
+[95:88] & OPCODE & 8 & Direct Map & Operation Type \\
+[87:56] & OPERAND\_REF & 32 & Dual 16-Bit Ref & Source Register / Node \\
+[55:24] & SEMANTIC\_TAG & 32 & Context Hash & Proximity / Category \\
+[23:8] & CONFIDENCE & 16 & Fixed-Point Q8.8 & Probabilistic Weight \\
+[7:0] & FLAGS / LATENCY & 8 & Bit-Packed & Cycle Cost \& Edges \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+ Upstream Node Output        Edge Resolution Check         Queue Activation
++--------------------+      +-----------------------+      +-------------------+
+| Node ID: 0x00000000|----->| Dependency Evaluator  |----->| 128-Bit Circular  |
+| Opcode: ADD        |      | (Check DEPENDS_ON)    |      | Node Register FIFO|
++--------------------+      +-----------------------+      +-------------------+
+          |                             |                          |
+          v                             v                          v
++--------------------+      +-----------------------+      +-------------------+
+| Node ID: 0x00000001|----->| Confidence Evaluator  |----->| Issue to RLC      |
+| Opcode: MUL        |      | (Validate Q8.8 Weight)|      | Cluster           |
++--------------------+      +-----------------------+      +-------------------+
+\end{verbatim}
+\caption{FIG. 2 --- SEG node dataflow and DAG dependency queue.}
+\label{fig:hspa-2}
+\end{figure}
+
+\chapter{FIG 3: PMCU Bayesian Inference and Dynamic Scheduler}
+
+\begin{equation}
+P(\text{Path}_k \mid \text{Telemetry}) = \frac{P(\text{Telemetry} \mid \text{Path}_k) \cdot P(\text{Path}_k)}{\sum_j P(\text{Telemetry} \mid \text{Path}_j) \cdot P(\text{Path}_j)}
+\end{equation}
+
+\begin{equation}
+\text{confidence\_out} = \text{confidence\_in} + (\text{prior\_in} \gg 1)
+\end{equation}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+                    PMCU INTERNAL ARCHITECTURE
++---------------------------------------------------------------------------+
+|  Telemetry Input Bus [31:0] --->+-----------------------+                 |
+|  Prior Weight Bus [31:0] ------>| INFERENCE MATRIX      |                 |
+|                                 | (Q16.16 Bayesian)     |                 |
+|                                 +-----------------------+                 |
+|                                             | Posterior Confidence        |
+|                                 +-----------------------+                 |
+|                                 | DYNAMIC SCHEDULER     |                 |
+|                                 +-----------------------+                 |
+|                                             |                             |
+|                                 +-----------------------+                 |
+|                                 | HEURISTIC PIPELINE    |                 |
+|                                 | MANAGER (SIMG Dispatch|                 |
+|                                 +-----------------------+                 |
+|                                             |                             |
+|                                 +-----------------------+                 |
+|                                 | COMPARISON GATE       |                 |
+|                                 | Threshold 32'h00018000|                 |
+|                                 +-----------------------+                 |
+|                                      /             \                      |
+|                       Branch Taken  /               \ Not Taken           |
+|                                    v                 v                    |
+|                           [ Target Address ]   [ Sequential Path ]        |
++---------------------------------------------------------------------------+
+\end{verbatim}
+\caption{FIG. 3 --- PMCU Bayesian inference and dynamic scheduler.}
+\label{fig:hspa-3}
+\end{figure}
+
+\chapter{FIG 4: Unified Memory Lattice}
+
+\begin{table}[h]
+\centering
+\caption{UML 128-bit hybrid address structure.}
+\label{tab:uml-addr-hspa}
+\begin{tabular}{llll}
+\toprule
+\textbf{Field} & \textbf{Bits} & \textbf{Width} & \textbf{Purpose} \\
+\midrule
+Physical Index & [127:64] & 64 & Hardware RAM Pointer \\
+Semantic Hash & [63:16] & 48 & Context Hash Vector \\
+Privilege/Uncertainty & [15:0] & 16 & Access \& Bounds \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+                    128-Bit Hybrid Address Bus [127:0]
+                                  |
+       +--------------------------+--------------------------+
+       |                          |                          |
+       v                          v                          v
++---------------+          +---------------+          +---------------+
+| NODE A TAG    |          | NODE B TAG    |          | NODE C TAG    |
+| Index [127:64]|          | Index [127:64]|          | Index [127:64]|
+| Hash  [63:16] |          | Hash  [63:16] |          | Hash  [63:16] |
++---------------+          +---------------+          +---------------+
+       |                          |                          |
+       +--------------------------+--------------------------+
+                                  |
+                                  v
+                +-----------------------------------+
+                | SEMANTIC ADJACENCY ROUTER         |
+                | (Hamming/Semantic Distance Check) |
+                +-----------------------------------+
+                                  |
+        +-------------------------+-------------------------+
+        | Distance <= Threshold                             | Distance > Threshold
+        v                                                   v
++-----------------------+                   +-----------------------+
+| SHARED 128-BIT        |                   | CACHE MISS / DRAM     |
+| CACHE LINE            |                   | FETCH                 |
++-----------------------+                   +-----------------------+
+\end{verbatim}
+\caption{FIG. 4 --- UML hybrid address decoding.}
+\label{fig:hspa-4}
+\end{figure}
+
+\chapter{FIG 5: SOML Safe-Commit Protocol}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+   Instruction Retirement Telemetry
+                |
+                v
+   +--------------------------+
+   | Telemetry Counter Unit   |
+   | (HOT_THRESHOLD = 1024)   |
+   +--------------------------+
+                |
+                v { Counter > HOT_THRESHOLD }
+   +--------------------------+
+   | Candidate RLC Function   |
+   | Mapping Buffer           |
+   +--------------------------+
+                |
+                v Candidate Table Configuration
+   +-----------------------------------------------------------+
+   | CRYPTOGRAPHIC SANDBOX VERIFICATION GATE                   |
+   | SHA-3 / Dilithium-III Hash Chain Checksum Evaluator       |
+   +-----------------------------------------------------------+
+          /                                             \
+   Valid / Hash Checksum                            Invalid / Checksum
+        v                                               v
+   +--------------------------+                   +--------------------------+
+   | SAFE-COMMIT REGISTER     |                   | ABORT & FAULT LOG        |
+   | Update RLC Mapping Table |                   | Maintain Base Microcode  |
+   +--------------------------+                   +--------------------------+
+                |
+                v Configuration Bus
+   +-----------------------------------------------------------+
+   | DIRECT rlc_function_select[3:0] BUS DRIVING LAYER 1        |
+   +-----------------------------------------------------------+
+\end{verbatim}
+\caption{FIG. 5 --- SOML safe-commit protocol.}
+\label{fig:hspa-5}
+\end{figure}
+
+\chapter{FIG 6: Asymmetric N-Refinement Dual-Clock HTC}
+
+\begin{equation}
+\text{Trigger Asserted} \iff \left\| \frac{\mathbf{z}_{t+1} - \mathbf{z}_t}{\Delta t} \right\|_2 < \varepsilon
+\end{equation}
+where $\varepsilon = \code{32'h0000000A} \approx 0.0001$.
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+  System Clock (1x f_CLK) -----------+-----> [ 1x: 16 Y-Registers ]
+                                     |
+                                     v (Frequency Doubler)
+  Fast Clock (2x f_CLK) ---------------------> [ 2x: 32 Z-Registers ]
+
+  Z-Register Bus [1024-Bit] ===> ( Add-Norm & SAU ) ===> Gradient Diff
+                                                              |
+                                                              v
+                                                    [ ||dz/dt||_2 ]
+
+     z_(t+1) Bus --->+----------------------+
+                     | Vector Difference    |
+     z_t Bus ------->| Unit (z_(t+1) - z_t) |
+                     +----------------------+
+                                |
+                                v
+                     +----------------------+
+                     | L2-Norm Calculator   |
+                     +----------------------+
+                                |
+                                v
+                     +----------------------+
+                     | GRADIENT COMPARATOR  |
+                     | Threshold 32'h0000000A|
+                     +----------------------+
+                          /            \
+         Norm < eps      /              \  Norm >= eps
+                        v                v
+            [ Assert Trigger ]    [ Continue Z-Updates ]
+                    |
+                    v Physical Gating Line
+            +----------------------------------+
+            | REG_CTRL Clock-Enable Pin        |
+            +----------------------------------+
+\end{verbatim}
+\caption{FIG. 6 --- Dual-clock HTC and convergence trigger.}
+\label{fig:hspa-6}
+\end{figure}
+
+\chapter{FIG 7: LoongDiamond-2.5 Quantum Substrate}
+
+\begin{equation}
+K_0^{(T_1)} = \begin{pmatrix} 1 & 0 \\ 0 & \sqrt{1-\gamma} \end{pmatrix}, \quad
+K_1^{(T_1)} = \begin{pmatrix} 0 & \sqrt{\gamma} \\ 0 & 0 \end{pmatrix}
+\end{equation}
+\begin{equation}
+K_0^{(T_2)} = \sqrt{1-\lambda} \cdot \mathbf{I}, \quad
+K_1^{(T_2)} = \sqrt{\lambda} \cdot \mathbf{Z}
+\end{equation}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+   Density Matrix Reg (rho) --->+-----------------------------------+
+                                | KRAUS CHANNEL TRANSFORM ENGINE    |
+   Time Step (t) -------------->| rho -> sum_i ( K_i * rho * K_i^+ )|
+                                +-----------------------------------+
+                                                  |
+                                                  v Updated rho
+                                +-----------------------------------+
+                                | PHYSICAL INVARIANT CHECKER        |
+                                | 1. Hermiticity: rho == rho^dagger |
+                                | 2. Trace: Tr(rho) == 1.0          |
+                                | 3. Positivity: Eigenvalues >= 0   |
+                                +-----------------------------------+
+                                                  |
+                                                  v
+                                +-----------------------------------+
+                                | VON NEUMANN PROJECTION MEASUREMENT|
+                                | Born Rule: P(m) = Tr(P_m rho)     |
+                                +-----------------------------------+
+                                      /                       \
+                                     v                         v
+                           [ Opcode 0x40 QRAND ]     [ NV Optical Output ]
+\end{verbatim}
+\caption{FIG. 7 --- Density-matrix quantum substrate.}
+\label{fig:hspa-7}
+\end{figure}
+
+\chapter{FIG 8: PQC Multi-Tier Trust Chain (DAG-Only)}
+
+The trust chain uses \emph{directed acyclic graph} anchoring exclusively. Each signed telemetry unit hashes to one or more parent DAG nodes; the DAG root's hash is anchored to WORM storage and the public blockchain. \textbf{No Merkle tree, Merkle root, or Merkle proof is used anywhere.}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
++---------------------------------------------------------------------------+
+| MULTI-TIER PQC TRUST CHAIN - DAG-ONLY ANCHORING                           |
++---------------------------------------------------------------------------+
+|  TIER 1: ML-KEM (Kyber-768 / FIPS 203)                                    |
+|  [ Public Key: 1184 B | Ciphertext: 1088 B | Shared Secret: 32 B ]        |
+|                                        |                                  |
+|                                        v Ephemeral Shared Channel         |
+|  TIER 2: ML-DSA (Dilithium-III / FIPS 204)                                |
+|  [ Public Key: 1952 B | Private Key: 4000 B | Signature: 3293 B ]        |
+|                                        |                                  |
+|                                        v Signed Telemetry Bundle          |
+|  TIER 3: SLH-DSA (SPHINCS+ / FIPS 205)                                    |
+|  [ Master HSM Key Attestation & Root-of-Trust Validation ]                |
+|                                        |                                  |
+|                                        v Batch Roots (256 Signed Units)   |
+|  TIER 4: WRITE-ONCE STORAGE & DAG ANCHORING                               |
+|                                                                           |
+|      Telemetry_0 ---> DAG_Node_A                                          |
+|      Telemetry_1 ---> DAG_Node_B ---+                                     |
+|      Telemetry_2 ---> DAG_Node_C ---+---> DAG_Node_F (Root)              |
+|      Telemetry_3 ---> DAG_Node_D ---+                                     |
+|      Telemetry_4 ---> DAG_Node_E ---+                                     |
+|                                                                           |
+|  [ DAG Root Hash (64-Byte SHA-3-512) -> WORM Partition -> Blockchain Tx ] |
++---------------------------------------------------------------------------+
+\end{verbatim}
+\caption{FIG. 8 --- PQC multi-tier trust chain with DAG-only anchoring.}
+\label{fig:hspa-8}
+\end{figure}
+
+\begin{invariant}[DAG-only integrity]
+For any two distinct telemetry units $T_i$ and $T_j$, either their DAG paths share a common ancestor (partial ordering exists) or they belong to separate DAG components jointly anchored at the DAG root. No cycles: $\forall i, \text{path}(T_i, T_i) = \emptyset$.
+\end{invariant}
+
+\chapter{FIG 9: ZU9EG Carrier Board PCB Stackup (Manufacturing Design)}
+
+\begin{table}[h]
+\centering
+\caption{10-layer PCB stackup (revision 1.0).}
+\label{tab:pcb-hspa}
+\begin{tabular}{llll}
+\toprule
+\textbf{Layer} & \textbf{Type} & \textbf{Function} & \textbf{Target impedance} \\
+\midrule
+L1 (TOP) & Signal & High-Speed Signal / SMT Pads & 50~$\Omega \pm 10\%$ \\
+L2 & Ground & Solid Ground Reference Plane & -- \\
+L3 & Signal & Controlled Impedance Inner Signal 1 & 50~$\Omega \pm 10\%$ \\
+L4 & Ground & Solid Ground Reference Plane & -- \\
+L5 & Signal & Fly-By High-Speed DDR4 Routing & 40~$\Omega \pm 10\%$ \\
+L6 & Power & VCCINT Power Plane (0.85 V Core) & -- \\
+L7 & Power & VCCAUX / VCCO Power Plane & -- \\
+L8 & Signal & Inner Signal Layer 2 & 50~$\Omega \pm 10\%$ \\
+L9 & Ground & Solid Ground Reference Plane & -- \\
+L10 (BOT) & Signal & Bottom Signal / Decoupling & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Power rail management (sequencing design).}
+\label{tab:power-hspa}
+\begin{tabular}{lllll}
+\toprule
+\textbf{Rail} & \textbf{Voltage} & \textbf{Peak (A)} & \textbf{Target} & \textbf{Phase} \\
+\midrule
+VCCINT & 0.85 V & 12.0 & FPGA Core / RLC & 1 \\
+VCCBRAM & 0.85 V & 2.0 & Block RAM / UML & 1 \\
+VCCAUX & 1.8 V & 1.5 & Auxiliary / Clock & 2 \\
+VCCO\_HP & 1.8 V & 1.0 & High-Perf I/O & 3 \\
+VCC\_PS & 0.85 V & 5.0 & ARM Cortex-A53 & 1 \\
+VCCO\_DDR4 & 1.2 V & 2.0 & LPDDR4 Bus & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{FIG 10: HARMONI-X Accessibility Pipeline}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+  User Input Stream (Procedural Request)
+                            |
+                            v
++-------------------------------------------------------------------+
+| LOCAL LLM INFERENCE ENGINE (Phi-3-mini / Gemma-2B)                |
+| Executed over HSPA RLC Hardware Vector Acceleration Units         |
++-------------------------------------------------------------------+
+                            |
+                            v Unfiltered Output
++-------------------------------------------------------------------+
+| OPENSSA INTEGRITY PIPELINE (OSI-P)                                |
+| Stage 1: Procedural Template Verification                         |
+| Stage 2: Neurogenetic Accommodation Adaptation (COMT/FKBP5)       |
+| Stage 3: PQC Audit Evidence Signer (Dilithium-III Hardware)       |
++-------------------------------------------------------------------+
+                            |
+                            v Accommodated & Signed Output
+  Output Stream (Accessibility Accommodated Document)
+\end{verbatim}
+\caption{FIG. 10 --- HARMONI-X accessibility pipeline.}
+\label{fig:hspa-10}
+\end{figure}
+
+\chapter{FIGS 11--22: Extended Subsystems}
+
+FIG 11 (RLC array microarchitecture), FIG 12 (multi-layer execution FSM), FIG 13 (Bayesian Q16.16 pipeline), FIG 14 (UML Hamming router), FIG 15 (verification testbench), FIG 16 (thermal/clock), FIG 17 (TMR+ECC fault tolerance), FIG 18 (Dynamic Reconfiguration Scheduler), FIG 19 (HTG scheduler), FIG 20 (DPS unit), FIG 21 (NSP fabric), and FIG 22 (HTM controller) are fully specified in the ODF-WP-2026-006 repository and in the earlier revision of this filing. Their claim cross-references (see Table \ref{tab:master-matrix-hspa}) establish enablement for Claims 1--18.
+
+% ============================================================================
+\part{Full Multi-ISA Backwards Compatibility (Figures 23--32)}
+% ============================================================================
+
+\chapter{Multi-ISA Overview}
+
+Full ISA backwards compatibility requires that a binary produced for a legacy ISA executes on the Q128/HSPA processor without recompilation and with bit-exact observable behavior at the application boundary.
+
+\begin{table}[h]
+\centering
+\caption{Dimensions of full ISA backwards compatibility.}
+\label{tab:compat-dims}
+\small
+\begin{tabular}{lp{5.2cm}p{4.3cm}}
+\toprule
+\textbf{Dimension} & \textbf{Requirement} & \textbf{Q128 Solution} \\
+\midrule
+Instruction decode & Byte-identical encodings accepted & Multi-ISA decode front-end (FIG 23, 29) \\
+Architecture state & Architectural registers \& flags bit-exact & Cross-ISA register file (FIG 24, 30) \\
+Memory model & Legacy observable ordering preserved & Consistency translation (FIG 25, 31) \\
+Syscall ABI & Numbers, args, return codes mapped & Syscall dispatcher (FIG 26) \\
+Performance & Within order of magnitude of native & DBT cache (FIG 27) \\
+Self-modifying code & Correct under JIT compilation & SMC detector (FIG 28) \\
+Exceptions & Signal delivery and trap vectoring & Unified trap vectoring \\
+Floating-point & IEEE 754 with legacy rounding edges & Native FPU with compat flags \\
+Segmentation (x86) & Flat, 32-bit, 16-bit segments & Segment register translation \\
+Privilege & Ring 0--3, EL0--EL3, M/S/U, PLV0--PLV3 & Virtual privilege mapping \\
+LoongArch variants & LA32R, LA32S, LA64 & Per-variant decode and register mapping \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{FIG 23: Multi-ISA Decode Front-End}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+                Instruction fetch (16-byte window)
+                              |
+                              v
+              +-----------------------------------+
+              |  Byte-buffer / Length predict     |
+              +-----------------------------------+
+                              |
+                              v
+              +-----------------------------------+
+              |  Mode selector (5-bit)            |
+              |  00000 = Q128 native              |
+              |  00001 = RV32I                    |
+              |  00010 = RV64GC                   |
+              |  00011 = RV128I                   |
+              |  00100 = x86-32                   |
+              |  00101 = x86-64                   |
+              |  00110 = ARMv7-A32                |
+              |  00111 = ARMv7-T32                |
+              |  01000 = ARMv8-AArch64            |
+              |  01001 = ARMv8-AArch32            |
+              |  01010 = LoongArch LA64           |
+              |  01011 = LoongArch LA32S          |
+              |  01100 = LoongArch LA32R          |
+              +-----------------------------------+
+                              |
+             +----------------+----------------+
+             |                                 |
+             v                                 v
+   +-------------------+           +----------------------+
+   |  Length-decoder   |           |  Legacy decoder      |
+   |  (per-ISA)        |           |  (bit-field parser)  |
+   +-------------------+           +----------------------+
+             |                                 |
+             v                                 v
+   +-------------------+           +----------------------+
+   |  Instruction      |           |  Legacy micro-op     |
+   |  length (1-15 B)  |           |  sequence generator  |
+   +-------------------+           +----------------------+
+                                                |
+                                                v
+                              +-----------------------------------+
+                              |  Translation tag insert           |
+                              |  (guest PC, guest mode)           |
+                              +-----------------------------------+
+                                                |
+                                                v
+                              +-----------------------------------+
+                              |  Q128 micro-op dispatch bus       |
+                              +-----------------------------------+
+\end{verbatim}
+\caption{FIG. 23 --- Multi-ISA decode front-end.}
+\label{fig:23}
+\end{figure}
+
+\chapter{FIG 24: Cross-ISA Register File Aliasing}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+   Physical Register File (128 x 128 bits)
+   +-------+-------+-------+-------+     +---------+
+   |  PR0  |  PR1  |  PR2  |  PR3  | ... |  PR127  |
+   +-------+-------+-------+-------+     +---------+
+
+   Aliasing view:
+
+   Q128 native:        each PRi = a full 128-bit architectural register
+   RV128I:             each PRi = x0..x31
+   RV64GC:             PRi[63:0] = x0..x31; PRi[127:64] = zero
+   RV32I:              PRi[31:0] = x0..x31; PRi[127:32] = zero
+   x86-64 GPR:         PR0..PR15 low 64 bits = rax..r15
+   x86-64 SSE:         PR16..PR31 = xmm0..xmm15
+   ARMv8 AArch64 GPR:  PR0..PR30 low 64 bits = x0..x30
+   ARMv8 AArch64 SIMD: PR32..PR63 = v0..v31
+   ARMv7 A32/T32:      PR0..PR15 low 32 bits = r0..r15
+   ARMv7 NEON:         PR16..PR31 = d0..d31 / q0..q15
+   LoongArch GPR:      PR0..PR31 = $r0..$r31 (64-bit in LA64)
+   LoongArch FPR:      PR32..PR63 = $f0..$f31
+   LoongArch VR (LSX): PR64..PR95 = $vr0..$vr31 (128-bit)
+   LoongArch VR (LASX):PR96..PR127 = $xr0..$xr31 (256-bit)
+\end{verbatim}
+\caption{FIG. 24 --- Cross-ISA register file aliasing.}
+\label{fig:24}
+\end{figure}
+
+\chapter{FIG 25: Memory Consistency Translation}
+
+\begin{table}[h]
+\centering
+\caption{Memory consistency models.}
+\label{tab:mem-models}
+\begin{tabular}{llp{5cm}}
+\toprule
+\textbf{ISA} & \textbf{Model} & \textbf{Characteristics} \\
+\midrule
+Q128 native & RVWMO+ & Weak with fences; DAG-ordering constraints \\
+RV32I/RV64GC/RV128I & RVWMO & Weak, fences via FENCE \\
+x86 / x86-64 & TSO & Strong; only store-load reordering \\
+ARMv8 AArch64 & Weak (multi-copy atomic) & Weak with dmb, dsb, isb \\
+ARMv7 A32/T32 & Weak (multi-copy atomic) & Weak with dmb, dsb, isb \\
+LoongArch LA64/LA32S/LA32R & Weak consistency & Weak with dbar; LL/SC \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+     Guest memory model  -->  Translation  -->  Q128 native model
+
+     x86 TSO:
+       - mfence                     -> Full fence insertion
+       - lfence                     -> Load fence insertion
+       - sfence                     -> Store fence insertion
+       - lock prefix                -> Full fence + atomic
+
+     ARMv8 weak:
+       - ldar / stlr                -> acquire / release fence
+       - ldxr / stxr                -> atomic + acquire/release
+       - dmb ish / dmb ishld        -> partial fence insertion
+       - dsb ish / isb              -> full fence + pipeline flush
+
+     LoongArch weak:
+       - dbar 0 (full)              -> full Q128 fence
+       - dbar hints 0x1-0x1f        -> fine-grained fence (FIG 31)
+       - ll.w / ll.d                -> load-reserve + load/load fence
+       - sc.w / sc.d                -> store-cond + implicit barrier
+       - ibar                       -> instruction barrier
+       - plain loads/stores         -> pass through
+
+     RVWMO (native):
+       - all instructions            -> pass through unchanged
+\end{verbatim}
+\caption{FIG. 25 --- Memory consistency translation rules.}
+\label{fig:25}
+\end{figure}
+
+\chapter{FIG 26: Syscall Dispatcher and ABI Translation}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+     Guest syscall entry --> Dispatcher --> Q128 kernel syscall
+
+     x86-64 Linux:
+       syscall number in rax
+       args in rdi, rsi, rdx, r10, r8, r9
+       return in rax
+
+     x86-32 Linux:
+       syscall number in eax
+       args in ebx, ecx, edx, esi, edi, ebp
+       int 0x80 / sysenter
+
+     ARMv8 Linux:
+       syscall number in x8
+       args in x0..x5
+       svc #0
+
+     ARMv7 Linux:
+       syscall number in r7
+       args in r0..r5
+       svc #0
+
+     RISC-V Linux (native):
+       syscall number in a7
+       args in a0..a5
+       ecall
+
+     LoongArch Linux:
+       syscall number in $a7 ($r11)
+       args in $a0..$a6 ($r4..$r10)
+       syscall 0
+       return in $a0; $t0-$t8 clobbered
+
+     Dispatcher logic:
+       1. Read guest syscall number, args from guest ABI
+       2. Lookup <guest_isa, guest_number> -> q128_kernel_number
+       3. Copy args into Q128 kernel syscall frame
+       4. Invoke Q128 kernel syscall
+       5. Translate errno back to guest ISA (-errno passthrough)
+       6. Write return to guest ABI
+       7. Advance guest PC past the syscall instruction
+\end{verbatim}
+\caption{FIG. 26 --- Syscall dispatcher and ABI translation.}
+\label{fig:26}
+\end{figure}
+
+\chapter{FIG 27: Dynamic Binary Translation Cache}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+     Translation cache:
+       - Direct-mapped or 2/4/8-way set-associative
+       - 4,096 sets (default)
+       - Each entry: (guest_pc[63:0], guest_mode[4:0],
+                        code_pointer, code_length,
+                        last_used_timestamp)
+       - Total capacity: ~1.5 MB
+
+     Entry lookup on guest PC miss:
+       - Search for entry matching (guest_pc, guest_mode)
+       - If found: execute cached Q128 micro-ops
+       - If not found: decode, generate micro-ops, insert
+
+     Eviction policy: LRU within set
+
+     Invalidation on:
+       - self-modifying code (FIG 28)
+       - context switch (mm change)
+       - explicit icache flush
+       - LoongArch ibar instruction
+\end{verbatim}
+\caption{FIG. 27 --- Dynamic binary translation cache.}
+\label{fig:27}
+\end{figure}
+
+\chapter{FIG 28: Self-Modifying Code Detection}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+     Page protection table (in kernel virtual memory):
+       - Each guest page has a protect bit
+       - Pages that back any live translation block are read-only
+
+     Guest attempts to write to a protected page:
+       - MMU raises protection fault
+       - Trap handler invalidates all translation blocks
+         whose instructions originate in that page
+       - Handler clears protect bit, retries write
+
+     Cross-page branches:
+       - Target page also marked protected
+       - Writes to the target page invalidate branching TBs
+
+     LoongArch-specific:
+       - ibar treated as full icache flush
+       - LL/SC self-modifying loops trigger the trap
+       - LA32R reduced-register encodings handled identically
+\end{verbatim}
+\caption{FIG. 28 --- Self-modifying code detection.}
+\label{fig:28}
+\end{figure}
+
+\begin{invariant}[SMC safety]
+For any guest instruction $i$ that has been translated to a Q128 micro-op sequence $T(i)$, if the guest subsequently writes to the page containing $i$, then $T(i)$ is removed from the translation cache before the write completes.
+\end{invariant}
+
+\chapter{FIG 29: LoongArch Decode and Execution Path}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+    LoongArch instruction (32-bit, 4-byte aligned)
+                  |
+                  v
+    +-------------------------------+
+    | Format classifier             |
+    | - Opcode bits [31:26] (6 bits)|
+    | - 9 basic formats             |
+    +-------------------------------+
+                  |
+      +-----------+-----------+-----------+-----------+
+      |           |           |           |           |
+      v           v           v           v           v
+   +------+   +------+   +------+   +------+   +------+
+   | 2R   |   | 3R   |   | 4R   |   | 2RI5 |   | I26  |
+   | Rd,  |   | Rd,  |   | Rd,  |   | Rd,  |   | imm  |
+   | Rj   |   | Rj,  |   | Rj,  |   | Rj,  |   | (26) |
+   |      |   | Rk   |   | Rk,  |   | imm5 |   |      |
+   |      |   |      |   | Ra   |   |      |   |      |
+   +------+   +------+   +------+   +------+   +------+
+      |           |           |           |           |
+      +-----------+-----------+-----------+-----------+
+                  |
+                  v
+    +-------------------------------+
+    | LoongArch register mapper     |
+    | $r0      -> PR0  (zero)       |
+    | $r1      -> PR1  (ra)         |
+    | $r2      -> PR2  (tp)         |
+    | $r3      -> PR3  (sp)         |
+    | $r4-$r11 -> PR4-PR11 (a0-a7)  |
+    | $r12-$r20-> PR12-PR20 (t0-t8) |
+    | $r21     -> PR21 (u0)         |
+    | $r22     -> PR22 (fp)         |
+    | $r23-$r31-> PR23-PR31 (s0-s8) |
+    | $f0-$f31 -> PR32-PR63         |
+    | $vr0-$vr31-> PR64-PR95        |
+    | $xr0-$xr31-> PR96-PR127       |
+    +-------------------------------+
+                  |
+                  v
+    +-------------------------------+
+    | Q128 micro-op generator       |
+    | - Integer ops -> Q128 ALU     |
+    | - FP ops      -> Q128 FPU     |
+    | - LSX/LASX    -> Q128 vector  |
+    | - syscall 0   -> Dispatcher   |
+    | - dbar        -> Memory model |
+    +-------------------------------+
+                  |
+                  v
+    +-------------------------------+
+    | DBT cache insert / dispatch   |
+    +-------------------------------+
+\end{verbatim}
+\caption{FIG. 29 --- LoongArch decode and execution path.}
+\label{fig:29}
+\end{figure}
+
+\chapter{FIG 30: LoongArch Register Mapping}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+    +-----------------------------------------------------------+
+    | LoongArch LA64 register file (32 GPR + 32 FPR + 32 VR)    |
+    +-----------------------------------------------------------+
+    | GPR:                                                       |
+    |   $r0  = zero       (hard-wired, writes discarded)        |
+    |   $r1  = ra         (link register, BL writes it)         |
+    |   $r2  = tp         (thread pointer)                      |
+    |   $r3  = sp         (stack pointer, 16-byte aligned)      |
+    |   $r4  = a0         (arg 0, return 0)                     |
+    |   $r5  = a1         (arg 1, return 1)                     |
+    |   $r6  = a2         (arg 2)                               |
+    |   $r7  = a3         (arg 3)                               |
+    |   $r8  = a4         (arg 4)                               |
+    |   $r9  = a5         (arg 5)                               |
+    |   $r10 = a6         (arg 6)                               |
+    |   $r11 = a7         (arg 7 / syscall number)              |
+    |   $r12 = t0         (temp)                                |
+    |   $r13 = t1         (temp)                                |
+    |   $r14 = t2         (temp)                                |
+    |   $r15 = t3         (temp)                                |
+    |   $r16 = t4         (temp)                                |
+    |   $r17 = t5         (temp)                                |
+    |   $r18 = t6         (temp)                                |
+    |   $r19 = t7         (temp)                                |
+    |   $r20 = t8         (temp)                                |
+    |   $r21 = u0         (percpu base, kernel-reserved)        |
+    |   $r22 = fp         (frame pointer)                       |
+    |   $r23 = s0         (static 0)                            |
+    |   $r24 = s1         (static 1)                            |
+    |   $r25 = s2         (static 2)                            |
+    |   $r26 = s3         (static 3)                            |
+    |   $r27 = s4         (static 4)                            |
+    |   $r28 = s5         (static 5)                            |
+    |   $r29 = s6         (static 6)                            |
+    |   $r30 = s7         (static 7)                            |
+    |   $r31 = s8         (static 8)                            |
+    +-----------------------------------------------------------+
+    | FPR:                                                       |
+    |   $f0-$f7   = fa0-fa7   (FP args)                         |
+    |   $f0-$f1   = fv0-fv1   (FP return)                       |
+    |   $f8-$f23  = ft0-ft15  (FP temps)                        |
+    |   $f24-$f31 = fs0-fs7   (FP statics)                      |
+    +-----------------------------------------------------------+
+    | VR:                                                        |
+    |   $vr0-$vr31 = LSX 128-bit                                 |
+    |   $xr0-$xr31 = LASX 256-bit (two PRs each)                |
+    +-----------------------------------------------------------+
+\end{verbatim}
+\caption{FIG. 30 --- LoongArch register mapping to Q128 physical registers.}
+\label{fig:30}
+\end{figure}
+
+\chapter{FIG 31: LoongArch Memory Model and DBAR Translation}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+    LoongArch DBAR hint encoding (LA664+):
+      Bit 4: kind of constraint
+             0 = completion barrier
+             1 = ordering barrier
+      Bit 3: barrier for previous read
+             0 = enforce
+             1 = relax
+      Bit 2: barrier for previous write
+             0 = enforce
+             1 = relax
+      Bit 1: barrier for subsequent read
+             0 = enforce
+             1 = relax
+      Bit 0: barrier for subsequent write
+             0 = enforce
+             1 = relax
+
+    Translation to Q128 RVWMO+:
+      dbar 0            -> full fence (all four orderings)
+      dbar with hints   -> partial fence
+                           bit 3 -> fence.r.r
+                           bit 2 -> fence.r.w
+                           bit 1 -> fence.w.r
+                           bit 0 -> fence.w.w
+
+    LL/SC preservation:
+      ll.w / ll.d       -> LR.Q + implicit load/load fence
+      sc.w / sc.d       -> SC.Q + explicit fence after
+
+    __WEAK_LLSC_MB equivalent:
+      Because LoongArch allows load/load reorder for same address,
+      the Q128 translator emits a load/load fence between LL and
+      any subsequent load to the same address.
+\end{verbatim}
+\caption{FIG. 31 --- LoongArch memory model and DBAR translation.}
+\label{fig:31}
+\end{figure}
+
+\chapter{FIG 32: LoongArch LSX / LASX Vector Translation}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+    LSX 128-bit vector register file: $vr0 - $vr31
+    LASX 256-bit vector register file: $xr0 - $xr31
+
+    Q128 vector ALU is 1024-bit wide, so both LSX and LASX map
+    efficiently:
+
+      $vr0 - $vr31  (128-bit) -> PR64 - PR95   (low 128 bits)
+      $xr0 - $xr31  (256-bit) -> PR96 - PR127 (two PRs each)
+
+    Common LSX instruction mappings:
+      vadd.b/h/w/d       -> Q128 VADD with element mask
+      vsub.b/h/w/d       -> Q128 VSUB with element mask
+      vmul.b/h/w/d       -> Q128 VMUL with element mask
+      vmadd.b/h/w/d      -> Q128 VFMA with element mask
+      vld / vst          -> Q128 vector load/store
+      vldx / vstx        -> Q128 indexed vector load/store
+      vpermi.w           -> Q128 VPERM
+      vshuf.b/h/w/d      -> Q128 VSHUF
+
+    Common LASX instruction mappings:
+      xvadd.b/h/w/d      -> Q128 VADD on 256-bit window
+      xvsub.b/h/w/d      -> Q128 VSUB on 256-bit window
+      xvmul.b/h/w/d      -> Q128 VMUL on 256-bit window
+      xvpermi.w          -> Q128 VPERM on 256-bit window
+      xvld / xvst        -> Q128 256-bit vector load/store
+      xvldx / xvstx      -> Q128 256-bit indexed load/store
+\end{verbatim}
+\caption{FIG. 32 --- LoongArch LSX/LASX vector translation.}
+\label{fig:32}
+\end{figure}
+
+% ============================================================================
+\part{DAG-Only HAL, Driver, and IDE Architecture (CIT Figures 1--4)}
+% ============================================================================
+
+\chapter{Field and Background}
+
+\section{Field of the Invention}
+This invention relates to parallel task scheduling, runtime dependency resolution, and hardware abstraction layers, and more particularly to a deterministic, Directed Acyclic Graph (DAG)-only execution architecture across physical hardware registers, kernel device drivers, compiler infrastructure, and integrated development environments, integrated with post-quantum zero-trust cryptographic enclaves.
+
+\section{Background}
+Conventional build systems, HALs, and device drivers rely on stateful, imperative execution loops and synchronous blocking primitives (mutexes, semaphores). In high-performance embedded systems and complex software builds, imperative state management causes race conditions, non-deterministic execution order, deadlocks, and pipeline stalls. Existing graph-based build engines partially address dependency resolution; however, they rely on hybrid execution models where task scheduling is loosely coupled to underlying memory barriers and hardware execution units. A need exists for a unified, pure DAG execution blueprint wherein system execution---from high-level IDE build tasks down to register-level Direct Memory Access (DMA) transactions---is represented, transformed, and executed solely via immutable topological graph transitions.
+
+\section{Summary}
+The present invention provides a unified system, non-transitory computer-readable medium, and method for constructing, transforming, and topologically executing a pure DAG architecture. The system extracts a first dependency set from an execution context, generates a primary DAG ($G$), applies an algebraic graph transformation ($\mathcal{T}$) to yield an optimized secondary DAG ($G'$), and dispatches task nodes across concrete physical hardware execution resources governed by fan-in gate counters and hardware synchronization barriers.
+
+\chapter{DAG Node Taxonomy and Formal Mathematics}
+
+\begin{definition}[Task Node]
+A Task Node $v \in V_{\text{task}}$ represents an atomic unit of execution:
+\begin{equation}
+v = \langle \text{ID},\, \text{OpCode},\, \text{Payload},\, \mathcal{A},\, \mathcal{S} \rangle
+\end{equation}
+where $\text{ID} \in \mathbb{N}$, $\text{OpCode}$ designates the operation, $\text{Payload}$ points to data memory, $\mathcal{A} \in \mathbb{Z}_2^K$ is the hardware core affinity mask, and $\mathcal{S}$ denotes memory space constraints.
+\end{definition}
+
+\begin{definition}[Gate Node]
+A Gate Node $g \in V_{\text{gate}}$ enforces atomic fan-in synchronization:
+\begin{equation}
+g = \langle \text{ID},\, K_{\text{in}},\, \text{Counter},\, \text{BarrierSem} \rangle
+\end{equation}
+where $K_{\text{in}} \in \mathbb{N}^+$ is the fixed in-degree threshold and $\text{Counter}$ is an atomic decrementor initialized to $K_{\text{in}}$.
+\end{definition}
+
+\section{Algebraic Transformation Rules}
+The system transforms an unoptimized graph $G = (V, E)$ into an optimized execution graph $G' = (V', E')$ via:
+\begin{equation}
+G' = \mathcal{T}(G, \Delta_{\text{deps}}) = (V \cup V_{\text{new}},\, (E \setminus E_{\text{rm}}) \cup E_{\text{add}})
+\end{equation}
+where
+\begin{equation}
+E_{\text{rm}} = \{\, (u, v) \in E \mid \text{TransitiveClosure}(E \setminus \{(u,v)\}) \text{ satisfies } u \to^* v \,\}
+\end{equation}
+\begin{equation}
+E_{\text{add}} = \{\, (g, v) \mid g \in V_{\text{gate}},\, \text{FanIn}(g) \ge 2 \,\}
+\end{equation}
+
+\begin{theorem}[Deterministic Execution Invariant]
+For any valid DAG $G = (V, E)$, the execution sequence $\sigma = (v_1, v_2, \dots, v_n)$ produced by topological queue processing guarantees zero data races over shared state $M$, provided that for all edges $(u, v) \in E$, the memory footprints satisfy $\text{WriteSet}(u) \cap \text{ReadSet}(v) \neq \emptyset$.
+\end{theorem}
+
+\begin{proof}
+By definition of topological sort, $(u, v) \in E \implies \sigma^{-1}(u) < \sigma^{-1}(v)$. Since node execution is gated by the strict monotonic decrement of $g.\text{Counter}$ to zero, node $v$ cannot be assigned to any queue processor until node $u$ completes its physical memory store and issues a hardware memory barrier (\texttt{DMB/DSB}). Hence data dependency violation is mathematically impossible.
+\end{proof}
+
+\chapter{CIT FIG 1: Pure DAG Node Taxonomy and Synchronization Topology}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
++-----------------------------------------------------------------------+
+|                                FIGURE 1                               |
+|                     DAG NODE TAXONOMY & TOPOLOGY                      |
++-----------------------------------------------------------------------+
+
+     +-----------------------+             +-----------------------+
+     |  Immediate Task 101   |             |  Immediate Task 102   |
+     | [Init Directory Maps] |             | [Alloc Standard Libs] |
+     +-----------+-----------+             +-----------+-----------+
+                 |                                     |
+                 | (Edge E1)                           | (Edge E2)
+                 v                                     v
+     +-----------+-----------+             +-----------+-----------+
+     |     Task Node 201     |             |     Task Node 202     |
+     |  [Compile Source A]   |             |  [Compile Source B]   |
+     +-----------+-----------+             +-----------+-----------+
+                 |                                     |
+                 | (Out-Edge)                          | (Out-Edge)
+                 +------------------+  +---------------+
+                                    |  |
+                                    v  v
+                         +----------+----------+
+                         |    Gate Node 301    |
+                         |  [Fan-In Counter=2] |
+                         +----------+----------+
+                                    |
+                                    | (Barrier Release)
+                                    v
+                         +----------+----------+
+                         |     Task Node 401   |
+                         |    [Link Binary]    |
+                         +---------------------+
+\end{verbatim}
+\caption{CIT FIG. 1 --- DAG node taxonomy and topology.}
+\label{fig:cit-1}
+\end{figure}
+
+\chapter{CIT FIG 2: Graph Transformation Engine}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
++-----------------------------------------------------------------------+
+|                                FIGURE 2                               |
+|                  DAG DEPENDENCY TRANSFORMER (E_rm/E_add)              |
++-----------------------------------------------------------------------+
+
+ UNOPTIMIZED INITIAL GRAPH (G)              OPTIMIZED SECONDARY GRAPH (G')
+ =============================              ==============================
+
+    +-------------------+                      +-------------------+
+    |    Task Node A    |                      |    Task Node A    |
+    +---------+---------+                      +----+---------+----+
+              |                                     |         |
+              | (Redundant Edge)                    |         | (Direct)
+              |                                     |         v
+              v                                     |     +---+---+
+    +---------+---------+                           |     | Immed. |
+    |    Task Node B    |                           |     | Task C |
+    +---------+---------+                           |     +---+---+
+              |                                     |         |
+              v                                     v         v
+    +---------+---------+                      +----+---------+----+
+    |    Task Node D    |                      |    Gate Node G1   |
+    +-------------------+                      +----+--------------+
+                                                            |
+   Transformation:                                          v
+   1. Locate Transitive Edges               +---------------+---+
+   2. Remove E_rm = (A -> B -> D)           |    Task Node D    |
+   3. Inject Dynamic Gate Nodes             +-------------------+
+\end{verbatim}
+\caption{CIT FIG. 2 --- DAG dependency transformer.}
+\label{fig:cit-2}
+\end{figure}
+
+\chapter{CIT FIG 3: HAL DAG-Aware DMA Descriptor Chain (Manufacturing)}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
++-----------------------------------------------------------------------+
+|                                FIGURE 3                               |
+|                  HAL DAG-AWARE DMA DESCRIPTOR CHAIN                   |
++-----------------------------------------------------------------------+
+
+   MMIO Base: 0x40000000                   Physical Hardware Memory
+  +-----------------------+              +---------------------------+
+  |  REG_DAG_CTRL [0x00]  |------------->|  Descriptor Node 1 (0x10) |
+  |  - START_DAG = 1      |              |  - SRC:  0x20001000       |
+  |  - HEAD_PTR  = 0x10   |              |  - DST:  0x40008000       |
+  +-----------------------+              |  - COUNT: 1024 Bytes      |
+  |  REG_DAG_STAT [0x04]  |              |  - GATE_REF: Gate_Node_A  |
+  |  - ACTIVE_TASKS = 4   |              +-------------+-------------+
+  +-----------------------+                            |
+                                                       v
+                                         +---------------------------+
+                                         |  Descriptor Node 2 (0x20) |
+                                         |  - SRC:  0x20002000       |
+                                         |  - DST:  0x40008400       |
+                                         |  - COUNT: 2048 Bytes      |
+                                         |  - GATE_REF: Gate_Node_B  |
+                                         +---------------------------+
+\end{verbatim}
+\caption{CIT FIG. 3 --- HAL DAG-aware DMA descriptor chain.}
+\label{fig:cit-3}
+\end{figure}
+
+\chapter{CIT FIG 4: IDE Build Pipeline and Driver Fault Recovery}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
++-----------------------------------------------------------------------+
+|                                FIGURE 4                               |
+|              IDE / DRIVER DWARF INTEGRATION & RECOVERY                |
++-----------------------------------------------------------------------+
+
+ [IDE AST Engine] --------> [Emit DAG] -------> [Hardware Thread Pool]
+                                                    |
+                                                    +---> Core 0 (Task 1)
+                                                    +---> Core 1 (Task 2)
+                                                    |
+ [DWARF Symbol DIE Offset] <--- [Task_ID Map] <----+
+                                                    | (Fault Interrupt)
+                                                    v
+                                       +----------------------------+
+                                       |   Driver Fault Handler     |
+                                       |   - Isolate Faulty Node    |
+                                       |   - Prune Subtree          |
+                                       |   - Re-schedule Safe DAG   |
+                                       +----------------------------+
+\end{verbatim}
+\caption{CIT FIG. 4 --- IDE/DWARF integration and fault recovery.}
+\label{fig:cit-4}
+\end{figure}
+
+\chapter{WIPO ST.26 Compliant XML Schema}
+
+\begin{lstlisting}[style=xml, caption={WIPO ST.26 XML for DAG Node Taxonomy.}, label={lst:st26}]
+<?xml version="1.0" encoding="UTF-8"?>
+<ST26SequenceListing
+    xmlns="http://www.wipo.int/standards/XMLSchema/ST26"
+    dtdVersion="V1_3"
+    fileName="DAG_Node_Taxonomy_ST26.xml"
+    softwareName="WIPO Sequence Editor"
+    softwareVersion="2.3.0"
+    productionDate="2026-10-03">
+    <ApplicantFileReference>DAG-PCT-2026-CLM</ApplicantFileReference>
+    <ApplicantName englishName="Caustin Lee McLaughlin">Caustin Lee McLaughlin</ApplicantName>
+    <InventionTitle englishName="DETERMINISTIC DAG-ONLY HAL, DRIVERS, IDES, AND QUANTUM-RESISTANT EMBEDDED SYSTEM INFRASTRUCTURE">DETERMINISTIC DAG-ONLY HAL, DRIVERS, IDES, AND QUANTUM-RESISTANT EMBEDDED SYSTEM INFRASTRUCTURE</InventionTitle>
+    <SequenceTotalQuantity>0</SequenceTotalQuantity>
+    <NonConventionalListingData>
+        <TaxonomyDefinition id="DAG_NODE_TAXONOMY">
+            <NodeTypes>
+                <NodeType name="TaskNode" typeId="0x01">
+                    <Field name="task_id" dataType="uint32" byteOffset="0x00"/>
+                    <Field name="opcode" dataType="uint32" byteOffset="0x04"/>
+                    <Field name="payload_ptr" dataType="uint64" byteOffset="0x08"/>
+                    <Field name="affinity_mask" dataType="uint32" byteOffset="0x10"/>
+                    <Field name="space_constraint" dataType="uint32" byteOffset="0x14"/>
+                </NodeType>
+                <NodeType name="GateNode" typeId="0x02">
+                    <Field name="gate_id" dataType="uint32" byteOffset="0x00"/>
+                    <Field name="fan_in_threshold" dataType="uint32" byteOffset="0x04"/>
+                    <Field name="atomic_counter" dataType="uint32_volatile" byteOffset="0x08"/>
+                    <Field name="barrier_sem" dataType="uint32" byteOffset="0x0C"/>
+                </NodeType>
+            </NodeTypes>
+        </TaxonomyDefinition>
+        <HardwareDescriptorFormat id="HAL_DMA_DESCRIPTOR_CHAIN">
+            <DescriptorLayout structName="dma_dag_descriptor_t" sizeBytes="40" alignment="8">
+                <Member name="task_id" dataType="uint32_t" offset="0x00"/>
+                <Member name="opcode" dataType="uint32_t" offset="0x04"/>
+                <Member name="src_phys_addr" dataType="uint64_t" offset="0x08"/>
+                <Member name="dst_phys_addr" dataType="uint64_t" offset="0x10"/>
+                <Member name="transfer_bytes" dataType="uint32_t" offset="0x18"/>
+                <Member name="target_gate_id" dataType="uint32_t" offset="0x1C"/>
+                <Member name="next_descriptor" dataType="uint64_t" offset="0x20"/>
+            </DescriptorLayout>
+            <RegisterMap mmioBase="0x40000000">
+                <Register name="REG_DAG_CTRL" offset="0x00" access="R/W" width="32"/>
+                <Register name="REG_DAG_STATUS" offset="0x04" access="R" width="32"/>
+                <Register name="REG_DAG_HEAD_ADDR" offset="0x08" access="R/W" width="64"/>
+                <Register name="REG_DAG_GATE_DEC" offset="0x10" access="W" width="32"/>
+                <Register name="REG_DAG_IRQ_MASK" offset="0x14" access="R/W" width="32"/>
+            </RegisterMap>
+        </HardwareDescriptorFormat>
+        <CryptographicIntegrity id="POST_QUANTUM_ENCLAVE_INTEGRATION">
+            <KeyEncapsulation Standard="NIST FIPS 203" Primitive="ML-KEM-1024" KeySizeBytes="1568"/>
+            <DigitalSignature Standard="NIST FIPS 204" Primitive="ML-DSA-87" SignatureSizeBytes="4627"/>
+            <HashingAlgorithm Standard="FIPS 202" Primitive="SHA3-256"/>
+        </CryptographicIntegrity>
+    </NonConventionalListingData>
+</ST26SequenceListing>
+\end{lstlisting}
+
+\chapter{Source Code: HAL MMIO Driver}
+
+\begin{lstlisting}[style=code, caption={HAL MMIO register controller (dag\_hal.c).}, label={lst:hal-c}]
+#include <stdint.h>
+#include <stdbool.h>
+
+#define MMIO_DAG_BASE        0x40000000
+#define REG_DAG_CTRL         (*(volatile uint32_t*)(MMIO_DAG_BASE + 0x00))
+#define REG_DAG_STATUS       (*(volatile uint32_t*)(MMIO_DAG_BASE + 0x04))
+#define REG_DAG_HEAD_ADDR    (*(volatile uint64_t*)(MMIO_DAG_BASE + 0x08))
+#define REG_DAG_GATE_DEC     (*(volatile uint32_t*)(MMIO_DAG_BASE + 0x10))
+
+typedef struct __attribute__((packed)) {
+    uint32_t task_id;
+    uint32_t opcode;
+    uint64_t src_phys_addr;
+    uint64_t dst_phys_addr;
+    uint32_t transfer_bytes;
+    uint32_t target_gate_id;
+    uint64_t next_descriptor;
+} dma_dag_descriptor_t;
+
+void hal_dag_init(uint64_t head_descriptor_phys_addr) {
+    REG_DAG_CTRL = 0x02;
+    REG_DAG_HEAD_ADDR = head_descriptor_phys_addr;
+    REG_DAG_CTRL = 0x01;
+}
+
+void hal_dag_atomic_decrement_gate(uint32_t gate_id) {
+    REG_DAG_GATE_DEC = gate_id;
+}
+
+bool hal_dag_is_busy(void) {
+    return (REG_DAG_STATUS & 0x01) != 0;
+}
+\end{lstlisting}
+
+\chapter{Source Code: IDE DAG Scheduler (Python)}
+
+\begin{lstlisting}[style=code, caption={IDE DAG scheduler and transformer.}, label={lst:dag-py}]
+from collections import defaultdict, deque
+import threading
+
+class TaskNode:
+    def __init__(self, task_id, opcode, payload, affinity=0):
+        self.task_id = task_id
+        self.opcode = opcode
+        self.payload = payload
+        self.affinity = affinity
+        self.in_degree = 0
+
+class GateNode:
+    def __init__(self, gate_id, fan_in):
+        self.gate_id = gate_id
+        self.counter = fan_in
+        self.lock = threading.Lock()
+
+    def decrement(self):
+        with self.lock:
+            self.counter -= 1
+            return self.counter == 0
+
+class DAGEngine:
+    def __init__(self):
+        self.nodes = {}
+        self.edges = defaultdict(list)
+
+    def add_task(self, task_node):
+        self.nodes[task_node.task_id] = task_node
+
+    def add_edge(self, src_id, dst_id):
+        self.edges[src_id].append(dst_id)
+        self.nodes[dst_id].in_degree += 1
+
+    def remove_transitive_edges(self):
+        for u in list(self.nodes.keys()):
+            for v in list(self.edges[u]):
+                queue = deque([w for w in self.edges[u] if w != v])
+                while queue:
+                    curr = queue.popleft()
+                    if curr == v:
+                        self.edges[u].remove(v)
+                        self.nodes[v].in_degree -= 1
+                        break
+                    for nxt in self.edges[curr]:
+                        queue.append(nxt)
+
+    def execute_topological(self):
+        ready_queue = deque([n for n in self.nodes.values() if n.in_degree == 0])
+        order = []
+        while ready_queue:
+            curr = ready_queue.popleft()
+            order.append(curr.task_id)
+            for neighbor_id in self.edges[curr.task_id]:
+                neighbor = self.nodes[neighbor_id]
+                neighbor.in_degree -= 1
+                if neighbor.in_degree == 0:
+                    ready_queue.append(neighbor)
+        return order
+\end{lstlisting}
+
+% ============================================================================
+\part{Post-Quantum Cryptographic Integration}
+% ============================================================================
+
+\chapter{FIPS 203/204/205 Primitives and QRDE-AEAD}
+
+\section{Overview}
+The DAG hardware execution pipeline integrates NIST FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), and FIPS 205 (SLH-DSA) directly at the descriptor level.
+
+\section{Mathematical Foundations}
+
+\subsection{Module Learning With Errors (M-LWE)}
+Let $R = \mathbb{Z}[X]/(X^n + 1)$ with $n = 256$, and $R_q = R/qR$ with $q = 3329$. Given $\mathbf{A} \in R_q^{k \times k}$ and $\mathbf{b} = \mathbf{A}\mathbf{s} + \mathbf{e} \in R_q^k$, M-LWE asserts $(\mathbf{A}, \mathbf{A}\mathbf{s} + \mathbf{e}) \approx_c (\mathbf{A}, \mathbf{u})$ for uniform $\mathbf{u}$.
+
+\subsection{Module Short Integer Solution (M-SIS)}
+Given $\mathbf{A} \in R_q^{k \times l}$, find non-zero $\mathbf{z} \in R^l$ such that:
+\begin{equation}
+\mathbf{A}\mathbf{z} \equiv \mathbf{0} \pmod q \quad \text{and} \quad 0 < \Vert \mathbf{z} \Vert_\infty \le \gamma
+\end{equation}
+
+\section{QRDE-AEAD Dual-Envelope Protocol}
+\begin{align}
+\text{ML-KEM.Encaps}(\text{pk}_{\text{receiver}}) &\longrightarrow (c_1, \text{ss}) \\
+\mathbf{K}_{\text{master}} &= \text{HKDF-SHA3-384}(\text{ss}, \text{"QRDE-Master-Salt"}) \\
+\mathbf{K}_e &= \mathbf{K}_{\text{master}}[0..31], \quad \mathbf{K}_m = \mathbf{K}_{\text{master}}[32..63] \\
+\text{Inner: } ct_2, \tau_2 &= \text{AES-256-GCM.Encrypt}(\mathbf{K}_e, \text{IV}, P, \text{AD}_{\text{inner}}) \\
+\text{Outer: } \tau_1 &= \text{HMAC-SHA3-256}(\mathbf{K}_m, c_1 \mathbin{\Vert} ct_2 \mathbin{\Vert} \tau_2 \mathbin{\Vert} \text{AD}_{\text{outer}})
+\end{align}
+
+\section{Post-Quantum Cryptographic Integration Code (C)}
+
+\begin{lstlisting}[style=code, caption={PQC HAL MMIO driver (dag\_hal\_pqc.c).}, label={lst:pqc-c}]
+#include <stdint.h>
+#include <stdbool.h>
+
+#define MMIO_DAG_BASE            0x40000000
+#define REG_DAG_CTRL             (*(volatile uint32_t*)(MMIO_DAG_BASE + 0x00))
+#define REG_DAG_HEAD_ADDR        (*(volatile uint64_t*)(MMIO_DAG_BASE + 0x08))
+#define REG_DAG_GATE_DEC         (*(volatile uint32_t*)(MMIO_DAG_BASE + 0x10))
+#define REG_PQC_ENQUEUE_TRIGGER  (*(volatile uint32_t*)(MMIO_DAG_BASE + 0x24))
+
+#define ML_KEM_1024_BYTES_PUBLIC_KEY   1568
+#define ML_KEM_1024_BYTES_CIPHERTEXT   1568
+#define ML_DSA_87_BYTES_SIGNATURE      4627
+
+typedef enum {
+    OP_DMA_TRANSFER          = 0x01,
+    OP_COMPILE_STEP          = 0x02,
+    OP_PQC_ML_KEM_1024_ENCAP = 0x10,
+    OP_PQC_ML_KEM_1024_DECAP = 0x11,
+    OP_PQC_ML_DSA_87_SIGN    = 0x20,
+    OP_PQC_ML_DSA_87_VERIFY  = 0x21
+} dag_opcode_t;
+
+typedef struct __attribute__((packed)) {
+    uint32_t task_id;
+    uint32_t opcode;
+    uint64_t src_phys_addr;
+    uint64_t dst_phys_addr;
+    uint64_t key_phys_addr;
+    uint32_t payload_bytes;
+    uint32_t target_gate_id;
+    uint64_t next_descriptor;
+} pqc_dag_descriptor_t;
+
+void hal_dag_enqueue_ml_kem_1024_encap(
+    pqc_dag_descriptor_t* desc, uint32_t task_id,
+    uint64_t pk_addr, uint64_t ct_out_addr, uint64_t ss_out_addr,
+    uint32_t gate_id, uint64_t next_desc_addr)
+{
+    desc->task_id = task_id;
+    desc->opcode = OP_PQC_ML_KEM_1024_ENCAP;
+    desc->src_phys_addr = pk_addr;
+    desc->dst_phys_addr = ct_out_addr;
+    desc->key_phys_addr = ss_out_addr;
+    desc->payload_bytes = ML_KEM_1024_BYTES_PUBLIC_KEY;
+    desc->target_gate_id = gate_id;
+    desc->next_descriptor = next_desc_addr;
+    REG_PQC_ENQUEUE_TRIGGER = task_id;
+}
+\end{lstlisting}
+
+% ============================================================================
+\part{Manufacturing Designs}
+% ============================================================================
+
+\chapter{Diamond CVD Fabrication Sequence}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Substrate growth}: grow 20~\micro m CVD diamond on Ir/YSZ/Si(001) handle wafer; lift off.
+    \item \textbf{Backside via etch}: RIE from backside, stop on metal-1 pads; insulate with PECVD SiO$_2$.
+    \item \textbf{Via metallization}: electroplate Au, 10~\micro m diameter.
+    \item \textbf{Schottky contact deposition}: Al (100 nm) on phosphorus-doped diamond ($5\times 10^{17}$~cm$^{-3}$), patterned by lift-off.
+    \item \textbf{Row/column electrodes}: Ti/Au (10/200 nm) sputtering and lift-off.
+    \item \textbf{H-termination}: hydrogen plasma exposure defines 2D hole gas channels for Q128 core.
+    \item \textbf{Gate dielectric}: Al$_2$O$_3$ ALD at 120~$^\circ$C.
+    \item \textbf{Graphene interconnects}: CVD graphene transfer, patterned.
+    \item \textbf{Glass reservoir cap}: anodic bond at 400~$^\circ$C with pre-etched 50-\micro m microchannels.
+    \item \textbf{Parylene-C passivation}: 5~\micro m CVD, opened at electrode tips and bond pads.
+    \item \textbf{Dice, test, package}: dicing, electrical test, pick-and-place onto flexible inductive coil substrate.
+\end{enumerate}
+
+\chapter{GDSII Mask Layer Outline}
+
+\begin{table}[h]
+\centering
+\caption{GDSII mask layer outline.}
+\label{tab:gds-layers}
+\begin{tabular}{lll}
+\toprule
+\textbf{Layer} & \textbf{Name} & \textbf{Function} \\
+\midrule
+1 & NWELL & n-type doping (phosphorus) \\
+2 & PWELL & p-type doping (boron) \\
+3 & HTERM & hydrogen termination regions \\
+4 & GATE & Al$_2$O$_3$/Ti/Au gate stack \\
+5 & SCHOTTKY & Al Schottky contacts \\
+6 & METAL1 & row electrodes (Ti/Au) \\
+7 & METAL2 & column electrodes (Ti/Au) \\
+8 & GRAPHENE & interconnect layer \\
+9 & VIA & through-diamond vias \\
+10 & PAD & bond pads \\
+11 & PARYLENE\_OPEN & electrode tips and bond windows \\
+12 & RESERVOIR\_ALIGN & glass-bond alignment marks \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{Bill of Materials (Device)}
+
+\begin{table}[h]
+\centering
+\caption{Bill of materials at 10,000 units/year.}
+\label{tab:bom}
+\begin{tabular}{lrl}
+\toprule
+\textbf{Item} & \textbf{Cost (USD)} & \textbf{Notes} \\
+\midrule
+20~\micro m CVD diamond die (4.5$\times$4.5 mm) & 60 & electronic grade \\
+H-terminated MESFET processing & 31 & Q128 + multi-ISA decoder incl. LoongArch \\
+VCSEL array (1064 nm, 8 ch) & 12 & lidar source \\
+PMUT ultrasound array & 10 & PZT/AlN \\
+Balanced photodetector & 15 & coherent RX \\
+Waveguide etch & 8 & shared lidar/opto \\
+Electrophoresis array & 12 & Pt/Ir, Au vias \\
+Glass reservoir + bond & 15 & 50~\micro m channels \\
+Parylene-C encapsulation & 5 & 5~\micro m \\
+Inductive coil + septum & 8 & power + refill \\
+Nanoparticle reagent (per patient) & 10 & one-time CSF injection \\
+\midrule
+\textbf{Total device BOM} & \textbf{\$186} & excl. nano reagent \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{Regulatory and Test Flow}
+
+\begin{table}[h]
+\centering
+\caption{Silicon validation test flow.}
+\label{tab:testflow}
+\small
+\begin{tabular}{clp{5cm}}
+\toprule
+\textbf{Step} & \textbf{Test} & \textbf{Pass Criteria} \\
+\midrule
+1 & Functional Bring-Up & All layers responsive, no timeout \\
+2 & Thermal Throttle Characterization & Z-domain throttles at $\ge$115$^\circ$C \\
+3 & Fault-Injection Campaign & Single-bit corrected $\le$2 cycles \\
+4 & Bayesian Scheduler Validation & Posterior matches Q16.16 model \\
+5 & Quantum Emulation Fidelity & Trace distance $<$ 0.01 \\
+6 & PQC Trust-Chain E2E & Signature verifies, DAG root matches \\
+7 & Accessibility Stress Test & Compliance $\ge$ 95\% \\
+8 & Multi-ISA Workload Tests & Linux, Debian, GCC, Python, Node.js, Firefox, Chromium, PostgreSQL, Loongnix pass \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Regulatory submission plan.}
+\label{tab:reg}
+\begin{tabular}{lll}
+\toprule
+\textbf{Standard} & \textbf{Scope} & \textbf{Target} \\
+\midrule
+IEC 62304 & Software lifecycle & Q1 2027 \\
+ISO 14971 & Risk management & Q1 2027 \\
+IEC 60601-2-33 & MRI safety & Q2 2027 \\
+IEC 60825-1 & Laser safety & Q2 2027 \\
+ISO 14708-3 & Active implants & Q4 2027 \\
+IEC 62366-1 & Usability & Q2 2027 \\
+ISO 10993 & Biocompatibility & Q3 2027 \\
+Multi-ISA supplemental & Software item annex & Q2 2027 \\
+LoongArch supplemental & Software item annex & Q2 2027 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================================
+\part{USPTO Claims (1--28)}
+% ============================================================================
+
+\chapter{Independent Claims}
+
+\section*{Claim 1 (System --- DAG execution)}
+
+\textbf{1.} A system for deterministic Directed Acyclic Graph (DAG) task execution across hardware and software boundaries, the system comprising a physical memory storing a DAG data structure and one or more hardware processing units configured to execute instructions to perform operations comprising: reading a first dependency set from an execution context; generating a primary DAG comprising a plurality of task nodes and gate nodes interconnected by directed edges; transforming the primary DAG into a secondary DAG by applying an algebraic graph transformation that removes transitive redundancy edges and inserts gate nodes at dependency convergence points; identifying immediate task nodes lacking unresolved incoming edges; dispatching immediate task nodes in parallel according to execution affinity masks; and atomically decrementing a target gate counter upon task completion, releasing downstream task nodes when the counter reaches zero.
+
+\section*{Claim 2 (Method --- DAG build engine)}
+
+\textbf{2.} A method for executing a DAG-only build engine within a computing environment, the method comprising: extracting a first dependency set corresponding to software compilation units; constructing a primary DAG comprising task nodes and gate nodes; transforming the primary DAG into a secondary DAG by evaluating transitive dependencies; mapping each task node to a Debug Information Entry (DIE) offset within a DWARF debugging structure; scheduling ready task nodes to a multi-core processing pipeline; and upon detecting a fault in a first task node, isolating the fault and continuing execution of unaffected subgraphs.
+
+\section*{Claim 3 (CRM --- HAL device driver)}
+
+\textbf{3.} A non-transitory computer-readable medium storing instructions that, when executed by at least one hardware processor, cause the processor to execute a HAL device driver model by performing steps comprising: initializing an MMIO controller with a physical memory pointer referencing a root DMA descriptor chain structured as a DAG; writing to a control register to initiate topological DMA processing; receiving a hardware interrupt indicating completion of a first DMA task node; executing an atomic decrement on a fan-in gate counter; and triggering execution of a subsequent DMA task node when the counter reaches zero.
+
+\chapter{Open Diamond and Q128 Claims}
+
+\textbf{4.} A neural interface system comprising: a single-crystal CVD diamond substrate; a 128-bit RISC-V processor core integrated into said substrate; a frequency-modulated continuous-wave (FMCW) lidar subsystem operating at approximately 1064~nm; a focused ultrasound array operating at 1--5~MHz; a passive-matrix electrophoresis array comprising 144 rows and 233 columns; and a formally verified software stack executing on said processor core; wherein the system is configured to activate neural tissue only by superposition of the lidar field and the ultrasound field onto functionalized nanoparticles distributed via cerebrospinal fluid, and wherein the system contains no electrical stimulation path to tissue.
+
+\textbf{5.} The system of claim 4, wherein the electrophoresis array comprises a diamond Schottky diode at each intersection of a row electrode and a column electrode, and each pixel is controlled by a 128-bit command word comprising a current amplitude field, a pulse waveform field, and a per-pixel safety dose cap.
+
+\textbf{6.} The system of claim 4, wherein the processor core comprises a hardware safety extension fuse-programmed at fabrication and not modifiable by software, and a quantum control extension that directly manipulates NV-centre qubits integrated into the diamond substrate.
+
+\textbf{7.} A method for non-genetic, non-electrical neural activation, comprising: administering functionalized nanoparticles into the cerebrospinal fluid; allowing said nanoparticles to distribute to a target tissue region; simultaneously illuminating said region with an FMCW lidar beam at 1064~nm; simultaneously applying focused ultrasound at 1--5~MHz to said region; verifying that thermal load, mechanical index, and cumulative dose remain within safety limits; wherein the superposition of said fields causes the nanoparticles to release a biochemical ligand, thereby activating neurons without genetic modification and without injecting electrical current into tissue.
+
+\textbf{8.} The method of claim 7, further comprising logging each activation event to an append-only directed acyclic graph whose node hashes incorporate parent hashes, and anchoring the DAG root to write-once storage.
+
+\chapter{HSPA Processor Claims (9--18)}
+
+\textbf{9.} A processor comprising: a semantic instruction set defining graph-based executable nodes; a probabilistic microcontroller unit configured to apply Bayesian inference to schedule said nodes; a plurality of reconfigurable logic cells; a unified memory lattice encoding physical and semantic address data; and a self-optimizing microcode layer configured to autonomously remap the reconfigurable logic cells based on execution telemetry and to cryptographically verify said remapping against an append-only directed acyclic graph.
+
+\textbf{10.} The processor of claim 9, wherein the probabilistic microcontroller unit comprises a Bayesian inference matrix operating on Q16.16 fixed-point arithmetic and a comparator evaluating posterior confidence against a threshold of \code{32'h00018000}.
+
+\textbf{11.} The processor of claim 9, wherein the unified memory lattice comprises a 128-bit hybrid address field in which bits [127:64] encode a physical index, bits [63:16] encode a semantic hash, and bits [15:0] encode a privilege and uncertainty vector.
+
+\textbf{12.} The processor of claim 9, further comprising an asymmetric dual-clock hardware transformer core in which 32 Z-latent registers operate at twice a system clock frequency and 16 Y-prediction registers operate at the system clock frequency, and wherein convergence is asserted when a fixed-point L2 norm falls below \code{32'h0000000A}.
+
+\textbf{13.} The processor of claim 9, further comprising a density-matrix quantum emulation substrate configured to apply Kraus channel operators, enforce Hermiticity, unit trace, and positive semi-definiteness, and emit quantum random numbers via an opcode.
+
+\textbf{14.} The processor of claim 9, further comprising a post-quantum cryptographic trust chain comprising an ML-KEM engine, an ML-DSA hardware signer, and an SLH-DSA signer, wherein signed telemetry units are organized as a directed acyclic graph and the DAG root hash is anchored to write-once storage.
+
+\textbf{15.} A method for cryptographic integrity verification, comprising constructing a directed acyclic graph whose nodes are signed telemetry units, computing a root hash from the unique root node, writing the root hash to write-once storage, and anchoring the root hash to a public blockchain, wherein no Merkle tree is constructed and no Merkle root is computed at any step.
+
+\textbf{16.} The processor of claim 9, further comprising a multi-ISA decode front-end configured to accept instruction bytes in a plurality of legacy binary formats including at least RISC-V RV32I, RV32GC, RV64GC, RV128I, x86-32, x86-64, ARMv7 A32, ARMv7 T32, ARMv8 AArch64, ARMv8 AArch32, LoongArch LA32R, LoongArch LA32S, and LoongArch LA64, and to dispatch the decoded instructions either to a native Q128 semantic graph execution path or to a hardware-assisted dynamic binary translation path.
+
+\textbf{17.} The processor of claim 16, further comprising a cross-ISA register file in which a single physical register file of 128-bit registers is aliased to the architectural register names of each supported ISA, including LoongArch 32 GPRs (\$r0--\$r31), 32 FPRs (\$f0--\$f31), and 32 vector registers (\$vr0--\$vr31 for LSX, \$xr0--\$xr31 for LASX).
+
+\textbf{18.} The processor of claim 16, further comprising a memory consistency translation engine that converts the memory ordering semantics of the executing legacy ISA into the native Q128 consistency model by inserting or removing fence instructions, including translation of LoongArch DBAR instructions to the equivalent Q128 RVWMO+ fence pattern.
+
+\chapter{Extended Claims (19--28)}
+
+\textbf{19.} The processor of claim 16, further comprising a syscall dispatcher that accepts syscall invocations in the native ABI of each supported legacy ISA, including LoongArch \code{syscall 0} with syscall number in \$a7 and arguments in \$a0--\$a6, and translates them to the native Q128 kernel syscall ABI with error-code translation.
+
+\textbf{20.} The processor of claim 16, further comprising a dynamic binary translation cache keyed by guest program counter and guest execution mode, with a configurable associativity between two and eight ways.
+
+\textbf{21.} The processor of claim 16, further comprising a self-modifying code detector with a page protection table, a write trap, an invalidation engine, and a dirty-bit propagation mechanism.
+
+\textbf{22.} A processor comprising: a LoongArch decode front-end configured to accept 32-bit fixed-length LoongArch instructions in LA32R, LA32S, and LA64 variants and to classify them into the 2R, 3R, 4R, 2RI5, 2RI12, 2RI14, 2RI16, 1RI21, and I26 instruction formats; a LoongArch register mapping unit that maps the 32 LoongArch GPRs \$r0--\$r31 to Q128 physical registers, with \$r0 hard-wired to zero, \$r1 as link register, \$r4--\$r11 as argument registers \$a0--\$a7, \$r12--\$r20 as temporaries \$t0--\$t8, and \$r23--\$r31 as statics \$s0--\$s8; a LoongArch memory model translator that converts the LoongArch weak consistency model to the Q128 RVWMO+ model, inserting DBAR-equivalent fences and preserving LL/SC semantics including the load/load reorder barrier; and a LoongArch vector translator that maps LSX 128-bit and LASX 256-bit vector instructions to the Q128 vector ALU.
+
+\textbf{23.} The processor of claim 22, wherein the LoongArch memory model translator emits fine-grained DBAR hints for LA664-class processors, decoding bit 4 as ordering versus completion, bit 3 as barrier for previous read, bit 2 as barrier for previous write, bit 1 as barrier for subsequent read, and bit 0 as barrier for subsequent write.
+
+\textbf{24.} The processor of claim 22, further comprising a Loongson Binary Translation (LBT) extension compatibility layer that exposes four scratch registers (scr0--scr3), an x86/ARM \code{eflags} register, and an x87 FPU stack pointer (\code{ftop}) to guest binaries that rely on hardware-assisted translation features.
+
+\textbf{25.} The processor of claim 22, wherein the LoongArch syscall dispatcher maps \code{syscall 0} invocations with the syscall number in \$a7 and arguments in \$a0--\$a6 to the Q128 kernel syscall ABI, and maps the return value from the Q128 ABI back to \$a0, clobbering \$t0--\$t8 as required by the LoongArch ABI.
+
+\textbf{26.} The system of claim 1, wherein the immediate task nodes comprise operations for creating directory frameworks, generating header maps, and copying standard libraries without blocking on unresolved dependencies, and dispatching further comprises evaluating real-time execution constraints using an Earliest Deadline First (EDF) scheduling policy.
+
+\textbf{27.} The method of claim 2, wherein isolating the fault further comprises signaling an IDE user interface to highlight the fault at the exact DWARF DIE offset, and dynamically updating the DMA descriptor chain without halting the MMIO controller.
+
+\textbf{28.} The processor of claim 9, wherein atomic decrements are executed via dedicated bus-locked hardware synchronization instructions and the self-optimizing microcode layer triggers candidate microcode generation when a telemetry count exceeds a threshold of 1024.
+
+% ============================================================================
+\part{Patent Eligibility and Formal Verification}
+% ============================================================================
+
+\chapter{Patent Eligibility (35 U.S.C. § 101 / MPEP 2106)}
+
+\section{Step 1 --- Statutory Category}
+Claims 1, 2, and 3 fall within statutory categories: System (Machine), Method (Process), and Non-Transitory Computer-Readable Medium (Manufacture).
+
+\section{Step 2A, Prong 1 --- Abstract Concept}
+The claims recite technical algorithms for graph transformations ($\mathcal{T}$) and topological execution integrated into concrete technological processes (MMIO register programming, DMA descriptor chaining, CPU affinity mask mapping, DWARF synchronization).
+
+\section{Step 2A, Prong 2 --- Practical Application}
+\begin{itemize}
+    \item Claims bind task nodes to physical processor affinity masks ($\mathcal{A}$) and physical MMIO register maps (\texttt{DAG\_HEAD\_ADDR}).
+    \item The transformation improves system efficiency by reducing DMA pipeline stalls and isolating fault propagation paths.
+    \item Under MPEP 2106.04(d), improvement of computer hardware pipeline operation constitutes a clear practical application.
+\end{itemize}
+
+\section{Step 2B --- Inventive Concept}
+\begin{enumerate}
+    \item Hardware-enforced fan-in gate counters coupled to atomic decrement register operations.
+    \item Dynamic dependency transformation removing transitive edges prior to thread queue insertion.
+    \item Automatic DWARF DIE offset mapping for real-time interrupt debugging.
+    \item LoongArch DBAR fine-grained hint translation with LL/SC load/load reorder barrier.
+    \item DAG-only cryptographic integrity (no Merkle constructions).
+\end{enumerate}
+
+\chapter{Formal Verification Programme}
+
+\begin{table}[h]
+\centering
+\caption{Formal verification per layer.}
+\label{tab:verify}
+\begin{tabular}{lll}
+\toprule
+\textbf{Layer} & \textbf{Method} & \textbf{Tool} \\
+\midrule
+ISA specification & Formal semantics & Sail \\
+RTL & Property verification & SymbiYosys \\
+Boot ROM & Absence of runtime errors & SPARK \\
+Kernel & Functional correctness & SPARK \\
+HAL & Type safety + unit tests & Rust + Kani \\
+Drivers & Memory safety & Rust + Kani \\
+Safety monitor & Full functional correctness & SPARK \\
+Therapy application & Functional correctness & Rust + Creusot \\
+CNN & Output bound & $\alpha,\beta$-CROWN \\
+Quantum circuits & Equivalence & Qbricks \\
+DAG integrity & Structural proof & Lean 4 \\
+Multi-ISA decoder & Per-instruction equivalence & Kani (5,000+ proofs) \\
+Memory model & Litmus conformance & Catt, LISA, RISCV-model, LoongArch litmus \\
+Syscall ABI & Conformance tests & glibc mach, musl, ARM ACT, LoongArch suite \\
+LoongArch decode & Per-instruction equivalence & Kani + LoongArch reference \\
+LoongArch memory model & DBAR + LL/SC litmus & LoongArch litmus suite \\
+Translation cache & Correctness + SMC safety & Kani + litmus \\
+Top-level safety & Mathematical proof & Lean 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{lstlisting}[style=code, caption={Lean 4 top-level safety theorem.}, label={lst:lean}]
+theorem dag_integrity
+    (g : DAG Node)
+    (h_acyclic : IsAcyclic g)
+    (h_parent : ∀ n ∈ g, hash n = H (n.data, map hash (parents n)))
+    (h_single_root : ∃! r, r ∈ g ∧ parents r = ∅) :
+    ∀ g', IsAcyclic g' →
+      hash (root g) = hash (root g') →
+      g = g' :=
+by
+  -- Composed from Kani parent-hash verification and SPARK DAG proofs
+  ...
+
+theorem combined_safety
+    (p : StimulationPattern)
+    (h_verified : SafetyMonitor.approves p = true) :
+    ThermalLoad p      <= ThermalLimit
+    /\ MechanicalIndex p <= MILimit
+    /\ CumulativeDose p  <= DoseLimit
+    /\ RACIScore p       >= RACIThreshold :=
+by
+  -- Composed from SPARK, Kani, alpha-beta-CROWN, Qbricks proofs
+  ...
+\end{lstlisting}
+
+% ============================================================================
+\appendix
+% ============================================================================
+
+\chapter{Glossary}
+
+\begin{description}
+    \item[A32] ARM 32-bit instruction set.
+    \item[AArch32] ARMv8 processor running in 32-bit mode.
+    \item[AArch64] ARMv8 64-bit instruction set.
+    \item[ABI] Application Binary Interface.
+    \item[ALM] Adaptive Logic Module.
+    \item[CAM] Content-Addressable Memory.
+    \item[CSF] Cerebrospinal Fluid.
+    \item[DAG] Directed Acyclic Graph.
+    \item[DBAR] LoongArch Data Barrier instruction.
+    \item[DBT] Dynamic Binary Translation.
+    \item[DVNI] Direct Visual Neural Interface.
+    \item[EDA] Electrophoretic Delivery Array.
+    \item[ENDD] Extended Neuromodulation Drug Delivery.
+    \item[FMCW] Frequency-Modulated Continuous-Wave.
+    \item[HSPA] Hybrid Semantic Processing Architecture.
+    \item[HTC] Hardware Transformer Core.
+    \item[LA32R] LoongArch reduced 32-bit variant.
+    \item[LA32S] LoongArch standard 32-bit variant.
+    \item[LA64] LoongArch 64-bit variant.
+    \item[LASX] Loongson Advanced SIMD Extension (256-bit).
+    \item[LBT] Loongson Binary Translation extension.
+    \item[LL/SC] Load-Linked / Store-Conditional.
+    \item[LSX] Loongson SIMD Extension (128-bit).
+    \item[MIT] Meta-ISA Translator.
+    \item[ML-DSA] Module-Lattice Digital Signature Algorithm.
+    \item[ML-KEM] Module-Lattice Key Encapsulation Mechanism.
+    \item[MMU] Memory Management Unit.
+    \item[PMCU] Probabilistic Microcontroller Unit.
+    \item[PMUT] Piezoelectric Micromachined Ultrasonic Transducer.
+    \item[PQC] Post-Quantum Cryptography.
+    \item[Q128] 128-bit unified processor ISA.
+    \item[QEXT] Quantum extension.
+    \item[RACI] Reasoning--Answer Coherence Index.
+    \item[RLC] Reconfigurable Logic Cell.
+    \item[RVWMO] RISC-V Weak Memory Ordering.
+    \item[SAFE] Hardware safety extension.
+    \item[SEG] Semantic Execution Graph.
+    \item[SMC] Self-Modifying Code.
+    \item[TMR] Triple-Modular Redundancy.
+    \item[TSO] Total Store Order (x86).
+    \item[UML] Unified Memory Lattice.
+    \item[UOSE] Unified Optical Superposition Engine.
+    \item[VOM] Virtual Optical Microdomain.
+    \item[WORM] Write-Once Read-Many.
+\end{description}
+
+\chapter{Complete Figure Index}
+
+\begin{longtable}{cl}
+\caption{Complete figure index.}\\
+\toprule
+\textbf{Figure} & \textbf{Title} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Figure} & \textbf{Title} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Lidar DAG & FMCW range--Doppler processing DAG \\
+Nano DAG & CSF nanoparticle administration DAG \\
+Probe X-section & Open Diamond probe cross-section \\
+FIG 1 (HSPA) & HSPA Core System Architecture \\
+FIG 2 (HSPA) & 128-Bit SEG Node Bit Structure \\
+FIG 3 (HSPA) & PMCU Bayesian Inference \\
+FIG 4 (HSPA) & Unified Memory Lattice \\
+FIG 5 (HSPA) & SOML Safe-Commit Protocol \\
+FIG 6 (HSPA) & Asymmetric N-Refinement HTC \\
+FIG 7 (HSPA) & LoongDiamond-2.5 Quantum Substrate \\
+FIG 8 (HSPA) & PQC Multi-Tier Trust Chain (DAG) \\
+FIG 9 (HSPA) & ZU9EG PCB Stackup \\
+FIG 10 (HSPA) & HARMONI-X Accessibility Pipeline \\
+FIGS 11--22 & Extended Subsystems (RLC, FSM, Bayesian Pipeline, Hamming Router, Testbench, Thermal, Fault Tolerance, DRS, HTG, DPS, NSP, HTM) \\
+FIG 23 & Multi-ISA Decode Front-End \\
+FIG 24 & Cross-ISA Register File Aliasing \\
+FIG 25 & Memory Consistency Translation \\
+FIG 26 & Syscall Dispatcher and ABI Translation \\
+FIG 27 & Dynamic Binary Translation Cache \\
+FIG 28 & Self-Modifying Code Detection \\
+FIG 29 & LoongArch Decode and Execution Path \\
+FIG 30 & LoongArch Register Mapping \\
+FIG 31 & LoongArch Memory Model and DBAR Translation \\
+FIG 32 & LoongArch LSX/LASX Vector Translation \\
+CIT FIG 1 & DAG Node Taxonomy and Topology \\
+CIT FIG 2 & DAG Dependency Transformer \\
+CIT FIG 3 & HAL DAG-Aware DMA Descriptor Chain \\
+CIT FIG 4 & IDE/DWARF Integration and Fault Recovery \\
+\end{longtable}
+
+\begin{thebibliography}{99}
+\bibitem{uscode} 35 U.S.C. \S\,101, \S\,112.
+\bibitem{cfr} 37 CFR 1.84.
+\bibitem{mpep} MPEP 2106 (Subject Matter Eligibility).
+\bibitem{fips203} FIPS 203 (ML-KEM).
+\bibitem{fips204} FIPS 204 (ML-DSA).
+\bibitem{fips205} FIPS 205 (SLH-DSA).
+\bibitem{ieee754} IEEE 754-2019.
+\bibitem{riscv} A. Waterman and K. Asanovi\'c, \emph{The RISC-V Instruction Set Manual}, 2019.
+\bibitem{sail} K. Armstrong et al., ``ISA Semantics for ARMv8-A, RISC-V, and CHERI-MIPS,'' POPL 2019.
+\bibitem{spark} J. Barnes, \emph{SPARK: The Proven Approach to High Integrity Software}, 2012.
+\bibitem{kani} Kani Rust Verifier.
+\bibitem{abCROWN} K. Xu et al., ``$\alpha,\beta$-CROWN,'' 2021.
+\bibitem{qbricks} C. Chareton et al., ``Qbricks,'' 2020.
+\bibitem{lean4} L. de Moura and S. Ullrich, ``The Lean 4 Theorem Prover,'' CADE 2021.
+\bibitem{loongarch} Loongson, ``Introduction to LoongArch,'' Linux kernel documentation, 2022.
+\bibitem{loongarch-abi} Loongson, ``LoongArch ELF psABI Specification,'' v1.00.
+\bibitem{loongarch-dbar} Loongson, ``LoongArch v1.10 DBAR hints,'' and GCC commit r14-5432, 2023.
+\bibitem{loongarch-lbt} Loongson, ``Loongson Binary Translation (LBT) extension,'' Linux kernel KVM patches, 2024.
+\bibitem{catt} Cambridge Catt memory model framework.
+\bibitem{lisa} ARM LISA memory model tool.
+\bibitem{iec62304} IEC 62304:2006/AMD1:2015.
+\bibitem{iso14971} ISO 14971:2019.
+\bibitem{iso14708} ISO 14708-3:2017.
+\bibitem{iec60601} IEC 60601-2-33:2022.
+\bibitem{iec60825} IEC 60825-1:2014.
+\bibitem{wcag} W3C, WCAG 2.2, 2023.
+\end{thebibliography}
+
+\vspace{18pt}
+\begin{center}
+\textbf{END OF FILING}
+\end{center}
+
+\end{document}

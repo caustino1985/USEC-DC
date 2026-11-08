@@ -13,7 +13,9 @@ import {
 export const UNIFIED_DOCUMENT_METADATA = {
   title: "OMNIBUS CONSOLIDATED PETITION FOR WRIT OF MANDAMUS, DECLARATORY RELIEF, EMERGENCY CUSTODIAL SETTLEMENT, AND RULE 18 CONSOLIDATED EXACTION OF LIBERTY",
   shortTitle: "Unified Baltimore County Circuit Court, D.C. Circuit & BNY Mellon Master Mandamus & Trust Clearing Omnibus",
-  executionDate: "November 1, 2026",
+  executionDate: "November 3, 2026",
+  filingDate: "November 3, 2026",
+  batchDispatchDate: "November 2–3, 2026 (00:46 UTC)",
   initialFormalDate: "Tuesday, August 11, 2026 at 7:25:32 PM EDT",
   
   // Primary Petitioner & Signatory
@@ -197,8 +199,8 @@ export const WYOMING_LIQUIDATION_TRUST_DOCUMENTS: WyomingTrustDocument[] = [
         content: "In compliance with perpetual trust preservation rules, annual distributions to operating purposes shall never exceed 5% of the trailing five-year moving average value of the corpus: D(t) <= 0.05 * A_5yr(t). All surplus yields are permanently reinvested in sovereign Treasury equivalents."
       },
       {
-        heading: "Section 4: Daily Sweep Allocation Vector",
-        content: "All realized liquidation proceeds, dividends, and interest sweeps into M&T Bank Account 2 are distributed daily at 4:00 PM EST according to the deterministic vector: 60% Treasury Equivalents (Capital Floor), 25% Baltimore Historic Rowhomes Housing Preservation SPV (300 Properties), 10% Pro Se Litigant AI & Cognitive Grant Pool, and 5% Legal & Operational Reserves."
+        heading: "Section 4: Daily Sweep Allocation Vector & 30 Row Homes SSDI/SSI Housing",
+        content: "All realized liquidation proceeds, dividends, and interest sweeps into M&T Bank Account 2 are distributed daily at 4:00 PM EST according to the deterministic vector: 60% Treasury Equivalents (Capital Floor), 25% Baltimore Historic Rowhomes Housing Preservation SPV (300 Properties — including exactly 30 row homes dedicated as PSDLEF expedited housing for SSDI/SSI applicants awaiting disability adjudication), 10% Pro Se Litigant AI & Cognitive Grant Pool, and 5% Legal & Operational Reserves."
       }
     ]
   }
@@ -491,9 +493,9 @@ export const DYREO_ALLOCATION_VECTOR: SweepAllocation[] = [
   },
   {
     key: "real_estate",
-    category: "Baltimore Historic Rowhomes Housing Preservation SPV (300 Properties)",
+    category: "Baltimore Historic Rowhomes Housing Preservation SPV (300 Properties — 30 SSDI/SSI Units)",
     percentage: 25,
-    description: "Capital expenditures for historic rowhome building envelope preservation, structural longevity, and tenant stabilization requiring Housing Preservation Ratio HPR >= 0.85.",
+    description: "Capital expenditures for historic rowhome building envelope preservation, structural longevity, and tenant stabilization requiring Housing Preservation Ratio HPR >= 0.85, including exactly 30 dedicated row homes as PSDLEF expedited supportive housing for SSDI/SSI applicants.",
     formulaSymbol: "\\beta_{\\text{Housing}} = 0.25"
   },
   {

@@ -32,20 +32,44 @@ import {
   Scroll,
   TrendingDown,
   Lock,
-  Compass
+  Compass,
+  Printer,
+  Eye,
+  BookOpen
 } from 'lucide-react';
+import { DocumentPdfPreviewer } from './DocumentPdfPreviewer';
+import { getFootnotesForPart } from '../data/legalFootnotesData';
+import { TranslatedLegalClause } from './TranslatedLegalClause';
+import { SUPPORTED_LEGAL_LANGUAGES } from '../services/geminiTranslationService';
+import { Globe, Sparkles, Languages } from 'lucide-react';
 
 interface Props {
   showLineNumbers: boolean;
   fontSize: 'small' | 'medium' | 'large';
   searchQuery: string;
+  onOpenEmailModal?: () => void;
+  onOpenExportModal?: () => void;
+  selectedLanguage?: string;
+  onSelectLanguage?: (lang: string) => void;
+  isTranslating?: boolean;
+  setIsTranslating?: (v: boolean) => void;
 }
 
 export const UnifiedDocumentContent: React.FC<Props> = ({
   showLineNumbers,
   fontSize,
-  searchQuery
+  searchQuery,
+  onOpenEmailModal,
+  onOpenExportModal,
+  selectedLanguage = 'en',
+  onSelectLanguage,
+  isTranslating = false,
+  setIsTranslating
 }) => {
+  const [viewMode, setViewMode] = React.useState<'pleading' | 'pdfPreview'>('pleading');
+
+  const currentLang = SUPPORTED_LEGAL_LANGUAGES.find(l => l.code === selectedLanguage) || SUPPORTED_LEGAL_LANGUAGES[0];
+
   const textSizeClass = {
     small: 'text-sm leading-relaxed',
     medium: 'text-base leading-relaxed',
@@ -65,8 +89,163 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
     );
   };
 
+  // Canonical Legal Footnotes Renderer for each Part
+  const renderFootnotesBlock = (partId: string) => {
+    const footnotes = getFootnotesForPart(partId);
+    if (!footnotes || footnotes.length === 0) return null;
+    return (
+      <div className="mt-8 pt-4 border-t border-slate-700/80 text-xs text-slate-300 space-y-2 font-serif">
+        <div className="text-[10px] uppercase tracking-wider font-sans font-bold text-slate-400 flex items-center justify-between border-b border-slate-800 pb-1.5">
+          <span className="flex items-center gap-1.5 text-indigo-400">
+            <Scale className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Canonical Legal Citations &amp; Statutory Authorities (The Bluebook Standard)</span>
+          </span>
+          <span className="font-mono text-slate-500">Part {partId.replace('part-', '')} Authorities</span>
+        </div>
+        <div className="space-y-2 pt-1">
+          {footnotes.map((fn) => (
+            <div key={fn.number} className="p-2.5 bg-slate-950/70 rounded-lg border border-slate-800/80 leading-relaxed text-xs">
+              <div className="flex flex-wrap items-baseline gap-2">
+                <sup className="font-mono font-bold text-indigo-400 text-xs">[{fn.number}]</sup>
+                <span className="font-bold text-white">{fn.canonicalCitation}</span>
+                {fn.pincite && <span className="font-mono text-[11px] text-amber-300">at {fn.pincite}</span>}
+                <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-900 text-slate-400 font-mono border border-slate-800 ml-auto shrink-0">
+                  {fn.jurisdiction}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-300 pl-4 mt-1">
+                <em>Holding / Rule:</em> {fn.holdingOrRule}
+              </p>
+              {fn.statutoryAnchor && (
+                <div className="text-[10px] text-slate-500 font-mono pl-4 mt-0.5">
+                  Statutory cross-reference: {fn.statutoryAnchor}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // If Court-Ready PDF Layout Previewer is active, render previewer directly in Document tab
+  if (viewMode === 'pdfPreview') {
+    return (
+      <div className="flex-1 min-w-0 space-y-4">
+        {/* View Switcher Bar */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setViewMode('pleading')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-950 border border-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>Standard Court Pleading (12 Parts)</span>
+            </button>
+            <button
+              onClick={() => setViewMode('pdfPreview')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-md cursor-pointer"
+            >
+              <Eye className="w-3.5 h-3.5" />
+              <span>Court-Ready PDF Layout Previewer</span>
+            </button>
+          </div>
+          <span className="text-[11px] font-mono text-emerald-400 pr-2 hidden sm:inline">
+            Active: 8.5" × 11" Pleading Paper Simulation
+          </span>
+        </div>
+
+        <DocumentPdfPreviewer
+          onOpenEmailModal={onOpenEmailModal || (() => {})}
+          onOpenExportModal={onOpenExportModal || (() => {})}
+          onClosePreview={() => setViewMode('pleading')}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="flex-1 min-w-0">
+    <div className="flex-1 min-w-0 space-y-4">
+      {/* View Switcher Bar at top of Document Tab */}
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between no-print">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setViewMode('pleading')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-md cursor-pointer"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            <span>Standard Court Pleading (12 Parts)</span>
+          </button>
+          <button
+            onClick={() => setViewMode('pdfPreview')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-950 border border-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            title="Preview court-ready 8.5x11 inch layout before triggering email or export workflow"
+          >
+            <Eye className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Court-Ready PDF Layout Previewer</span>
+            <span className="px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300 text-[10px] font-mono border border-indigo-500/30">
+              NEW
+            </span>
+          </button>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {onOpenEmailModal && (
+            <button
+              onClick={onOpenEmailModal}
+              className="px-2.5 py-1 text-xs font-semibold bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border border-indigo-500/40 rounded-lg cursor-pointer transition-colors"
+            >
+              Email Workflow
+            </button>
+          )}
+          {onOpenExportModal && (
+            <button
+              onClick={onOpenExportModal}
+              className="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg cursor-pointer transition-colors"
+            >
+              Export
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Real-time Gemini 3.8 Flash Translation Active Banner */}
+      {selectedLanguage !== 'en' && (
+        <div className="bg-gradient-to-r from-indigo-950/80 via-slate-900 to-slate-950 border border-indigo-500/40 rounded-xl p-4 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 no-print">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-indigo-600/30 border border-indigo-400/50 flex items-center justify-center text-amber-300 font-bold shrink-0 shadow-sm">
+              <Sparkles className="w-5 h-5 text-amber-300" />
+            </div>
+            <div>
+              <div className="text-xs sm:text-sm font-bold text-white flex flex-wrap items-center gap-2">
+                <span>Real-Time Gemini 3.8 Flash Translation Active:</span>
+                <span className="text-indigo-300 underline decoration-indigo-400 font-serif">
+                  {currentLang.flag} {currentLang.name} ({currentLang.localName})
+                </span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono border border-amber-500/30">
+                  {currentLang.badge}
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 mt-0.5 leading-snug">
+                Key master pleading clauses, mandamus causes of action, and trust formation sections below have been translated into certified juridical register. All Bluebook citations, docket numbers, and the $500,000,000.00 / 45,850,000 LEU share capitalization are preserved verbatim.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+            {onSelectLanguage && (
+              <button
+                onClick={() => onSelectLanguage('en')}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 cursor-pointer transition-colors"
+                title="Revert master pleading back to original English text"
+              >
+                Reset to English Original
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className={`legal-document-container bg-slate-900/95 border border-slate-800 rounded-xl p-6 sm:p-10 lg:p-14 shadow-2xl text-slate-200 ${textSizeClass}`}>
         
         {/* =========================================================================
@@ -194,7 +373,7 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
               <div className="text-[11px] text-emerald-400 font-mono bg-emerald-950/40 border border-emerald-500/30 p-2 rounded">
                 STATUS: In Custodia Legis Asset<br />
                 CAPITALIZATION: $500,000,000.00 Senior Notes<br />
-                EXECUTION DATE: November 1, 2026
+                EXECUTION DATE: November 3, 2026
               </div>
             </div>
           </div>
@@ -206,67 +385,80 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
               <span>Master $500,000,000.00 Estate Capitalization Vector</span>
             </h4>
             
-            <div className="p-4 bg-slate-950 border-l-4 border-indigo-500 rounded-r-lg text-slate-300 text-xs sm:text-sm">
-              <div className="font-bold text-indigo-300 mb-1 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-indigo-400" />
-                <span>UNIFIED CAPITALIZATION SPECIFICATION:</span>
-              </div>
-              <p>
-                The entire estate capitalization vector across both BNY Mellon Corporate Trust and the D.C. Circuit Court is <strong>strictly established at exactly $500,000,000.00 in face debt principal</strong> originating from the January 14, 1999 Senior Notes Indenture of USEC Inc., converting into <strong>45,850,000 common shares of Centrus Energy Corp. (NYSE: LEU)</strong> at the court-confirmed 0.0917 exchange ratio pursuant to Delaware Bankruptcy Case No. 14-10492.
-              </p>
-            </div>
+            <TranslatedLegalClause
+              clauseKey="caption-capitalization"
+              clauseTitle="Part I Master Estate Capitalization & Jurisdiction Clause"
+              selectedLanguage={selectedLanguage}
+              englishPlainText={`UNIFIED CAPITALIZATION SPECIFICATION:
+The entire estate capitalization vector across both BNY Mellon Corporate Trust and the D.C. Circuit Court is strictly established at exactly $500,000,000.00 in face debt principal originating from the January 14, 1999 Senior Notes Indenture of USEC Inc., converting into 45,850,000 common shares of Centrus Energy Corp. (NYSE: LEU) at the court-confirmed 0.0917 exchange ratio pursuant to Delaware Bankruptcy Case No. 14-10492.
+V_estate = $350,000,000.00 (Series A, CUSIP 917300AA1) + $150,000,000.00 (Series B, CUSIP 917300AB9) = $500,000,000.00.
+Converted Common Shares = 45,850,000 shares of Centrus Energy Corp. (NYSE: LEU) at 0.0917 exchange ratio. Tucker Act pool is strictly $0.00.`}
+              englishContent={
+                <div className="space-y-4">
+                  <div className="p-4 bg-slate-950 border-l-4 border-indigo-500 rounded-r-lg text-slate-300 text-xs sm:text-sm">
+                    <div className="font-bold text-indigo-300 mb-1 flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-indigo-400" />
+                      <span>UNIFIED CAPITALIZATION SPECIFICATION:</span>
+                    </div>
+                    <p>
+                      The entire estate capitalization vector across both BNY Mellon Corporate Trust and the D.C. Circuit Court is <strong>strictly established at exactly $500,000,000.00 in face debt principal</strong> originating from the January 14, 1999 Senior Notes Indenture of USEC Inc., converting into <strong>45,850,000 common shares of Centrus Energy Corp. (NYSE: LEU)</strong> at the court-confirmed 0.0917 exchange ratio pursuant to Delaware Bankruptcy Case No. 14-10492.
+                    </p>
+                  </div>
 
-            {/* Formula Block */}
-            <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-sm space-y-2">
-              <div className="text-xs text-slate-400 uppercase tracking-widest">
-                Master Estate Capitalization Formulation
-              </div>
-              <div className="text-emerald-400 font-bold text-base sm:text-lg">
-                V<sub>estate</sub> = $350,000,000.00 (Series A) + $150,000,000.00 (Series B) = <span className="underline">$500,000,000.00</span>
-              </div>
-              <div className="text-indigo-400 font-bold text-base sm:text-lg">
-                N<sub>shares</sub> = $500,000,000.00 &times; 0.0917 = <span className="underline">45,850,000 Reorganized Common Shares (NYSE: LEU)</span>
-              </div>
-            </div>
+                  {/* Formula Block */}
+                  <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-sm space-y-2">
+                    <div className="text-xs text-slate-400 uppercase tracking-widest">
+                      Master Estate Capitalization Formulation
+                    </div>
+                    <div className="text-emerald-400 font-bold text-base sm:text-lg">
+                      V<sub>estate</sub> = $350,000,000.00 (Series A) + $150,000,000.00 (Series B) = <span className="underline">$500,000,000.00</span>
+                    </div>
+                    <div className="text-indigo-400 font-bold text-base sm:text-lg">
+                      N<sub>shares</sub> = $500,000,000.00 &times; 0.0917 = <span className="underline">45,850,000 Reorganized Common Shares (NYSE: LEU)</span>
+                    </div>
+                  </div>
 
-            {/* Table 1.1 Master Capitalization Vector */}
-            <div className="overflow-x-auto mt-4">
-              <table className="w-full text-xs text-left border-collapse border border-slate-700">
-                <thead>
-                  <tr className="bg-slate-800/80 text-slate-200 border-b border-slate-700">
-                    <th className="p-2.5 font-bold">Asset Identifier</th>
-                    <th className="p-2.5 font-bold">Legacy CUSIP</th>
-                    <th className="p-2.5 font-bold">Stated Coupon / Maturity</th>
-                    <th className="p-2.5 font-bold">Restructured Instrument</th>
-                    <th className="p-2.5 font-bold text-right">Face Valuation</th>
-                    <th className="p-2.5 font-bold text-right">Converted Shares</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800">
-                  <tr className="hover:bg-slate-800/40">
-                    <td className="p-2.5 font-semibold text-white">USEC Series A Notes</td>
-                    <td className="p-2.5 font-mono text-indigo-300">917300AA1</td>
-                    <td className="p-2.5">6.625% (6 ½%) due 01/20/2006</td>
-                    <td className="p-2.5">LEU Common Stock (0.0917 Ratio)</td>
-                    <td className="p-2.5 font-mono text-right text-emerald-400">$350,000,000.00</td>
-                    <td className="p-2.5 font-mono text-right text-indigo-300">32,095,000 sh</td>
-                  </tr>
-                  <tr className="hover:bg-slate-800/40">
-                    <td className="p-2.5 font-semibold text-white">USEC Series B Notes</td>
-                    <td className="p-2.5 font-mono text-indigo-300">917300AB9</td>
-                    <td className="p-2.5">6.750% (6 ¾%) due 01/20/2009</td>
-                    <td className="p-2.5">LEU Common Stock (0.0917 Ratio)</td>
-                    <td className="p-2.5 font-mono text-right text-emerald-400">$150,000,000.00</td>
-                    <td className="p-2.5 font-mono text-right text-indigo-300">13,755,000 sh</td>
-                  </tr>
-                  <tr className="bg-slate-950 font-bold border-t-2 border-slate-600 text-white">
-                    <td className="p-3" colSpan={4}>TOTAL ESTATE CAPITALIZATION</td>
-                    <td className="p-3 font-mono text-right text-emerald-300 text-sm">$500,000,000.00</td>
-                    <td className="p-3 font-mono text-right text-indigo-300 text-sm">45,850,000 sh</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                  {/* Table 1.1 Master Capitalization Vector */}
+                  <div className="overflow-x-auto mt-4">
+                    <table className="w-full text-xs text-left border-collapse border border-slate-700">
+                      <thead>
+                        <tr className="bg-slate-800/80 text-slate-200 border-b border-slate-700">
+                          <th className="p-2.5 font-bold">Asset Identifier</th>
+                          <th className="p-2.5 font-bold">Legacy CUSIP</th>
+                          <th className="p-2.5 font-bold">Stated Coupon / Maturity</th>
+                          <th className="p-2.5 font-bold">Restructured Instrument</th>
+                          <th className="p-2.5 font-bold text-right">Face Valuation</th>
+                          <th className="p-2.5 font-bold text-right">Converted Shares</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800">
+                        <tr className="hover:bg-slate-800/40">
+                          <td className="p-2.5 font-semibold text-white">USEC Series A Notes</td>
+                          <td className="p-2.5 font-mono text-indigo-300">917300AA1</td>
+                          <td className="p-2.5">6.625% (6 ½%) due 01/20/2006</td>
+                          <td className="p-2.5">LEU Common Stock (0.0917 Ratio)</td>
+                          <td className="p-2.5 font-mono text-right text-emerald-400">$350,000,000.00</td>
+                          <td className="p-2.5 font-mono text-right text-indigo-300">32,095,000 sh</td>
+                        </tr>
+                        <tr className="hover:bg-slate-800/40">
+                          <td className="p-2.5 font-semibold text-white">USEC Series B Notes</td>
+                          <td className="p-2.5 font-mono text-indigo-300">917300AB9</td>
+                          <td className="p-2.5">6.750% (6 ¾%) due 01/20/2009</td>
+                          <td className="p-2.5">LEU Common Stock (0.0917 Ratio)</td>
+                          <td className="p-2.5 font-mono text-right text-emerald-400">$150,000,000.00</td>
+                          <td className="p-2.5 font-mono text-right text-indigo-300">13,755,000 sh</td>
+                        </tr>
+                        <tr className="bg-slate-950 font-bold border-t-2 border-slate-600 text-white">
+                          <td className="p-3" colSpan={4}>TOTAL ESTATE CAPITALIZATION</td>
+                          <td className="p-3 font-mono text-right text-emerald-300 text-sm">$500,000,000.00</td>
+                          <td className="p-3 font-mono text-right text-indigo-300 text-sm">45,850,000 sh</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              }
+            />
           </div>
 
           {/* Section 1.3 Target Settlement Protocol Endpoints */}
@@ -311,6 +503,9 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
               </div>
             </div>
           </div>
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-1')}
         </section>
 
         {/* =========================================================================
@@ -326,61 +521,77 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
             </h3>
           </div>
 
-          <div className="space-y-4 text-justify text-slate-300">
-            <h4 className="font-serif font-bold text-slate-100 text-base">
-              2.1 Federal Rule 18(a) / Maryland Rule 2-303(b) Plenary Joinder of Claims
-            </h4>
-            <p>
-              Pursuant to Federal Rule of Civil Procedure 18(a) (&ldquo;A party asserting a claim, counterclaim, crossclaim, or third-party claim may join, as independent or alternative claims, as many claims as it has against an opposing party&rdquo;) and Maryland Rule 2-303(b), Petitioner consolidates into this unified pleading all four iterative dimensions of unlawful governmental and institutional exactions of liberty. Rather than bifurcating these interrelated deprivations across fragmented actions, Rule 18 mandates cumulative joinder to redress the systemic continuum of physical, administrative, biological, and property confiscation.
-            </p>
+          <TranslatedLegalClause
+            clauseKey="rule-18-exaction"
+            clauseTitle="Part II Rule 18 Consolidated Exaction of Liberty Mandate"
+            selectedLanguage={selectedLanguage}
+            englishPlainText={`FEDERAL RULE 18(a) / MARYLAND RULE 2-303(b) PLENARY JOINDER OF CLAIMS:
+Pursuant to Federal Rule of Civil Procedure 18(a) and Maryland Rule 2-303(b), Petitioner consolidates into this unified pleading all four iterative dimensions of unlawful governmental and institutional exactions of liberty. Rather than bifurcating these interrelated deprivations across fragmented actions, Rule 18 mandates cumulative joinder to redress the systemic continuum of physical, administrative, biological, and property confiscation.
+Iteration I: Physical Liberty & 42 U.S.C. § 1983 / Bivens Fourth & Fourteenth Amendment False Imprisonment.
+Iteration II: Administrative Mortality & Due Process Exaction (SSDI 800-day hearing queue & MORTAR triage).
+Iteration III: Biological Receptor Exaction & Pharmacological Experimentation without Informed Consent.
+Iteration IV: Property, Senior Indenture Covenants & In Custodia Legis Estate Confiscation under 11 U.S.C. §§ 541, 1186.`}
+            englishContent={
+              <div className="space-y-4 text-justify text-slate-300">
+                <h4 className="font-serif font-bold text-slate-100 text-base">
+                  2.1 Federal Rule 18(a) / Maryland Rule 2-303(b) Plenary Joinder of Claims
+                </h4>
+                <p>
+                  Pursuant to Federal Rule of Civil Procedure 18(a) (&ldquo;A party asserting a claim, counterclaim, crossclaim, or third-party claim may join, as independent or alternative claims, as many claims as it has against an opposing party&rdquo;) and Maryland Rule 2-303(b), Petitioner consolidates into this unified pleading all four iterative dimensions of unlawful governmental and institutional exactions of liberty. Rather than bifurcating these interrelated deprivations across fragmented actions, Rule 18 mandates cumulative joinder to redress the systemic continuum of physical, administrative, biological, and property confiscation.
+                </p>
 
-            {/* Iterations Detailed Cards */}
-            <div className="space-y-6 mt-4">
-              {RULE_18_EXACTION_ITERATIONS.map((iter) => (
-                <div key={iter.iterationNumber} className="p-5 bg-slate-950 rounded-lg border border-slate-800 space-y-3">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-red-500/20 text-red-300 font-mono text-xs font-bold flex items-center justify-center border border-red-500/30">
-                        {iter.iterationNumber}
-                      </span>
-                      <h5 className="font-serif font-bold text-white text-base">
-                        {iter.title}
-                      </h5>
-                    </div>
-                    <span className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2 py-0.5 rounded border border-indigo-500/30">
-                      {iter.legalAnchor}
-                    </span>
-                  </div>
+                {/* Iterations Detailed Cards */}
+                <div className="space-y-6 mt-4">
+                  {RULE_18_EXACTION_ITERATIONS.map((iter) => (
+                    <div key={iter.iterationNumber} className="p-5 bg-slate-950 rounded-lg border border-slate-800 space-y-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 rounded-full bg-red-500/20 text-red-300 font-mono text-xs font-bold flex items-center justify-center border border-red-500/30">
+                            {iter.iterationNumber}
+                          </span>
+                          <h5 className="font-serif font-bold text-white text-base">
+                            {iter.title}
+                          </h5>
+                        </div>
+                        <span className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2 py-0.5 rounded border border-indigo-500/30">
+                          {iter.legalAnchor}
+                        </span>
+                      </div>
 
-                  <div className="text-xs space-y-2">
-                    <div>
-                      <strong className="text-amber-400">Constitutional &amp; Statutory Basis:</strong>{' '}
-                      <span className="text-slate-200">{iter.constitutionalBasis}</span>
-                    </div>
-                    <div>
-                      <strong className="text-slate-300">Factual Deprivation &amp; Harm:</strong>{' '}
-                      <span className="text-slate-400">{iter.factualDeprivation}</span>
-                    </div>
-                    
-                    <div className="pt-2">
-                      <strong className="text-indigo-300 uppercase tracking-wider text-[10px] block mb-1">
-                        Controlling Precedents &amp; Doctrinal Invariants:
-                      </strong>
-                      <ul className="list-disc pl-5 space-y-1 text-slate-300 text-[11px]">
-                        {iter.doctrinalThresholds.map((dt, idx) => (
-                          <li key={idx}>{dt}</li>
-                        ))}
-                      </ul>
-                    </div>
+                      <div className="text-xs space-y-2">
+                        <div>
+                          <strong className="text-amber-400">Constitutional &amp; Statutory Basis:</strong>{' '}
+                          <span className="text-slate-200">{iter.constitutionalBasis}</span>
+                        </div>
+                        <div>
+                          <strong className="text-slate-300">Factual Deprivation &amp; Harm:</strong>{' '}
+                          <span className="text-slate-400">{iter.factualDeprivation}</span>
+                        </div>
+                        
+                        <div className="pt-2">
+                          <strong className="text-indigo-300 uppercase tracking-wider text-[10px] block mb-1">
+                            Controlling Precedents &amp; Doctrinal Invariants:
+                          </strong>
+                          <ul className="list-disc pl-5 space-y-1 text-slate-300 text-[11px]">
+                            {iter.doctrinalThresholds.map((dt, idx) => (
+                              <li key={idx}>{dt}</li>
+                            ))}
+                          </ul>
+                        </div>
 
-                    <div className="p-2.5 bg-red-950/20 border border-red-500/20 rounded text-red-200 mt-2">
-                      <strong>Specific Remedial Relief Demanded:</strong> {iter.remedyDemanded}
+                        <div className="p-2.5 bg-red-950/20 border border-red-500/20 rounded text-red-200 mt-2">
+                          <strong>Specific Remedial Relief Demanded:</strong> {iter.remedyDemanded}
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            }
+          />
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-2')}
         </section>
 
         {/* =========================================================================
@@ -423,53 +634,71 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
               On January 14, 1999, USEC Inc. issued $500,000,000.00 aggregate principal amount of Senior Notes under an Indenture: a $350,000,000.00 Series A tranche bearing 6.625% interest due January 20, 2006 (CUSIP 917300AA1), and a $150,000,000.00 Series B tranche bearing 6.750% interest due January 20, 2009 (CUSIP 917300AB9). On September 30, 2014, the United States Bankruptcy Court for the District of Delaware confirmed the Plan of Reorganization for USEC Inc. (Case No. 14-10475 / 14-10492), pursuant to which legacy Senior Notes were exchanged for reorganized common stock of Centrus Energy Corp. (NYSE: LEU) at the court-confirmed exchange ratio of <strong>0.0917</strong>, yielding precisely <strong>45,850,000 common shares</strong>.
             </p>
 
-            <h4 className="font-serif font-bold text-slate-100 text-base mt-4">
-              3.3 Formal Causes of Action
-            </h4>
-            <div className="space-y-3 text-xs sm:text-sm">
-              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
-                <span className="font-bold text-amber-300">COUNT I: DECLARATORY JUDGMENT (28 U.S.C. § 2201; MD. CODE ANN., CTS. &amp; JUD. PROC. § 3-403).</span>
-                <p className="text-slate-300 mt-1">
-                  Petitioner is entitled to an immediate declaration that the legacy USEC 1999 Senior Notes were validly issued, were restructured pursuant to the 2014 Plan into 45,850,000 LEU shares and successor debt covenants, and that the surviving equitable consideration is properly deliverable to The Bank of New York Mellon as master depository custodian.
-                </p>
-              </div>
+            <TranslatedLegalClause
+              clauseKey="mandamus-causes-action"
+              clauseTitle="Part III Verified Mandamus, Accounting & Declaratory Relief Causes of Action"
+              selectedLanguage={selectedLanguage}
+              englishPlainText={`FORMAL CAUSES OF ACTION & PEREMPTORY MANDAMUS:
+COUNT I: DECLARATORY JUDGMENT (28 U.S.C. § 2201; Md. Code Ann., Cts. & Jud. Proc. § 3-403). Immediate declaration that USEC 1999 Senior Notes (Series A & B) were validly issued and restructured into 45,850,000 LEU common shares and deliverable to The Bank of New York Mellon.
+COUNT II: MANDATORY ACCOUNTING. Command Computershare and BNY Mellon to render an exhaustive accounting of all Class 4 Allowed Claim distributions and Make-Whole Premium calculations since 2014.
+COUNT III: PEREMPTORY WRIT OF MANDAMUS (Md. Rule 15-701; 28 U.S.C. § 1651(a)). Order BNY Mellon and Computershare to transmit 45,850,000 LEU shares and accumulated yields to the Americana Digital Reserve Exchange endpoint and M&T Bank clearinghouse.
+COUNT IV: SPECIFIC PERFORMANCE OF INDENTURE (15 U.S.C. § 77aaa). Indenture trustee bound to execute conversion covenants without bar-date forfeiture.
+PRAYER FOR RELIEF: (a) Peremptory Writ of Mandamus; (b) Declaratory Judgment; (c) Institutional Accounting; (d) In Forma Pauperis leave under 28 U.S.C. § 1915; (e) DYREO sweep approval.`}
+              englishContent={
+                <div className="space-y-4">
+                  <h4 className="font-serif font-bold text-slate-100 text-base">
+                    3.3 Formal Causes of Action
+                  </h4>
+                  <div className="space-y-3 text-xs sm:text-sm">
+                    <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
+                      <span className="font-bold text-amber-300">COUNT I: DECLARATORY JUDGMENT (28 U.S.C. § 2201; MD. CODE ANN., CTS. &amp; JUD. PROC. § 3-403).</span>
+                      <p className="text-slate-300 mt-1">
+                        Petitioner is entitled to an immediate declaration that the legacy USEC 1999 Senior Notes were validly issued, were restructured pursuant to the 2014 Plan into 45,850,000 LEU shares and successor debt covenants, and that the surviving equitable consideration is properly deliverable to The Bank of New York Mellon as master depository custodian.
+                      </p>
+                    </div>
 
-              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
-                <span className="font-bold text-amber-300">COUNT II: MANDATORY ACCOUNTING.</span>
-                <p className="text-slate-300 mt-1">
-                  Petitioner requests an order commanding Delaware Trust Company, Computershare Trust Company, N.A., and The Bank of New York Mellon to render an exhaustive accounting of all Class 4 Allowed Claim distributions, accrued dividend yields, successor notes, and Make-Whole Premium calculations since 2014.
-                </p>
-              </div>
+                    <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
+                      <span className="font-bold text-amber-300">COUNT II: MANDATORY ACCOUNTING.</span>
+                      <p className="text-slate-300 mt-1">
+                        Petitioner requests an order commanding Delaware Trust Company, Computershare Trust Company, N.A., and The Bank of New York Mellon to render an exhaustive accounting of all Class 4 Allowed Claim distributions, accrued dividend yields, successor notes, and Make-Whole Premium calculations since 2014.
+                      </p>
+                    </div>
 
-              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
-                <span className="font-bold text-amber-300">COUNT III: PEREMPTORY WRIT OF MANDAMUS (MD. RULE 15-701; 28 U.S.C. § 1651(a)).</span>
-                <p className="text-slate-300 mt-1">
-                  Because Respondents have ministerial and non-discretionary duties under the confirmed Plan and federal securities laws to deliver converted book-entry shares, a Peremptory Writ of Mandamus shall issue ordering BNY Mellon and Computershare to transmit 45,850,000 LEU shares and accumulated yields to the Americana Digital Reserve Exchange endpoint and M&amp;T Bank clearinghouse.
-                </p>
-              </div>
+                    <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
+                      <span className="font-bold text-amber-300">COUNT III: PEREMPTORY WRIT OF MANDAMUS (MD. RULE 15-701; 28 U.S.C. § 1651(a)).</span>
+                      <p className="text-slate-300 mt-1">
+                        Because Respondents have ministerial and non-discretionary duties under the confirmed Plan and federal securities laws to deliver converted book-entry shares, a Peremptory Writ of Mandamus shall issue ordering BNY Mellon and Computershare to transmit 45,850,000 LEU shares and accumulated yields to the Americana Digital Reserve Exchange endpoint and M&amp;T Bank clearinghouse.
+                      </p>
+                    </div>
 
-              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
-                <span className="font-bold text-amber-300">COUNT IV: SPECIFIC PERFORMANCE OF INDENTURE (15 U.S.C. § 77aaa).</span>
-                <p className="text-slate-300 mt-1">
-                  Under the Trust Indenture Act of 1939, the indenture trustee and successor obligor are contractually and legally bound to execute the conversion covenants without obstruction or unconstitutional bar-date forfeiture.
-                </p>
-              </div>
-            </div>
+                    <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
+                      <span className="font-bold text-amber-300">COUNT IV: SPECIFIC PERFORMANCE OF INDENTURE (15 U.S.C. § 77aaa).</span>
+                      <p className="text-slate-300 mt-1">
+                        Under the Trust Indenture Act of 1939, the indenture trustee and successor obligor are contractually and legally bound to execute the conversion covenants without obstruction or unconstitutional bar-date forfeiture.
+                      </p>
+                    </div>
+                  </div>
 
-            <h4 className="font-serif font-bold text-slate-100 text-base mt-4">
-              3.4 Comprehensive Prayer for Relief
-            </h4>
-            <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-lg space-y-2 text-xs sm:text-sm">
-              <p className="font-bold text-slate-200">WHEREFORE, Petitioner respectfully prays that this Court:</p>
-              <ul className="list-disc pl-6 space-y-1.5 text-slate-300">
-                <li>(a) Issue a Peremptory Writ of Mandamus commanding BNY Mellon and Computershare Trust Company, N.A. to clear 45,850,000 LEU shares and accrued yields directly to the Americana Digital Reserve Exchange endpoint;</li>
-                <li>(b) Enter a Declaratory Judgment confirming that the legacy Senior Notes (Series A &amp; Series B) are fully recognized and cleared for credit;</li>
-                <li>(c) Order an immediate institutional accounting of all 13F CUSIP holdings associated with CUSIP 917300AA1 and 917300AB9;</li>
-                <li>(d) Grant Petitioner leave to proceed In Forma Pauperis pursuant to 28 U.S.C. § 1915 and Maryland Rule 1-325(e);</li>
-                <li>(e) Approve the DYREO automated sweep protocol and post-quantum cryptographic security framework.</li>
-              </ul>
-            </div>
+                  <h4 className="font-serif font-bold text-slate-100 text-base mt-4">
+                    3.4 Comprehensive Prayer for Relief
+                  </h4>
+                  <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-lg space-y-2 text-xs sm:text-sm">
+                    <p className="font-bold text-slate-200">WHEREFORE, Petitioner respectfully prays that this Court:</p>
+                    <ul className="list-disc pl-6 space-y-1.5 text-slate-300">
+                      <li>(a) Issue a Peremptory Writ of Mandamus commanding BNY Mellon and Computershare Trust Company, N.A. to clear 45,850,000 LEU shares and accrued yields directly to the Americana Digital Reserve Exchange endpoint;</li>
+                      <li>(b) Enter a Declaratory Judgment confirming that the legacy Senior Notes (Series A &amp; Series B) are fully recognized and cleared for credit;</li>
+                      <li>(c) Order an immediate institutional accounting of all 13F CUSIP holdings associated with CUSIP 917300AA1 and 917300AB9;</li>
+                      <li>(d) Grant Petitioner leave to proceed In Forma Pauperis pursuant to 28 U.S.C. § 1915 and Maryland Rule 1-325(e);</li>
+                      <li>(e) Approve the DYREO automated sweep protocol and post-quantum cryptographic security framework.</li>
+                    </ul>
+                  </div>
+                </div>
+              }
+            />
           </div>
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-3')}
         </section>
 
         {/* =========================================================================
@@ -485,35 +714,49 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
             </h3>
           </div>
 
-          <div className="space-y-4 text-justify text-slate-300">
-            <h4 className="font-serif font-bold text-slate-100 text-base">
-              4.1 Statutory Fee Waiver Grounds &amp; In Custodia Legis Estate Status
-            </h4>
-            <p>
-              Petitioner moves this Court pursuant to 28 U.S.C. § 1915, Maryland Rule 1-325(e), and Md. Code Ann., Cts. &amp; Jud. Proc. § 7-201 for an order waiving all open court costs, filing fees, and process service charges. Petitioner is the Debtor-in-Possession in an active Chapter 11 Subchapter V bankruptcy proceeding pending in the United States Bankruptcy Court for the District of Columbia (<em>In re Caustin Lee McLaughlin</em>, Case No. 24-2383).
-            </p>
-            <p>
-              Under 11 U.S.C. §§ 541 and 1186, all assets, causes of action, and property rights of the Petitioner are held <em>in custodia legis</em> under the exclusive jurisdiction of the federal bankruptcy court. Petitioner possesses no unencumbered liquid funds to pay upfront docket fees without violating federal bankruptcy stay orders. Petitioner's individual liquid income is below 125% of the federal poverty guidelines.
-            </p>
+          <TranslatedLegalClause
+            clauseKey="ifp-ada-mandate"
+            clauseTitle="Part IV In Forma Pauperis & ADA Title II Technological Accommodation Clause"
+            selectedLanguage={selectedLanguage}
+            englishPlainText={`STATUTORY FEE WAIVER GROUNDS (28 U.S.C. § 1915; MD. RULE 1-325(e)) & ADA TITLE II INTEGRATION:
+Petitioner moves for an order waiving all open court costs, filing fees, and process service charges. Petitioner is Debtor-in-Possession in active Chapter 11 Subchapter V bankruptcy (In re Caustin Lee McLaughlin, Case No. 24-2383).
+Under 11 U.S.C. §§ 541 and 1186, all assets are held in custodia legis under federal bankruptcy court jurisdiction.
+Pursuant to Title II of the Americans with Disabilities Act of 1990 (42 U.S.C. § 12131), 28 C.F.R. § 35.130(b)(7), and Tennessee v. Lane, 541 U.S. 509 (2004), courts are constitutionally mandated to provide reasonable technological accommodations to pro se litigants with neurogenetic disabilities, deploying automated algorithmic transaction protocols as an indispensable cognitive prosthetic.`}
+            englishContent={
+              <div className="space-y-4 text-justify text-slate-300">
+                <h4 className="font-serif font-bold text-slate-100 text-base">
+                  4.1 Statutory Fee Waiver Grounds &amp; In Custodia Legis Estate Status
+                </h4>
+                <p>
+                  Petitioner moves this Court pursuant to 28 U.S.C. § 1915, Maryland Rule 1-325(e), and Md. Code Ann., Cts. &amp; Jud. Proc. § 7-201 for an order waiving all open court costs, filing fees, and process service charges. Petitioner is the Debtor-in-Possession in an active Chapter 11 Subchapter V bankruptcy proceeding pending in the United States Bankruptcy Court for the District of Columbia (<em>In re Caustin Lee McLaughlin</em>, Case No. 24-2383).
+                </p>
+                <p>
+                  Under 11 U.S.C. §§ 541 and 1186, all assets, causes of action, and property rights of the Petitioner are held <em>in custodia legis</em> under the exclusive jurisdiction of the federal bankruptcy court. Petitioner possesses no unencumbered liquid funds to pay upfront docket fees without violating federal bankruptcy stay orders. Petitioner's individual liquid income is below 125% of the federal poverty guidelines.
+                </p>
 
-            <h4 className="font-serif font-bold text-slate-100 text-base mt-4">
-              4.2 Americans with Disabilities Act (ADA Title II) Integration &amp; Cognitive Load Model
-            </h4>
-            <p>
-              Pursuant to Title II of the Americans with Disabilities Act of 1990 (42 U.S.C. § 12131), 28 C.F.R. § 35.130(b)(7), and controlling Supreme Court precedent in <em>Tennessee v. Lane</em>, 541 U.S. 509 (2004), courts and administrative clearing facilities are constitutionally mandated to provide reasonable procedural and technological accommodations to pro se litigants with neurogenetic and executive function disabilities.
-            </p>
-            <p>
-              Petitioner asserts the right to deploy automated transaction protocols as an indispensable cognitive prosthetic. Under Cognitive Load Theory (Sweller, 1988), working memory capacity C<sub>capacity</sub> is strictly bounded:
-            </p>
+                <h4 className="font-serif font-bold text-slate-100 text-base mt-4">
+                  4.2 Americans with Disabilities Act (ADA Title II) Integration &amp; Cognitive Load Model
+                </h4>
+                <p>
+                  Pursuant to Title II of the Americans with Disabilities Act of 1990 (42 U.S.C. § 12131), 28 C.F.R. § 35.130(b)(7), and controlling Supreme Court precedent in <em>Tennessee v. Lane</em>, 541 U.S. 509 (2004), courts and administrative clearing facilities are constitutionally mandated to provide reasonable procedural and technological accommodations to pro se litigants with neurogenetic and executive function disabilities.
+                </p>
+                <p>
+                  Petitioner asserts the right to deploy automated transaction protocols as an indispensable cognitive prosthetic. Under Cognitive Load Theory (Sweller, 1988), working memory capacity C<sub>capacity</sub> is strictly bounded:
+                </p>
 
-            <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-indigo-300 text-sm">
-              L<sub>total</sub> = L<sub>intrinsic</sub> + L<sub>extraneous</sub> + L<sub>germane</sub> &le; C<sub>capacity</sub>
-            </div>
+                <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-indigo-300 text-sm">
+                  L<sub>total</sub> = L<sub>intrinsic</sub> + L<sub>extraneous</sub> + L<sub>germane</sub> &le; C<sub>capacity</sub>
+                </div>
 
-            <p>
-              Automated algorithmic compilation, direct electronic transfer to protocol endpoints, and programmatic settlement minimize extraneous processing friction, ensuring equal access to judicial remedies guaranteed under the Fourteenth Amendment.
-            </p>
-          </div>
+                <p>
+                  Automated algorithmic compilation, direct electronic transfer to protocol endpoints, and programmatic settlement minimize extraneous processing friction, ensuring equal access to judicial remedies guaranteed under the Fourteenth Amendment.
+                </p>
+              </div>
+            }
+          />
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-4')}
         </section>
 
         {/* =========================================================================
@@ -563,6 +806,9 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
               Because institutional holdings were publicly disclosed in SEC Form 13F-HR filings (e.g., The PNC Financial Services Group, Inc., File No. 28-1235; BlackRock, Inc., File No. 28-5703), the identity of beneficial holders was ascertainable through reasonable diligence. Consequently, publication notice was unconstitutional under <em>Mennonite</em>, and statutory bar dates are subject to equitable tolling under 11 U.S.C. § 105(a).
             </p>
           </div>
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-5')}
         </section>
 
         {/* =========================================================================
@@ -669,6 +915,9 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
               This filing evidence demonstrates that BNY Mellon, as the master indenture depository and DTC clearing participant, maintains the precise historical records and CUSIP ledger bridges necessary to execute the requested conversion.
             </p>
           </div>
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-6')}
         </section>
 
         {/* =========================================================================
@@ -752,6 +1001,9 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
               </div>
             </div>
           </div>
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-7')}
         </section>
 
         {/* =========================================================================
@@ -767,60 +1019,79 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
             </h3>
           </div>
 
-          <div className="space-y-4 text-justify text-slate-300 text-sm">
-            <h4 className="font-serif font-bold text-slate-100 text-base">
-              8.1 Statutory Purpose &amp; Bankruptcy-Remote Entity Architecture
-            </h4>
-            <p>
-              Pursuant to the Wyoming Statutory Trust Act (Wyo. Stat. Ann. § 17-23-101 et seq.) and the Uniform Directed Trust Act, Petitioner has formed the <strong>Americana Liquidation &amp; Sovereign Purpose Trust</strong> (1621 Central Avenue, Cheyenne, WY 82001) as an irrevocable, bankruptcy-remote statutory purpose trust. The trust is dedicated exclusively to the holding, custodial segregation, and programmatic liquidation of the <strong>45,850,000 reorganized common shares of Centrus Energy Corp. (NYSE: LEU)</strong> and the management of $500,000,000.00 in senior debt claims.
-            </p>
+          <TranslatedLegalClause
+            clauseKey="wyoming-liquidation-trust"
+            clauseTitle="Part VIII Wyoming Statutory Liquidation Trust Formation & Quad-Cameral Fiduciary Matrix"
+            selectedLanguage={selectedLanguage}
+            englishPlainText={`WYOMING STATUTORY LIQUIDATION TRUST FORMATION (Wyo. Stat. Ann. § 17-23-101 et seq.):
+Pursuant to the Wyoming Statutory Trust Act and Uniform Directed Trust Act, Petitioner has formed Americana Liquidation & Sovereign Purpose Trust (1621 Central Ave, Cheyenne, WY 82001) as an irrevocable, bankruptcy-remote statutory purpose trust to hold and programmatically liquidate 45,850,000 common shares of Centrus Energy Corp. (NYSE: LEU) and manage $500,000,000.00 senior debt claims.
+Quad-Cameral Fiduciary Separation Matrix (Wyo. Stat. Ann. § 17-23-114):
+1. Principal Trustee: Caustin Lee McLaughlin (dispositive authority and liquidation pacing).
+2. Co-Trustee: Juan Jose Fernandez (dual signatory authorization, spousal fiduciary oversight).
+3. Independent Custodian: BNY Mellon / M&T Bank (DTC participant clearing and cash custody).
+4. Trust Protector: Delaware Trust Company (sovereign compliance oversight and indenture covenants).
+Algorithmic Liquidation: Capped at <= 1.5% trailing 20-day ADV via TWAP/VWAP.
+5% Trailing Corpus Perpetuity Rule: Min Corpus = 0.05 * Max(Total Assets Recovered) invested in short-term U.S. Treasury bills.`}
+            englishContent={
+              <div className="space-y-4 text-justify text-slate-300 text-sm">
+                <h4 className="font-serif font-bold text-slate-100 text-base">
+                  8.1 Statutory Purpose &amp; Bankruptcy-Remote Entity Architecture
+                </h4>
+                <p>
+                  Pursuant to the Wyoming Statutory Trust Act (Wyo. Stat. Ann. § 17-23-101 et seq.) and the Uniform Directed Trust Act, Petitioner has formed the <strong>Americana Liquidation &amp; Sovereign Purpose Trust</strong> (1621 Central Avenue, Cheyenne, WY 82001) as an irrevocable, bankruptcy-remote statutory purpose trust. The trust is dedicated exclusively to the holding, custodial segregation, and programmatic liquidation of the <strong>45,850,000 reorganized common shares of Centrus Energy Corp. (NYSE: LEU)</strong> and the management of $500,000,000.00 in senior debt claims.
+                </p>
 
-            {/* Quad-Cameral Governance Breakdown */}
-            <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 space-y-2">
-              <div className="text-xs uppercase font-bold text-amber-400 tracking-wider">
-                Quad-Cameral Fiduciary Separation Matrix (Wyo. Stat. Ann. § 17-23-114)
+                {/* Quad-Cameral Governance Breakdown */}
+                <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 space-y-2">
+                  <div className="text-xs uppercase font-bold text-amber-400 tracking-wider">
+                    Quad-Cameral Fiduciary Separation Matrix (Wyo. Stat. Ann. § 17-23-114)
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs mt-2">
+                    <div className="p-3 bg-slate-900 rounded border border-slate-800">
+                      <div className="font-bold text-indigo-300">1. Principal Trustee</div>
+                      <div className="text-slate-300 font-semibold mt-0.5">Caustin Lee McLaughlin</div>
+                      <p className="text-[11px] text-slate-400 mt-1">Dispositive authority, algorithmic liquidation pacing, and judicial enforcement.</p>
+                    </div>
+                    <div className="p-3 bg-slate-900 rounded border border-slate-800">
+                      <div className="font-bold text-indigo-300">2. Co-Trustee</div>
+                      <div className="text-slate-300 font-semibold mt-0.5">Juan Jose Fernandez</div>
+                      <p className="text-[11px] text-slate-400 mt-1">Dual signatory authorization, audit sign-off, and spousal co-custodial authority.</p>
+                    </div>
+                    <div className="p-3 bg-slate-900 rounded border border-slate-800">
+                      <div className="font-bold text-indigo-300">3. Independent Custodian</div>
+                      <div className="text-slate-300 font-semibold mt-0.5">BNY Mellon / M&amp;T Bank</div>
+                      <p className="text-[11px] text-slate-400 mt-1">DTC participant settlement, physical vault safekeeping, and cash custody.</p>
+                    </div>
+                    <div className="p-3 bg-slate-900 rounded border border-slate-800">
+                      <div className="font-bold text-indigo-300">4. Trust Protector</div>
+                      <div className="text-slate-300 font-semibold mt-0.5">Delaware Trust Company</div>
+                      <p className="text-[11px] text-slate-400 mt-1">Sovereign compliance oversight, removal powers, and indenture covenants.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 className="font-serif font-bold text-slate-100 text-base mt-4">
+                  8.2 Algorithmic Market-Neutral Liquidation Pacing (TWAP / VWAP)
+                </h4>
+                <p>
+                  To eliminate adverse market impact on NYSE: LEU, the liquidation of the 45,850,000 shares is strictly bounded by a daily volumetric cap of <strong>&le; 1.5% of trailing 20-day Average Daily Volume (ADV)</strong>. Liquidation tranches execute algorithmically via Time-Weighted Average Price (TWAP) and Volume-Weighted Average Price (VWAP) execution curves across primary market trading hours (9:30 AM – 4:00 PM EST).
+                </p>
+
+                <h4 className="font-serif font-bold text-slate-100 text-base mt-4">
+                  8.3 The 5% Trailing Corpus Perpetuity Rule
+                </h4>
+                <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 font-mono text-xs sm:text-sm text-emerald-400 text-center">
+                  Perpetual Sovereign Floor: Min Corpus = 0.05 &times; Max(Total Assets Recovered)
+                </div>
+                <p className="text-xs text-slate-400">
+                  Pursuant to Section 5 of the Wyoming Trust Indenture, a minimum of 5% of all recovered liquidation proceeds must remain perpetually invested in short-term U.S. Treasury bills and sovereign reserves, generating continuous yield for pro se disability access in perpetuity.
+                </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs mt-2">
-                <div className="p-3 bg-slate-900 rounded border border-slate-800">
-                  <div className="font-bold text-indigo-300">1. Principal Trustee</div>
-                  <div className="text-slate-300 font-semibold mt-0.5">Caustin Lee McLaughlin</div>
-                  <p className="text-[11px] text-slate-400 mt-1">Dispositive authority, algorithmic liquidation pacing, and judicial enforcement.</p>
-                </div>
-                <div className="p-3 bg-slate-900 rounded border border-slate-800">
-                  <div className="font-bold text-indigo-300">2. Co-Trustee</div>
-                  <div className="text-slate-300 font-semibold mt-0.5">Juan Jose Fernandez</div>
-                  <p className="text-[11px] text-slate-400 mt-1">Dual signatory authorization, audit sign-off, and spousal co-custodial authority.</p>
-                </div>
-                <div className="p-3 bg-slate-900 rounded border border-slate-800">
-                  <div className="font-bold text-indigo-300">3. Independent Custodian</div>
-                  <div className="text-slate-300 font-semibold mt-0.5">BNY Mellon / M&amp;T Bank</div>
-                  <p className="text-[11px] text-slate-400 mt-1">DTC participant settlement, physical vault safekeeping, and cash custody.</p>
-                </div>
-                <div className="p-3 bg-slate-900 rounded border border-slate-800">
-                  <div className="font-bold text-indigo-300">4. Trust Protector</div>
-                  <div className="text-slate-300 font-semibold mt-0.5">Delaware Trust Company</div>
-                  <p className="text-[11px] text-slate-400 mt-1">Sovereign compliance oversight, removal powers, and indenture covenants.</p>
-                </div>
-              </div>
-            </div>
+            }
+          />
 
-            <h4 className="font-serif font-bold text-slate-100 text-base mt-4">
-              8.2 Algorithmic Market-Neutral Liquidation Pacing (TWAP / VWAP)
-            </h4>
-            <p>
-              To eliminate adverse market impact on NYSE: LEU, the liquidation of the 45,850,000 shares is strictly bounded by a daily volumetric cap of <strong>&le; 1.5% of trailing 20-day Average Daily Volume (ADV)</strong>. Liquidation tranches execute algorithmically via Time-Weighted Average Price (TWAP) and Volume-Weighted Average Price (VWAP) execution curves across primary market trading hours (9:30 AM – 4:00 PM EST).
-            </p>
-
-            <h4 className="font-serif font-bold text-slate-100 text-base mt-4">
-              8.3 The 5% Trailing Corpus Perpetuity Rule
-            </h4>
-            <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 font-mono text-xs sm:text-sm text-emerald-400 text-center">
-              Perpetual Sovereign Floor: Min Corpus = 0.05 &times; Max(Total Assets Recovered)
-            </div>
-            <p className="text-xs text-slate-400">
-              Pursuant to Section 5 of the Wyoming Trust Indenture, a minimum of 5% of all recovered liquidation proceeds must remain perpetually invested in short-term U.S. Treasury bills and sovereign reserves, generating continuous yield for pro se disability access in perpetuity.
-            </p>
-          </div>
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-8')}
         </section>
 
         {/* =========================================================================
@@ -836,61 +1107,101 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
             </h3>
           </div>
 
-          <div className="space-y-4 text-justify text-slate-300 text-sm">
-            <h4 className="font-serif font-bold text-slate-100 text-base">
-              9.1 Merton Stochastic Control Hamilton-Jacobi-Bellman (HJB) Formulation
-            </h4>
-            <p>
-              Disbursements from Escrow Sub-Account B are governed by the Dynamic Yield &amp; Real Estate Optimization (DYREO) stochastic control engine. Let liquid trust capital follow:
-            </p>
+          <TranslatedLegalClause
+            clauseKey="dyreo-housing-carveout"
+            clauseTitle="Part IX Continuous-Time DYREO Control & 30 Row Homes SSDI/SSI Housing Reservation"
+            selectedLanguage={selectedLanguage}
+            englishPlainText={`CONTINUOUS-TIME DYREO STOCHASTIC CONTROL & 30 ROW HOMES HOUSING CARVEOUT:
+Disbursements from Escrow Sub-Account B are governed by the Dynamic Yield & Real Estate Optimization (DYREO) Hamilton-Jacobi-Bellman (HJB) stochastic control engine.
+Sweep Allocation Vector: Housing Infrastructure & Land Trust 25%; SSDI/SSI Healthcare & Basic Needs 20%; Pro Se Legal Defense & ADA 20%; High-Frequency Crypto/Algorithmic Liquidity 15%; Real Estate Maintenance Reserve 10%; Sovereign Trust Perpetuity Floor 5%; Operational Overhead 5%.
+HOUSING PRESERVATION RATIO: HPR >= 0.85 across 300 Baltimore residential rowhome properties.
+SPECIAL STATUTORY CARVEOUT: Exactly 30 historic row homes within Baltimore are perpetually carved out and dedicated specifically as expedited transitional and supportive housing for Social Security SSDI and SSI disability applicants, supported by the MORTAR triage algorithm. Zero solar projects permitted.`}
+            englishContent={
+              <div className="space-y-4 text-justify text-slate-300 text-sm">
+                <h4 className="font-serif font-bold text-slate-100 text-base">
+                  9.1 Merton Stochastic Control Hamilton-Jacobi-Bellman (HJB) Formulation
+                </h4>
+                <p>
+                  Disbursements from Escrow Sub-Account B are governed by the Dynamic Yield &amp; Real Estate Optimization (DYREO) stochastic control engine. Let liquid trust capital follow:
+                </p>
 
-            <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-emerald-400 text-sm">
-              dA(t) = &mu; A(t)dt + &sigma; A(t)dW(t) - u(t)dt
-            </div>
-
-            <p>
-              Solving the Hamilton-Jacobi-Bellman (HJB) PDE for the value function:
-            </p>
-
-            <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-indigo-300 text-xs sm:text-sm overflow-x-auto">
-              &rho; V(A, t) - &part;V/&part;t = max<sub>u &ge; 0</sub> [ ln(u) + (&mu;A - u)&part;V/&part;A + &frac12;&sigma;<sup>2</sup>A<sup>2</sup>&part;<sup>2</sup>V/&part;A<sup>2</sup> ]
-            </div>
-
-            <p>
-              yields the deterministic daily sweep allocation vector:
-            </p>
-
-            {/* Sweep Allocation Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 my-4">
-              {DYREO_ALLOCATION_VECTOR.map((item, idx) => (
-                <div key={idx} className="p-3.5 bg-slate-950 rounded-lg border border-slate-800 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-lg font-bold text-emerald-400">{item.percentage}%</span>
-                      <span className="font-mono text-[10px] text-slate-500">{item.formulaSymbol}</span>
-                    </div>
-                    <div className="font-semibold text-slate-200 text-xs mt-1">{item.category}</div>
-                  </div>
-                  <p className="text-[11px] text-slate-400 mt-2">{item.description}</p>
+                <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-emerald-400 text-sm">
+                  dA(t) = &mu; A(t)dt + &sigma; A(t)dW(t) - u(t)dt
                 </div>
-              ))}
-            </div>
 
-            <h4 className="font-serif font-bold text-slate-100 text-base mt-6">
-              9.2 300 Baltimore Historic Rowhomes Housing Preservation &amp; HPR Threshold
-            </h4>
-            <p>
-              The 25% housing infrastructure allocation funds building envelope structural restoration, weatherization, and tenant stabilization across 300 Baltimore residential rowhome properties, requiring a minimum Housing Preservation Ratio (HPR &ge; 0.85):
-            </p>
+                <p>
+                  Solving the Hamilton-Jacobi-Bellman (HJB) PDE for the value function:
+                </p>
 
-            <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-amber-300 text-sm overflow-x-auto">
-              HPR = [ &int; (V<sub>rehab</sub>(t) - C<sub>deprec</sub>(t)) dt ] / [ K<sub>cap</sub> + &int; C<sub>maint</sub>(t) dt ] &ge; 0.85
-            </div>
+                <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-indigo-300 text-xs sm:text-sm overflow-x-auto">
+                  &rho; V(A, t) - &part;V/&part;t = max<sub>u &ge; 0</sub> [ ln(u) + (&mu;A - u)&part;V/&part;A + &frac12;&sigma;<sup>2</sup>A<sup>2</sup>&part;<sup>2</sup>V/&part;A<sup>2</sup> ]
+                </div>
 
-            <p className="text-xs text-slate-400">
-              Structural capital preservation is modeled via multi-period physical asset decay equations, and masonry envelope durability satisfies Arrhenius parabolic weathering kinetics: <span className="font-mono text-indigo-300">&Delta;C<sub>struct</sub>(t) = M &middot; exp(-E<sub>a</sub> / RT) &middot; t<sup>z</sup></span> (where z &approx; 0.5).
-            </p>
-          </div>
+                <p>
+                  yields the deterministic daily sweep allocation vector:
+                </p>
+
+                {/* Sweep Allocation Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 my-4">
+                  {DYREO_ALLOCATION_VECTOR.map((item, idx) => (
+                    <div key={idx} className="p-3.5 bg-slate-950 rounded-lg border border-slate-800 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <span className="font-mono text-lg font-bold text-emerald-400">{item.percentage}%</span>
+                          <span className="font-mono text-[10px] text-slate-500">{item.formulaSymbol}</span>
+                        </div>
+                        <div className="font-semibold text-slate-200 text-xs mt-1">{item.category}</div>
+                      </div>
+                      <p className="text-[11px] text-slate-400 mt-2">{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <h4 className="font-serif font-bold text-slate-100 text-base mt-6">
+                  9.2 300 Baltimore Historic Rowhomes Housing Preservation &amp; HPR Threshold
+                </h4>
+                <p>
+                  The 25% housing infrastructure allocation funds building envelope structural restoration, weatherization, and tenant stabilization across 300 Baltimore residential rowhome properties, requiring a minimum Housing Preservation Ratio (HPR &ge; 0.85):
+                </p>
+
+                <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 text-center font-mono text-amber-300 text-sm overflow-x-auto">
+                  HPR = [ &int; (V<sub>rehab</sub>(t) - C<sub>deprec</sub>(t)) dt ] / [ K<sub>cap</sub> + &int; C<sub>maint</sub>(t) dt ] &ge; 0.85
+                </div>
+
+                <p className="text-xs text-slate-400">
+                  Structural capital preservation is modeled via multi-period physical asset decay equations, and masonry envelope durability satisfies Arrhenius parabolic weathering kinetics: <span className="font-mono text-indigo-300">&Delta;C<sub>struct</sub>(t) = M &middot; exp(-E<sub>a</sub> / RT) &middot; t<sup>z</sup></span> (where z &approx; 0.5).
+                </p>
+
+                {/* Section 9.3: 30 Row Homes SSDI/SSI Applicant Housing Carveout */}
+                <div className="p-4 bg-amber-950/40 border border-amber-500/40 rounded-xl space-y-2 mt-4">
+                  <div className="flex items-center gap-2 text-amber-300 font-bold text-xs uppercase tracking-wider">
+                    <span className="w-2 h-2 rounded-full bg-amber-400" />
+                    <span>Special Statutory Carveout: 30 Historic Row Homes Dedicated for SSDI/SSI Applicants</span>
+                  </div>
+                  <p className="text-slate-200 text-xs leading-relaxed text-justify">
+                    Pursuant to the PSDLEF housing mandate and Rule 18 Iteration II (Administrative Mortality Due Process Exaction), exactly <strong>30 historic row homes</strong> within the 300-property portfolio are perpetually carved out and dedicated specifically as expedited transitional and permanent supportive housing for Social Security SSDI and SSI disability applicants enduring the 800+ day SSA hearing queue. Supported by the MORTAR anti-starvation triage algorithm (Sanders &amp; Larson, 2026), these 30 properties provide dignified shelter, energy-efficient weatherization, and zero-displacement community land trust tenure.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 text-[11px] font-mono text-slate-300">
+                    <div className="p-2 bg-slate-950 rounded border border-slate-800">
+                      <span className="text-slate-500 block text-[10px]">Dedicated Units:</span>
+                      <span className="text-amber-400 font-bold">30 Row Homes (Baltimore)</span>
+                    </div>
+                    <div className="p-2 bg-slate-950 rounded border border-slate-800">
+                      <span className="text-slate-500 block text-[10px]">Capital Carveout:</span>
+                      <span className="text-emerald-400 font-bold">$12,500,000.00 Senior Res</span>
+                    </div>
+                    <div className="p-2 bg-slate-950 rounded border border-slate-800">
+                      <span className="text-slate-500 block text-[10px]">Statutory Safeguard:</span>
+                      <span className="text-indigo-400 font-bold">Md. Real Prop. § 14-120</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          />
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-9')}
         </section>
 
         {/* =========================================================================
@@ -932,6 +1243,9 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
               • Ledger: Baltimore Secure Backbone System (BSBS) SHA3-256 Merkle Audit Trail
             </div>
           </div>
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-10')}
         </section>
 
         {/* =========================================================================
@@ -1002,6 +1316,9 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
               </div>
             </div>
           </div>
+
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-11')}
         </section>
 
         {/* =========================================================================
@@ -1017,72 +1334,90 @@ export const UnifiedDocumentContent: React.FC<Props> = ({
             </h3>
           </div>
 
-          <div className="space-y-6">
-            {/* Master Verification Block */}
-            <div className="p-6 bg-slate-950/90 border border-slate-700 rounded-lg font-serif space-y-3">
-              <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-amber-400">
-                MASTER VERIFICATION UNDER 28 U.S.C. § 1746
-              </h4>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed text-justify">
-                I, <strong>Caustin Lee McLaughlin</strong>, declare under penalty of perjury under the laws of the United States of America that:
-              </p>
-              <ol className="list-decimal pl-6 space-y-1.5 text-xs sm:text-sm text-slate-300 text-justify">
-                <li>I am the Petitioner, Debtor-in-Possession, and Principal Trustee authorized to present this Comprehensive Master Mandamus, Rule 18 Exaction of Liberty, and Custodial Settlement Package.</li>
-                <li>The factual representations concerning the $500,000,000.00 aggregate principal amount of USEC Inc. 1999 Senior Notes (Series A $350,000,000.00 and Series B $150,000,000.00), the exchange ratio of 0.0917, and the conversion into 45,850,000 reorganized Centrus Energy Corp. common shares are true, accurate, and substantiated by historical SEC filings and confirmed bankruptcy reorganization orders.</li>
-                <li>The estate capitalization vector is strictly $500,000,000.00 in senior debt obligations, establishing complete mathematical uniformity across all court and bank records.</li>
-                <li>The clearing venue designated for settlement is The Bank of New York Mellon, operating under DTC Participant clearing protocols.</li>
-                <li>All calculations, allocations, and algorithmic models are true and correct to the best of my knowledge, information, and belief.</li>
-              </ol>
+          <TranslatedLegalClause
+            clauseKey="master-verification-service"
+            clauseTitle="Part XII Master Verification under Penalty of Perjury (28 U.S.C. § 1746) & Certificate of Service"
+            selectedLanguage={selectedLanguage}
+            englishPlainText={`MASTER VERIFICATION UNDER 28 U.S.C. § 1746 & CONSOLIDATED CERTIFICATE OF SERVICE:
+I, Caustin Lee McLaughlin, declare under penalty of perjury under the laws of the United States of America that:
+1. I am Petitioner, Debtor-in-Possession, and Principal Trustee authorized to present this Comprehensive Master Mandamus, Rule 18 Exaction of Liberty, and Custodial Settlement Package.
+2. Factual representations concerning $500,000,000.00 aggregate principal amount of USEC 1999 Senior Notes (Series A $350M, Series B $150M), exchange ratio of 0.0917, and conversion into 45,850,000 reorganized Centrus Energy Corp. common shares are true and substantiated.
+3. Estate capitalization vector is strictly $500,000,000.00 in senior debt obligations with zero Tucker Act pool.
+4. Designated clearing venue is The Bank of New York Mellon under DTC Participant protocols.
+Executed on November 3, 2026 in Towson, Baltimore County, MD & Washington, D.C.
+Consolidated service certified electronically to: Baltimore County Circuit Court (saocircuitcourtmdec@baltimorecountymd.gov), D.C. Circuit (dcd_intake@dcd.uscourts.gov), Supreme Court of the United States (intake@supremecourt.gov), BNY Mellon Corporate Trust, Computershare, Centrus Energy Corp., Delaware Trust Company, and M&T Bank.`}
+            englishContent={
+              <div className="space-y-6">
+                {/* Master Verification Block */}
+                <div className="p-6 bg-slate-950/90 border border-slate-700 rounded-lg font-serif space-y-3">
+                  <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-amber-400">
+                    MASTER VERIFICATION UNDER 28 U.S.C. § 1746
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed text-justify">
+                    I, <strong>Caustin Lee McLaughlin</strong>, declare under penalty of perjury under the laws of the United States of America that:
+                  </p>
+                  <ol className="list-decimal pl-6 space-y-1.5 text-xs sm:text-sm text-slate-300 text-justify">
+                    <li>I am the Petitioner, Debtor-in-Possession, and Principal Trustee authorized to present this Comprehensive Master Mandamus, Rule 18 Exaction of Liberty, and Custodial Settlement Package.</li>
+                    <li>The factual representations concerning the $500,000,000.00 aggregate principal amount of USEC Inc. 1999 Senior Notes (Series A $350,000,000.00 and Series B $150,000,000.00), the exchange ratio of 0.0917, and the conversion into 45,850,000 reorganized Centrus Energy Corp. common shares are true, accurate, and substantiated by historical SEC filings and confirmed bankruptcy reorganization orders.</li>
+                    <li>The estate capitalization vector is strictly $500,000,000.00 in senior debt obligations, establishing complete mathematical uniformity across all court and bank records.</li>
+                    <li>The clearing venue designated for settlement is The Bank of New York Mellon, operating under DTC Participant clearing protocols.</li>
+                    <li>All calculations, allocations, and algorithmic models are true and correct to the best of my knowledge, information, and belief.</li>
+                  </ol>
 
-              <div className="pt-4 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 font-sans text-xs">
-                <div>
-                  <div className="font-mono text-indigo-400 font-bold">/s/ Caustin Lee McLaughlin</div>
-                  <div className="font-semibold text-slate-200">Caustin Lee McLaughlin</div>
-                  <div className="text-slate-400">Managing Director / Debtor-in-Possession / Principal Trustee</div>
-                  <div className="text-slate-500 font-mono text-[11px]">Xaustino@hotmail.com</div>
+                  <div className="pt-4 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 font-sans text-xs">
+                    <div>
+                      <div className="font-mono text-indigo-400 font-bold">/s/ Caustin Lee McLaughlin</div>
+                      <div className="font-semibold text-slate-200">Caustin Lee McLaughlin</div>
+                      <div className="text-slate-400">Managing Director / Debtor-in-Possession / Principal Trustee</div>
+                      <div className="text-slate-500 font-mono text-[11px]">Xaustino@hotmail.com</div>
+                    </div>
+                    <div className="text-right text-slate-400 text-xs font-mono">
+                      Executed on: <strong>November 3, 2026</strong><br />
+                      Location: Towson, Baltimore, Maryland &amp; Washington, D.C.
+                    </div>
+                  </div>
                 </div>
-                <div className="text-right text-slate-400 text-xs font-mono">
-                  Executed on: <strong>November 1, 2026</strong><br />
-                  Location: Towson, Baltimore, Maryland &amp; Washington, D.C.
+
+                {/* Consolidated Certificate of Service */}
+                <div className="p-6 bg-slate-950 border border-slate-800 rounded-lg space-y-4">
+                  <h4 className="font-bold text-xs uppercase tracking-widest text-slate-300 flex items-center gap-2">
+                    <FileCheck className="w-4 h-4 text-emerald-400" />
+                    <span>CONSOLIDATED MASTER CERTIFICATE OF SERVICE</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed text-justify">
+                    I hereby certify that on <strong>November 3, 2026</strong>, a true and correct copy of this Unified Master Legal Instrument, including all Exhibits, Rule 18 Exaction Arguments, CUSIP Reconciliations, and Execution Tabs, was served electronically upon the following designated intake and counterparty addresses:
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                    <div className="p-3 bg-slate-900 rounded border border-slate-800 space-y-1">
+                      <div className="font-bold text-indigo-300 uppercase text-[10px]">Federal &amp; State Courts:</div>
+                      <div className="text-slate-300">• <strong>Baltimore County Circuit Court:</strong> <span className="font-mono text-indigo-400">saocircuitcourtmdec@baltimorecountymd.gov</span></div>
+                      <div className="text-slate-300">• <strong>D.C. Circuit Court Intake:</strong> <span className="font-mono text-indigo-400">dcd_intake@dcd.uscourts.gov</span></div>
+                      <div className="text-slate-300">• <strong>Supreme Court of the United States:</strong> <span className="font-mono text-indigo-400">intake@supremecourt.gov</span></div>
+                      <div className="text-slate-300">• <strong>Baltimore City Circuit Court:</strong> <span className="font-mono text-indigo-400">saocircuitcourtmdec@stattorney.org</span></div>
+                    </div>
+
+                    <div className="p-3 bg-slate-900 rounded border border-slate-800 space-y-1">
+                      <div className="font-bold text-amber-300 uppercase text-[10px]">Corporate &amp; Custodial Counterparties:</div>
+                      <div className="text-slate-300">• <strong>The Bank of New York Mellon:</strong> <span className="font-mono text-amber-400">corptrust@bnymellon.com</span></div>
+                      <div className="text-slate-300">• <strong>Computershare Trust Company:</strong> <span className="font-mono text-amber-400">directorate-corporateactions@computershare.com</span></div>
+                      <div className="text-slate-300">• <strong>Centrus Energy Corp. (LEU):</strong> <span className="font-mono text-amber-400">corpcomm@usec.com</span></div>
+                      <div className="text-slate-300">• <strong>Delaware Trust Company:</strong> <span className="font-mono text-amber-400">csctrust@cscinfo.com</span></div>
+                      <div className="text-slate-300">• <strong>Counsel of Record (Ropes &amp; Gray):</strong> <span className="font-mono text-amber-400">mark.somerstein@ropesgray.com</span></div>
+                      <div className="text-slate-300">• <strong>M&amp;T Bank Corporate Trust:</strong> <span className="font-mono text-amber-400">commercialservices@mtb.com</span></div>
+                    </div>
+                  </div>
+
+                  <div className="text-[11px] text-slate-500 pt-2 border-t border-slate-800 text-center font-mono">
+                    Executed in Towson, Baltimore County, Maryland &amp; Washington, D.C., United States of America.
+                  </div>
                 </div>
               </div>
-            </div>
+            }
+          />
 
-            {/* Consolidated Certificate of Service */}
-            <div className="p-6 bg-slate-950 border border-slate-800 rounded-lg space-y-4">
-              <h4 className="font-bold text-xs uppercase tracking-widest text-slate-300 flex items-center gap-2">
-                <FileCheck className="w-4 h-4 text-emerald-400" />
-                <span>CONSOLIDATED MASTER CERTIFICATE OF SERVICE</span>
-              </h4>
-              <p className="text-xs text-slate-300 leading-relaxed text-justify">
-                I hereby certify that on <strong>November 1, 2026</strong>, a true and correct copy of this Unified Master Legal Instrument, including all Exhibits, Rule 18 Exaction Arguments, CUSIP Reconciliations, and Execution Tabs, was served electronically upon the following designated intake and counterparty addresses:
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                <div className="p-3 bg-slate-900 rounded border border-slate-800 space-y-1">
-                  <div className="font-bold text-indigo-300 uppercase text-[10px]">Federal &amp; State Courts:</div>
-                  <div className="text-slate-300">• <strong>Baltimore County Circuit Court:</strong> <span className="font-mono text-indigo-400">saocircuitcourtmdec@baltimorecountymd.gov</span></div>
-                  <div className="text-slate-300">• <strong>D.C. Circuit Court Intake:</strong> <span className="font-mono text-indigo-400">dcd_intake@dcd.uscourts.gov</span></div>
-                  <div className="text-slate-300">• <strong>Supreme Court of the United States:</strong> <span className="font-mono text-indigo-400">intake@supremecourt.gov</span></div>
-                  <div className="text-slate-300">• <strong>Baltimore City Circuit Court:</strong> <span className="font-mono text-indigo-400">saocircuitcourtmdec@stattorney.org</span></div>
-                </div>
-
-                <div className="p-3 bg-slate-900 rounded border border-slate-800 space-y-1">
-                  <div className="font-bold text-amber-300 uppercase text-[10px]">Corporate &amp; Custodial Counterparties:</div>
-                  <div className="text-slate-300">• <strong>The Bank of New York Mellon:</strong> <span className="font-mono text-amber-400">corptrust@bnymellon.com</span></div>
-                  <div className="text-slate-300">• <strong>Computershare Trust Company:</strong> <span className="font-mono text-amber-400">directorate-corporateactions@computershare.com</span></div>
-                  <div className="text-slate-300">• <strong>Centrus Energy Corp. (LEU):</strong> <span className="font-mono text-amber-400">corpcomm@usec.com</span></div>
-                  <div className="text-slate-300">• <strong>Delaware Trust Company:</strong> <span className="font-mono text-amber-400">csctrust@cscinfo.com</span></div>
-                  <div className="text-slate-300">• <strong>Counsel of Record (Ropes &amp; Gray):</strong> <span className="font-mono text-amber-400">mark.somerstein@ropesgray.com</span></div>
-                  <div className="text-slate-300">• <strong>M&amp;T Bank Corporate Trust:</strong> <span className="font-mono text-amber-400">commercialservices@mtb.com</span></div>
-                </div>
-              </div>
-
-              <div className="text-[11px] text-slate-500 pt-2 border-t border-slate-800 text-center font-mono">
-                Executed in Towson, Baltimore County, Maryland &amp; Washington, D.C., United States of America.
-              </div>
-            </div>
-          </div>
+          {/* Canonical Legal Citation Footnotes */}
+          {renderFootnotesBlock('part-12')}
         </section>
 
       </div>

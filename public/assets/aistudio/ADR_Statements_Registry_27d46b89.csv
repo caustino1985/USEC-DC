@@ -1,0 +1,4 @@
+Statement ID,Period,Type,Entity,Valuation USD,Status
+stmt_1,Q3 2026,QUARTERLY NAV,Americana Digital Reserve Statutory Trust,"$12,300,400.00",AUDITED
+stmt_2,August 2026,MONTHLY NAV,Americana Digital Reserve Statutory Trust,"$12,300,400.00",AUDITED
+stmt_3,2025 Tax Year (Form 1099-B / K-1),TAX NAV,Americana Digital Reserve Statutory Trust,"$12,300,400.00",AUDITED

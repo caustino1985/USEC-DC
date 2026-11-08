@@ -187,6 +187,12 @@ export async function createGmailDraft(accessToken: string, payload: EmailPayloa
 }
 
 // --- GOOGLE CALENDAR & MEET ---
+export interface CourtCalendarAttendee {
+  email: string;
+  displayName?: string;
+  optional?: boolean;
+}
+
 export interface CourtCalendarEvent {
   summary: string;
   description: string;
@@ -194,11 +200,13 @@ export interface CourtCalendarEvent {
   startTime: string; // ISO format
   endTime: string;   // ISO format
   createMeetRoom?: boolean;
+  attendees?: CourtCalendarAttendee[];
+  sendUpdates?: 'all' | 'externalOnly' | 'none';
 }
 
 export async function listCalendarEvents(accessToken: string): Promise<any[]> {
   const now = new Date().toISOString();
-  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(now)}&maxResults=15&singleEvents=true&orderBy=startTime`, {
+  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(now)}&maxResults=25&singleEvents=true&orderBy=startTime`, {
     headers: { Authorization: `Bearer ${accessToken}` }
   });
   if (!res.ok) {
@@ -218,16 +226,32 @@ export async function scheduleCourtEvent(accessToken: string, event: CourtCalend
     end: { dateTime: event.endTime }
   };
 
+  if (event.attendees && event.attendees.length > 0) {
+    eventBody.attendees = event.attendees.map(a => ({
+      email: a.email,
+      displayName: a.displayName
+    }));
+  }
+
   if (event.createMeetRoom) {
     eventBody.conferenceData = {
       createRequest: {
-        requestId: `meet_${Date.now()}`,
+        requestId: `meet_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
         conferenceSolutionKey: { type: 'hangoutsMeet' }
       }
     };
   }
 
-  const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events${event.createMeetRoom ? '?conferenceDataVersion=1' : ''}`;
+  const queryParams = new URLSearchParams();
+  if (event.createMeetRoom) {
+    queryParams.set('conferenceDataVersion', '1');
+  }
+  if (event.attendees && event.attendees.length > 0) {
+    queryParams.set('sendUpdates', event.sendUpdates || 'all');
+  }
+
+  const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
+  const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events${queryString}`;
   const res = await fetch(url, {
     method: 'POST',
     headers: {

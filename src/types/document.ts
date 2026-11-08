@@ -103,3 +103,92 @@ export interface AlgorithmDefinition {
   complexity: string;
   register: 'Adopted' | 'Model/Simulation' | 'Proposal/Design Target';
 }
+
+export interface LegalCitationFootnote {
+  number: number;
+  partId: string;
+  shortTag: string;
+  canonicalCitation: string;
+  jurisdiction: string;
+  pincite?: string;
+  holdingOrRule: string;
+  statutoryAnchor?: string;
+}
+
+export interface CaseHistoryRecord {
+  id: string;
+  caseName: string;
+  docketNumber: string;
+  court: string;
+  jurisdiction: 'Federal Appellate' | 'Federal Bankruptcy' | 'Supreme Court' | 'Maryland State' | 'Precedential';
+  status: string;
+  filingDate: string;
+  lastUpdated: string;
+  relevance: string;
+  openSourceUrl: string;
+  sourceDatabase: 'CourtListener / RECAP (PACER)' | 'Maryland Judiciary Case Search (MDEC)' | 'SEC EDGAR Public' | 'Supreme Court Record';
+  summary: string;
+  keyOrders: {
+    date: string;
+    description: string;
+    documentNumber?: string;
+  }[];
+}
+
+export interface PeerReviewScienceItem {
+  id: string;
+  title: string;
+  authors: string[];
+  journalOrVenue: string;
+  publicationDate: string;
+  source: 'NIH PubMed' | 'Europe PMC' | 'arXiv' | 'ClinicalTrials.gov';
+  identifier: string; // PMID, DOI, or arXiv ID
+  url: string;
+  relevantAlgorithmIds: string[];
+  algorithmicContext: string;
+  abstractSnippet: string;
+  openAccess: boolean;
+  peerReviewed: boolean;
+}
+
+export interface AdrAdxLedgerUpdate {
+  updateId: string;
+  timestamp: string;
+  triggerEvent: string;
+  algorithmId: string;
+  scientificCitation: string;
+  merkleRootHash: string;
+  housingAllocationDelta: string;
+  status: 'Committed' | 'Verified' | 'Pending Relay';
+}
+
+export type BeneficiaryVerificationStatus = 'Verified' | 'Pending' | 'Action Required' | 'Under Review';
+
+export interface TrustBeneficiaryRecord {
+  id: string;
+  name: string;
+  roleOrCategory: 
+    | 'Principal Trustee' 
+    | 'Co-Trustee & Fiduciary' 
+    | 'Housing Preservation SPV' 
+    | 'SSDI/SSI Dedicated Housing Pool' 
+    | 'Pro Se Litigant AI Grant' 
+    | 'Surety & Operational Reserve' 
+    | 'Research Fellowship'
+    | 'Land Trust Custodian';
+  masterPoolId: 'psdlef' | 'housing-spv' | 'pro-se-grant' | 'legal-defense';
+  poolName: string;
+  allocatedPercentage: number;
+  allocatedDollars: number;
+  allocatedShares: number;
+  verificationStatus: BeneficiaryVerificationStatus;
+  verificationMethod: string;
+  clearingEndpoint: string;
+  lastVerifiedAt: string;
+  verifiedBy: string;
+  notes: string;
+  ssdiBacklogCarveout?: boolean;
+  housingUnitsAssigned?: number;
+  docketReference?: string;
+}
+

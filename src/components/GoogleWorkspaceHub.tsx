@@ -5,6 +5,7 @@ import {
   googleSignIn, 
   logout, 
   getAccessToken, 
+  auth,
   db,
   handleFirestoreError,
   OperationType
@@ -21,13 +22,16 @@ import {
   listChatSpaces, 
   postChatMessage,
   DriveFileItem,
-  ChatSpaceItem
+  ChatSpaceItem,
+  CourtCalendarEvent
 } from '../services/googleWorkspaceService';
+import { CourtSchedulingPanel } from './CourtSchedulingPanel';
 import { 
   collection, 
   addDoc, 
   onSnapshot, 
   query, 
+  where,
   orderBy, 
   limit, 
   serverTimestamp 
@@ -62,7 +66,8 @@ import {
   HardDrive,
   LogOut,
   UserCheck,
-  Zap
+  Zap,
+  Gavel
 } from 'lucide-react';
 
 interface ActivityLog {
@@ -79,7 +84,7 @@ export const GoogleWorkspaceHub: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
-  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState<'drive' | 'sheets' | 'gmail' | 'calendar' | 'docs' | 'chat'>('drive');
+  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState<'drive' | 'sheets' | 'gmail' | 'scheduling' | 'calendar' | 'docs' | 'chat'>('scheduling');
 
   // Loading and feedback states
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null);
@@ -130,13 +135,14 @@ export const GoogleWorkspaceHub: React.FC = () => {
   // Listen to Firestore activity log
   useEffect(() => {
     if (!user) {
-      setActivities([]);
+      setActivities(prev => (prev.length > 0 ? [] : prev));
       return;
     }
 
     try {
       const q = query(
         collection(db, 'workspace_activity'),
+        where('uid', '==', user.uid),
         limit(20)
       );
 
@@ -156,7 +162,16 @@ export const GoogleWorkspaceHub: React.FC = () => {
               uid: data.uid
             });
           });
-          setActivities(list);
+          if (list.length > 0) {
+            setActivities(prev => {
+              const map = new Map<string, ActivityLog>();
+              list.forEach(item => map.set(item.id, item));
+              prev.forEach(item => {
+                if (!map.has(item.id)) map.set(item.id, item);
+              });
+              return Array.from(map.values()).slice(0, 50);
+            });
+          }
         },
         (error) => {
           console.warn('Firestore onSnapshot listener handled:', error);
@@ -169,20 +184,36 @@ export const GoogleWorkspaceHub: React.FC = () => {
     }
   }, [user]);
 
-  // Log activity to Firestore
+  // Log activity to Firestore with resilient local fallback and graceful telemetry
   const logActivityToFirestore = async (service: string, action: string, resourceTitle?: string) => {
     if (!user) return;
+    const nowIso = new Date().toISOString();
+    const localEntry: ActivityLog = {
+      id: `act_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      service,
+      action,
+      resourceTitle: resourceTitle || 'N/A',
+      timestamp: nowIso,
+      status: 'Completed',
+      uid: user.uid
+    };
+
+    // Immediate optimistic state update
+    setActivities(prev => [localEntry, ...prev.filter(a => a.id !== localEntry.id)].slice(0, 50));
+
     try {
-      await addDoc(collection(db, 'workspace_activity'), {
-        service,
-        action,
-        resourceTitle: resourceTitle || 'N/A',
-        timestamp: new Date().toISOString(),
-        status: 'Completed',
-        uid: user.uid
-      });
+      if (auth.currentUser) {
+        await addDoc(collection(db, 'workspace_activity'), {
+          service,
+          action,
+          resourceTitle: resourceTitle || 'N/A',
+          timestamp: nowIso,
+          status: 'Completed',
+          uid: auth.currentUser.uid
+        });
+      }
     } catch (error) {
-      console.error('Failed to log workspace activity:', error);
+      console.warn('Workspace activity Firestore persistence handled:', error);
     }
   };
 
@@ -477,6 +508,83 @@ Location: Towson, MD 21204`,
     });
   };
 
+  // --- COURT SCHEDULING & MILESTONE INVITATION HANDLERS ---
+  const promptScheduleMilestone = async (eventPayload: CourtCalendarEvent, milestoneTitle: string) => {
+    const attendeeCount = eventPayload.attendees?.length || 0;
+    const formattedStartTime = new Date(eventPayload.startTime).toLocaleString('en-US', {
+      dateStyle: 'full',
+      timeStyle: 'short'
+    });
+
+    setConfirmModal({
+      isOpen: true,
+      title: `Schedule Court Appearance & Send Invitations`,
+      description: `This will create the event "${eventPayload.summary}" on your primary Google Calendar scheduled for ${formattedStartTime} at "${eventPayload.location}".
+
+${attendeeCount > 0 ? `Official Google Calendar email invitations will be dispatched to ${attendeeCount} parties: ${eventPayload.attendees?.map(a => a.email).join(', ')}.` : 'No external attendees selected.'}
+${eventPayload.createMeetRoom ? 'An active Google Meet video conference link will be automatically generated and embedded in the invitations.' : ''}
+
+Proceed with scheduling and dispatching invitations?`,
+      onConfirm: async () => {
+        if (!token) return;
+        setIsLoading(true);
+        try {
+          const ev = await scheduleCourtEvent(token, eventPayload);
+          await logActivityToFirestore('calendar', 'Court Invitation Sent', `${milestoneTitle} (${attendeeCount} invitees)`);
+          const meetUrl = ev.conferenceData?.entryPoints?.find((ep: any) => ep.entryPointType === 'video')?.uri;
+          setStatusMessage({
+            type: 'success',
+            text: `Successfully scheduled "${milestoneTitle}" and sent Google Calendar invitations to ${attendeeCount} parties! ${meetUrl ? `Google Meet Link: ${meetUrl}` : ''}`
+          });
+          await handleFetchCalendar();
+        } catch (err: any) {
+          setStatusMessage({ type: 'error', text: err.message });
+        } finally {
+          setIsLoading(false);
+          setConfirmModal(prev => ({ ...prev, isOpen: false }));
+        }
+      }
+    });
+  };
+
+  const promptBatchScheduleAllMilestones = async (events: { event: CourtCalendarEvent; milestoneTitle: string }[]) => {
+    setConfirmModal({
+      isOpen: true,
+      title: `Batch Sync All Master Pleading Milestones (${events.length} Events)`,
+      description: `This will automatically schedule ${events.length} court appearance dates from the Master Mandamus and Rule 18 Pleading on your Google Calendar, generate Google Meet video bridges, and send official calendar invitations to named co-trustees, depository bank representatives, and court clerks.
+
+Proceed with batch calendar generation and invitation dispatch?`,
+      onConfirm: async () => {
+        if (!token) return;
+        setIsLoading(true);
+        let successCount = 0;
+        const failed: string[] = [];
+        try {
+          for (const item of events) {
+            try {
+              await scheduleCourtEvent(token, item.event);
+              await logActivityToFirestore('calendar', 'Batch Milestone Invite', item.milestoneTitle);
+              successCount++;
+            } catch (e: any) {
+              console.warn(`Error scheduling ${item.milestoneTitle}:`, e);
+              failed.push(item.milestoneTitle);
+            }
+          }
+          await handleFetchCalendar();
+          setStatusMessage({
+            type: successCount > 0 ? 'success' : 'error',
+            text: `Batch scheduled and dispatched invitations for ${successCount}/${events.length} court appearances to Google Calendar.${failed.length > 0 ? ` (Failed: ${failed.join(', ')})` : ''}`
+          });
+        } catch (err: any) {
+          setStatusMessage({ type: 'error', text: err.message });
+        } finally {
+          setIsLoading(false);
+          setConfirmModal(prev => ({ ...prev, isOpen: false }));
+        }
+      }
+    });
+  };
+
   // --- DOCS ACTIONS ---
   const promptExportPleadingToDoc = () => {
     setConfirmModal({
@@ -649,10 +757,11 @@ Message: "${chatMessageText}"`,
       {/* Main Workspace Tabs */}
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3">
         {[
+          { id: 'scheduling', label: 'Court Scheduling', icon: Gavel, badge: 'Pleading Sync' },
+          { id: 'calendar', label: 'Google Calendar & Meet', icon: Calendar },
           { id: 'drive', label: 'Google Drive', icon: HardDrive },
           { id: 'sheets', label: 'Google Sheets', icon: FileSpreadsheet },
           { id: 'gmail', label: 'Gmail Dispatch', icon: Mail },
-          { id: 'calendar', label: 'Google Calendar & Meet', icon: Calendar },
           { id: 'docs', label: 'Google Docs', icon: FileText },
           { id: 'chat', label: 'Google Chat', icon: MessageSquare }
         ].map((tab) => {
@@ -664,12 +773,21 @@ Message: "${chatMessageText}"`,
               onClick={() => setActiveWorkspaceTab(tab.id as any)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-lg'
+                  ? tab.id === 'scheduling'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-amber-900/50'
+                    : 'bg-blue-600 text-white shadow-lg'
                   : 'bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
               <span>{tab.label}</span>
+              {tab.badge && (
+                <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded uppercase ${
+                  isActive ? 'bg-black/30 text-amber-200' : 'bg-amber-500/20 text-amber-300'
+                }`}>
+                  {tab.badge}
+                </span>
+              )}
             </button>
           );
         })}
@@ -689,6 +807,19 @@ Message: "${chatMessageText}"`,
       {/* Authenticated Panels */}
       {user && (
         <div className="space-y-6">
+          {/* TAB 0: COURT SCHEDULING (DIRECT MASTER PLEADING SYNCHRONIZATION) */}
+          {activeWorkspaceTab === 'scheduling' && (
+            <CourtSchedulingPanel
+              token={token}
+              userEmail={user.email}
+              isLoading={isLoading}
+              onScheduleMilestone={promptScheduleMilestone}
+              onBatchScheduleAll={promptBatchScheduleAllMilestones}
+              onRefreshCalendar={handleFetchCalendar}
+              existingEvents={calendarEvents}
+            />
+          )}
+
           {/* TAB 1: GOOGLE DRIVE */}
           {activeWorkspaceTab === 'drive' && (
             <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-6 space-y-6">
